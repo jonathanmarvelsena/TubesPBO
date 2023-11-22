@@ -12,7 +12,6 @@ import javax.swing.JSeparator;
 import javax.swing.JTextField;
 
 import model.Publisher;
-import model.User;
 
 public class addItem {
     JFrame add_item;
