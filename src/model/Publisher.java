@@ -3,6 +3,10 @@ package model;
 import java.util.ArrayList;
 
 public class Publisher extends Account{
+    
+    public Publisher() {
+
+    }
     private ArrayList<Game> publishedGames;
     private ArrayList<DLC> publishedDLCs;
 

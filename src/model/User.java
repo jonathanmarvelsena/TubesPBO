@@ -9,6 +9,10 @@ public class User extends Account{
     private ArrayList<Transaction> history;
     private ShoppingCart cart;
 
+    public User() {
+        
+    }
+
     public User(String name, String password, int id) {
         super(name, password, id);
     }
