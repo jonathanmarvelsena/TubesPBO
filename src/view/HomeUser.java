@@ -17,7 +17,7 @@ public class HomeUser {
     JButton btnShopingCart;
     JButton btnShowUserTransaction;
 
-    public HomeUser () {
+    public HomeUser (User user) {
         home_user = new JFrame("Home ");
         home_user.setSize(320, 300);
         home_user.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -109,13 +109,11 @@ public class HomeUser {
         btnShowGameList.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new HomeUser();
+                new HomeUser(user);
                 home_user.setVisible(false);
             }
         });
         home_user.setVisible(true);
     }
-    public static void main(String[] args) {
-        new HomeUser();
-    }
-    }
+
+}

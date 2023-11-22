@@ -10,7 +10,15 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
+
+import controller.Controller;
+import model.Account;
+import model.Admin;
+import model.Publisher;
+import model.User;
+
 import javax.swing.JPasswordField;
 import javax.swing.JSeparator;
 
@@ -19,6 +27,7 @@ import javax.swing.JSeparator;
  * @author abil
  */
 public class Login {
+    Controller con = Controller.getInstance();
 
     JFrame container;
     JTextField name;
@@ -34,7 +43,7 @@ public class Login {
         container.setLayout(null);
         container.getContentPane().setBackground(Color.DARK_GRAY);
 
-        //Account Name
+        // Account Name
         JLabel labelName = new JLabel("Account name ");
         name = new JTextField();
         labelName.setBounds(28, 30, 150, 23);
@@ -45,7 +54,7 @@ public class Login {
         container.add(labelName);
         container.add(name);
 
-        //Password
+        // Password
         JLabel labelPassword = new JLabel("Password ");
         password = new JPasswordField();
         labelPassword.setBounds(50, 62, 150, 23);
@@ -56,42 +65,51 @@ public class Login {
         container.add(labelPassword);
         container.add(password);
 
-        //Bagian Button Login
+        // Bagian Button Login
         btnLogin = new JButton("Login");
         btnLogin.setBounds(120, 100, 160, 23);
         btnLogin.setForeground(Color.WHITE);
         btnLogin.setBackground(Color.decode("#717D7E"));
         container.add(btnLogin);
 
-//        btnLogin.addActionListener(new ActionListener() {
-//            @Override
-//            public void actionPerformed(ActionEvent e) {
-//                String userEmail = email.getText();
-//                String userPassword = new String(password.getPassword());
-//                Users loggedInUser = DatabaseController.getUser(userEmail, userPassword);
-//
-//                // Pengecekan ke database
-//                if (loggedInUser.getId() != 0) {
-//                    container.setVisible(false);
-//                    JOptionPane.showMessageDialog(null, "Login Berhasil");
-//                    new GameListScreen(loggedInUser);
-//                } else {
-//                    JOptionPane.showMessageDialog(null, "Login Gagal. email atau password salah.");
-//                }
-//            }
-//        });
+        btnLogin.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String userName = name.getText();
+                String userPassword = new String(password.getPassword());
+                Account loggedInUser = con.getUser(userName, userPassword);
+
+                if (loggedInUser instanceof User) {
+                    // If the logged-in user is an instance of User
+                    new HomeUser((User) loggedInUser);
+                    container.setVisible(false);
+                } else if (loggedInUser instanceof Admin) {
+                    // If the logged-in user is an instance of Admin
+                    new AdminHome((Admin) loggedInUser); // Replace AdminHome with the actual Admin home view
+                    container.setVisible(false);
+                } else if (loggedInUser instanceof Publisher) {
+                    // If the logged-in user is an instance of Publisher
+                    new HomePublisher((Publisher) loggedInUser); // Replace PublisherHome with the actual Publisher home
+                    container.setVisible(false);
+                    // view
+                } else {
+                    JOptionPane.showMessageDialog(container, "Email or password incorrect", "User not found",
+                            JOptionPane.WARNING_MESSAGE);
+                }
+            }
+        });
         JSeparator garisPemisah = new JSeparator();
         garisPemisah.setBounds(28, 150, 410, 5);
         garisPemisah.setForeground(Color.LIGHT_GRAY);
         container.add(garisPemisah);
 
-        //Bagian Registrasi
+        // Bagian Registrasi
         JLabel labelRegistrasi = new JLabel("Don't have a Steam Account? ");
         labelRegistrasi.setBounds(50, 182, 180, 23);
         labelRegistrasi.setForeground(Color.WHITE);
         container.add(labelRegistrasi);
 
-        //Bagian Button Registrasi
+        // Bagian Button Registrasi
         btnRegistrasi = new JButton("Create A New Account...");
         btnRegistrasi.setBounds(230, 182, 210, 23);
         btnRegistrasi.setForeground(Color.WHITE);
@@ -108,4 +126,7 @@ public class Login {
         container.setVisible(true);
     }
 
+    public static void main(String[] args) {
+        Login login = new Login();
+    }
 }

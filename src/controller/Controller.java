@@ -1,4 +1,5 @@
 package controller;
+
 import java.sql.Statement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -33,48 +34,44 @@ public class Controller {
         return instance;
     }
 
-    // SELECT WHERE ini usn sama pw (punya user)
-    public Account getUser(String username, String password, String userType) {
+    public Account getUser(String username, String password) {
         conn.connect();
         String query = "SELECT * FROM Account WHERE username = ? AND password = ?";
         Account account = null;
-        
+    
         try {
             PreparedStatement stmt = conn.con.prepareStatement(query);
             stmt.setString(1, username);
             stmt.setString(2, password);
             ResultSet rs = stmt.executeQuery();
-
+    
             if (rs.next()) {
-                switch (userType) {
-                    case "User":
-                        User user = new User();
-                        user.setId(rs.getInt("id"));
-                        user.setName(rs.getString("username"));
-                        user.setPassword(rs.getString("password"));
-                        user.setStatus(AccountStatus.valueOf(rs.getString("status")));
-                        user.setWallet(rs.getDouble("wallet"));
-                        account = user;
-                        break;
-                    case "Admin":
-                        Admin admin = new Admin();
-                        admin.setId(rs.getInt("id"));
-                        admin.setName(rs.getString("username"));
-                        admin.setPassword(rs.getString("password"));
-                        admin.setStatus(AccountStatus.valueOf(rs.getString("status")));
-                        account = admin;
-                        break;
-                    case "Publisher":
-                        Publisher publisher = new Publisher();
-                        publisher.setId(rs.getInt("id"));
-                        publisher.setName(rs.getString("username"));
-                        publisher.setPassword(rs.getString("password"));
-                        publisher.setStatus(AccountStatus.valueOf(rs.getString("status")));
-                        account = publisher;
-                        break;
-                    default:
-                        // Handle default case
-                        break;
+                // Determine user type based on the columns or attributes present in the result set
+                if (rs.getObject("user_id") != null) {
+                    // User type is "User"
+                    User user = new User();
+                    user.setId(rs.getInt("user_id"));
+                    user.setName(rs.getString("username"));
+                    user.setPassword(rs.getString("password"));
+                    user.setStatus(AccountStatus.valueOf(rs.getString("status")));
+                    user.setWallet(rs.getDouble("wallet"));
+                    account = user;
+                } else if (rs.getObject("admin_id") != null) {
+                    // User type is "Admin"
+                    Admin admin = new Admin();
+                    admin.setId(rs.getInt("admin_id")); 
+                    admin.setName(rs.getString("username"));
+                    admin.setPassword(rs.getString("password"));
+                    admin.setStatus(AccountStatus.valueOf(rs.getString("status")));
+                    account = admin;
+                } else if (rs.getObject("publisher_id") != null) {
+                    // User type is "Publisher"
+                    Publisher publisher = new Publisher();
+                    publisher.setId(rs.getInt("publisher_id")); 
+                    publisher.setName(rs.getString("username"));
+                    publisher.setPassword(rs.getString("password"));
+                    publisher.setStatus(AccountStatus.valueOf(rs.getString("status")));
+                    account = publisher;
                 }
             }
         } catch (SQLException e) {
@@ -83,7 +80,6 @@ public class Controller {
         conn.disconnect();
         return account;
     }
-
     // INSERT (punya user)
     public boolean insertNewUser(User user) {
         conn.connect();
@@ -93,9 +89,8 @@ public class Controller {
             stmt.setInt(1, user.getId());
             stmt.setString(2, user.getName());
             stmt.setString(3, user.getPassword());
-            // Mengambil nilai string dari enum GenderEnum
             String statusString = user.getStatus().toString();
-            stmt.setString(4, statusString); // Menyimpan nilai string ke dalam kolom gender  
+            stmt.setString(4, statusString);  
             stmt.setDouble(5, user.getWallet());
             conn.disconnect();
             return (true);
@@ -106,6 +101,29 @@ public class Controller {
         }
     }
 
+    public ArrayList<User> getUserList(){
+        conn.connect();
+        String query = "SELECT * FROM users";
+        ArrayList<User> users = new ArrayList<>();
+
+        try{
+            Statement stmt = conn.con.createStatement();
+            ResultSet rs = stmt.executeQuery(query);
+            while (rs.next()) {
+                User user = new User();
+                user.setId(rs.getInt("id"));
+                user.setName(rs.getString("name"));
+                user.setPassword(rs.getString("description"));
+                user.setStatus(AccountStatus.valueOf(rs.getString("user_status")));
+                user.setWallet(rs.getDouble("wallet"));
+
+                users.add(user);
+            }
+        }catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return users;
+    }
     public ArrayList<Game> getGames() {
         conn.connect();
         String query = "SELECT * FROM game";
@@ -186,24 +204,24 @@ public class Controller {
         conn.connect();
         String query = "SELECT * FROM review WHERE item_id = " + game.getItemID();
         ArrayList<Review> reviews = new ArrayList<>();
-    
+
         try {
             Statement stmt = conn.con.createStatement();
             ResultSet rs = stmt.executeQuery(query);
             while (rs.next()) {
                 Review review = new Review();
                 review.setReviewID(rs.getInt("review_id"));
-                
+
                 // Set the associated game
                 review.setItem(game);
-                
+
                 // Fetch the associated user (you need to implement getUserById method)
                 User user = getUserById(rs.getInt("user_id"));
                 review.setUser(user);
-    
+
                 // Set the review text
                 review.setReviewText(rs.getString("comment"));
-                
+
                 reviews.add(review);
             }
         } catch (SQLException e) {
@@ -211,7 +229,7 @@ public class Controller {
         } finally {
             conn.disconnect();
         }
-    
+
         return reviews;
     }
 
@@ -219,24 +237,24 @@ public class Controller {
         conn.connect();
         String query = "SELECT * FROM review WHERE item_id = " + dlc.getItemID();
         ArrayList<Review> reviews = new ArrayList<>();
-    
+
         try {
             Statement stmt = conn.con.createStatement();
             ResultSet rs = stmt.executeQuery(query);
             while (rs.next()) {
                 Review review = new Review();
                 review.setReviewID(rs.getInt("review_id"));
-    
+
                 // Set the associated DLC
                 review.setItem(dlc);
-    
+
                 // Fetch the associated user (you need to implement getUserById method)
                 User user = getUserById(rs.getInt("user_id"));
                 review.setUser(user);
-    
+
                 // Set the review text
                 review.setReviewText(rs.getString("comment"));
-    
+
                 reviews.add(review);
             }
         } catch (SQLException e) {
@@ -244,7 +262,7 @@ public class Controller {
         } finally {
             conn.disconnect();
         }
-    
+
         return reviews;
     }
 
@@ -336,11 +354,11 @@ public class Controller {
     public void getGameDetails(Game game) {
         conn.connect();
         String query = "SELECT * FROM games WHERE game_id = " + game.getItemID();
-        
+
         try {
             Statement stmt = conn.con.createStatement();
             ResultSet rs = stmt.executeQuery(query);
-            
+
             if (rs.next()) {
                 game.setItemID(rs.getInt("id"));
                 game.setName(rs.getString("name"));
@@ -348,32 +366,32 @@ public class Controller {
                 game.setPrice(rs.getInt("price"));
                 game.setDiscountID(rs.getInt("discountid"));
                 game.setCover(rs.getString("cover"));
-                
+
                 String statusString = rs.getString("status");
                 ItemStatus status = ItemStatus.valueOf(statusString);
                 game.setStatus(status);
-    
+
                 ArrayList<Review> reviews = getReviewsForGame(game);
                 game.setReviews(reviews);
-    
+
                 ArrayList<DLC> dlcList = getDLCs(game);
                 game.setDLC(dlcList);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            conn.disconnect(); 
+            conn.disconnect();
         }
     }
 
     public void getDLCDetails(DLC dlc) {
         conn.connect();
         String query = "SELECT * FROM dlcs WHERE dlc_id = " + dlc.getItemID();
-        
+
         try {
             Statement stmt = conn.con.createStatement();
             ResultSet rs = stmt.executeQuery(query);
-            
+
             if (rs.next()) {
                 dlc.setItemID(rs.getInt("id"));
                 dlc.setName(rs.getString("name"));
@@ -381,18 +399,18 @@ public class Controller {
                 dlc.setPrice(rs.getInt("price"));
                 dlc.setDiscountID(rs.getInt("discountid"));
                 dlc.setCover(rs.getString("cover"));
-                
+
                 String statusString = rs.getString("status");
                 ItemStatus status = ItemStatus.valueOf(statusString);
                 dlc.setStatus(status);
-    
+
                 ArrayList<Review> reviews = getReviewsForDLC(dlc);
                 dlc.setReviews(reviews);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            conn.disconnect(); 
+            conn.disconnect();
         }
     }
 }
