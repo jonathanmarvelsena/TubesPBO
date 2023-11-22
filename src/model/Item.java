@@ -10,6 +10,11 @@ public abstract class Item {
     private int discountID;
     private ArrayList<Review> reviews;
     private ItemStatus status;
+    private String cover;
+
+    public Item(){
+
+    }
 
     public Item(int itemID, String name, String description, double price, int discountID, ArrayList<Review> reviews, ItemStatus status) {
         this.itemID = itemID;
@@ -75,5 +80,13 @@ public abstract class Item {
 
     public void setStatus(ItemStatus status) {
         this.status = status;
+    }
+
+    public String getCover() {
+        return cover;
+    }
+
+    public void setCover(String cover) {
+        this.cover = cover;
     }
 }

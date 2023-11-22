@@ -7,4 +7,7 @@ public class DLC extends Item{
         super(itemID, name, description, price, discount, reviews, status);
     }
 
+    public DLC() {
+    }
+
 }
