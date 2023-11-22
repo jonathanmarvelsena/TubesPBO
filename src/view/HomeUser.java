@@ -15,7 +15,7 @@ public class HomeUser {
     JButton btnTopup;
     JButton btnShowGameLibrary;
     JButton btnShopingCart;
-    JButton showUserTransaction;
+    JButton btnShowUserTransaction;
 
     public HomeUser (User user) {
         home_user = new JFrame("Home ");
@@ -42,11 +42,27 @@ public class HomeUser {
         btnShowGameList.setBackground(Color.decode("#717D7E"));
         home_user.add(btnShowGameList);
 
+        btnShowGameList.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new ShowGameList();
+                home_user.dispose();
+            }
+        });
+
         btnShowGameLibrary = new JButton("Game Library");
         btnShowGameLibrary.setBounds(80, 90, 150, 23);
         btnShowGameLibrary.setForeground(Color.WHITE);
         btnShowGameLibrary.setBackground(Color.decode("#717D7E"));
         home_user.add(btnShowGameLibrary);
+
+        btnShowGameLibrary.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new ShowGameLibrary();
+                home_user.dispose();
+            }
+        });
 
         btnShopingCart = new JButton("Shoping Cart");
         btnShopingCart.setBounds(80, 120, 150, 23);
@@ -54,17 +70,41 @@ public class HomeUser {
         btnShopingCart.setBackground(Color.decode("#717D7E"));
         home_user.add(btnShopingCart);
 
+        btnShopingCart.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new ShoppingCart();
+                home_user.dispose();
+            }
+        });
+
         btnTopup = new JButton("Top Up");
         btnTopup.setBounds(80, 150, 150, 23);
         btnTopup.setForeground(Color.WHITE);
         btnTopup.setBackground(Color.decode("#717D7E"));
         home_user.add(btnTopup);
 
-        showUserTransaction = new JButton("history transaction");
-        showUserTransaction.setBounds(80, 180, 150, 23);
-        showUserTransaction.setForeground(Color.WHITE);
-        showUserTransaction.setBackground(Color.decode("#717D7E"));
-        home_user.add(showUserTransaction);
+        btnTopup.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new TopUp();
+                home_user.dispose();
+            }
+        });
+
+        btnShowUserTransaction = new JButton("history transaction");
+        btnShowUserTransaction.setBounds(80, 180, 150, 23);
+        btnShowUserTransaction.setForeground(Color.WHITE);
+        btnShowUserTransaction.setBackground(Color.decode("#717D7E"));
+        home_user.add(btnShowUserTransaction);
+
+        btnShowUserTransaction.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new ShowUserTransaction();
+                home_user.dispose();
+            }
+        });
 
         btnShowGameList.addActionListener(new ActionListener() {
             @Override
@@ -74,7 +114,6 @@ public class HomeUser {
             }
         });
         home_user.setVisible(true);
-
     }
 
 }
