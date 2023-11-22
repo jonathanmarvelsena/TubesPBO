@@ -12,7 +12,7 @@ public class TopUp {
     JFrame top_up;
 
     JLabel isiWallet = new JLabel("Isi Wallet");
-    JTextField isiNominalTopUP ;
+    JTextField isiNominalTopUP;
     JLabel nominalTopUP = new JLabel("Masukan Nominal Top Up : ");
     JLabel pembayaran = new JLabel("pilih pembayaran :");
     String arrPembayaran[] = {"Paypal","Visa"};

@@ -40,11 +40,27 @@ public class HomePublisher {
         btnAddItem.setBackground(Color.decode("#717D7E"));
         home_publisher.add(btnAddItem);
 
+        btnAddItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new addItem();
+                home_publisher.dispose();
+            }
+        });
+
         btnEditItem = new JButton("Edit Item");
         btnEditItem.setBounds(80, 90, 150, 23);
         btnEditItem.setForeground(Color.WHITE);
         btnEditItem.setBackground(Color.decode("#717D7E"));
         home_publisher.add(btnEditItem);
+
+        btnEditItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new editItem();
+                home_publisher.dispose();
+            }
+        });
 
         btnShowRemovedGame = new JButton("Show Removed Game");
         btnShowRemovedGame.setBounds(70, 120, 170, 23);
@@ -52,20 +68,36 @@ public class HomePublisher {
         btnShowRemovedGame.setBackground(Color.decode("#717D7E"));
         home_publisher.add(btnShowRemovedGame);
 
+        btnShowRemovedGame.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new showRemovedGame();
+                home_publisher.dispose();
+            }
+        });
+        
+
         btnRemovedGame = new JButton("Removed Game");
         btnRemovedGame.setBounds(80, 150, 150, 23);
         btnRemovedGame.setForeground(Color.WHITE);
         btnRemovedGame.setBackground(Color.decode("#717D7E"));
         home_publisher.add(btnRemovedGame);
 
-        // btnAddItem.addActionListener(new ActionListener() {
-        //     @Override
-        //     public void actionPerformed(ActionEvent e) {
-        //         new HomeUser(publisher);
-        //         home_publisher.setVisible(false);
-        //     }
-        // });
-        // home_publisher.setVisible(true);
-    }
+        btnRemovedGame.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new removedGame();
+                home_publisher.dispose();
+            }
+        });
 
+        btnAddItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new HomePublisher(publisher);
+                home_publisher.setVisible(false);
+            }
+        });
+        home_publisher.setVisible(true);
+    }
 }
