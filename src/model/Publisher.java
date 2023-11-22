@@ -6,8 +6,12 @@ public class Publisher extends User{
     private ArrayList<Game> publishedGames;
     private ArrayList<DLC> publishedDLCs;
 
-    public Publisher(String name, String password, AccountStatus status, double wallet, ArrayList<Game> ownedGames, ArrayList<DLC> ownedDLCs, ArrayList<Transaction> history, ArrayList<Game> publishedGames, ArrayList<DLC> publishedDLCs) {
-        super(name, password, AccountStatus.NOT_BANNED, wallet, ownedGames, ownedDLCs, history);
+    
+
+    public Publisher(String name, String password, AccountStatus status, double wallet, ArrayList<Game> ownedGames,
+            ArrayList<DLC> ownedDLCs, ArrayList<Transaction> history, ShoppingCart cart, ArrayList<Game> publishedGames,
+            ArrayList<DLC> publishedDLCs) {
+        super(name, password, AccountStatus.NOT_BANNED, wallet, ownedGames, ownedDLCs, history, cart);
         this.publishedGames = publishedGames;
         this.publishedDLCs = publishedDLCs;
     }
