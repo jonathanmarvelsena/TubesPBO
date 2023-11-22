@@ -98,7 +98,7 @@ public class Register {
                     new HomeUser(newUser);
                     container.dispose();
                 } else {
-                    JOptionPane.showMessageDialog(container, "Email or password incorrect", "User not found",
+                    JOptionPane.showMessageDialog(container, "Register Error", "Error",
                             JOptionPane.WARNING_MESSAGE);
                 }
 
