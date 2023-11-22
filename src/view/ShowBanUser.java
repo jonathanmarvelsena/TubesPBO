@@ -12,6 +12,8 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JSeparator;
 
+import model.Admin;
+
 /**
  *
  * @author abil
@@ -20,7 +22,7 @@ public class ShowBanUser {
     JFrame container;
     JButton btnBack;
 
-    public ShowBanUser() {
+    public ShowBanUser(Admin admin) {
         container = new JFrame("Show Ban User");
         container.setSize(480, 300);
         container.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -48,7 +50,7 @@ public class ShowBanUser {
         btnBack.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new HomeAdmin();
+                new HomeAdmin(admin);
                 container.setVisible(false);
             }
         });

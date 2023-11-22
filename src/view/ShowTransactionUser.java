@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package view;
 
 import java.awt.Color;
@@ -11,27 +7,26 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JSeparator;
-
-import model.Admin;
+import model.User;
 
 /**
  *
  * @author abil
  */
-public class ShowMonthlyTransaction {
+public class ShowTransactionUser {
 
     JFrame container;
     JButton btnBack;
 
-    public ShowMonthlyTransaction(Admin admin) {
-        container = new JFrame("Show Monthly Transaction");
+    public ShowTransactionUser(User user) {
+        container = new JFrame("Show User Transaction");
         container.setSize(480, 300);
         container.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         container.setLocationRelativeTo(null);
         container.setLayout(null);
         container.getContentPane().setBackground(Color.DARK_GRAY);
 
-        JLabel title = new JLabel("Show Monthly Transaction");
+        JLabel title = new JLabel("Show User Transaction");
         title.setBounds(15, 15, 150, 23);
         title.setForeground(Color.WHITE);
         container.add(title);
@@ -51,11 +46,10 @@ public class ShowMonthlyTransaction {
         btnBack.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new HomeAdmin(admin);
+                new HomeUser(user);
                 container.setVisible(false);
             }
         });
-
         container.setVisible(true);
     }
 }

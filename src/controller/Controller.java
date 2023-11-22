@@ -80,6 +80,7 @@ public class Controller {
         conn.disconnect();
         return account;
     }
+    
     // INSERT (punya user)
     public boolean insertNewUser(User user) {
         conn.connect();
@@ -105,7 +106,6 @@ public class Controller {
         conn.connect();
         String query = "SELECT * FROM users";
         ArrayList<User> users = new ArrayList<>();
-
         try{
             Statement stmt = conn.con.createStatement();
             ResultSet rs = stmt.executeQuery(query);
@@ -124,6 +124,45 @@ public class Controller {
         }
         return users;
     }
+
+    //UPDATE status jadi banned
+    public boolean updateStatusUser(String nama) {
+        conn.connect();
+        String query = "UPDATE users SET status= 'BANNED'"
+                + "WHERE username='" + nama + "'";
+        try {
+            Statement stmt = conn.con.createStatement();
+            stmt.executeUpdate(query);
+            return (true);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return (false);
+        }
+    }
+
+    public ArrayList<User> getUserBanned(){
+        conn.connect();
+        String query = "SELECT * FROM users WHERE status= 'BANNED'";
+        ArrayList<User> users = new ArrayList<>();
+        try{
+            Statement stmt = conn.con.createStatement();
+            ResultSet rs = stmt.executeQuery(query);
+            while (rs.next()) {
+                User user = new User();
+                user.setId(rs.getInt("id"));
+                user.setName(rs.getString("name"));
+                user.setPassword(rs.getString("description"));
+                user.setStatus(AccountStatus.valueOf(rs.getString("user_status")));
+                user.setWallet(rs.getDouble("wallet"));
+
+                users.add(user);
+            }
+        }catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return users;
+    }
+
     public ArrayList<Game> getGames() {
         conn.connect();
         String query = "SELECT * FROM game";

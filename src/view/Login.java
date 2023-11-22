@@ -12,13 +12,11 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
-
 import controller.Controller;
 import model.Account;
 import model.Admin;
 import model.Publisher;
 import model.User;
-
 import javax.swing.JPasswordField;
 import javax.swing.JSeparator;
 
@@ -85,7 +83,7 @@ public class Login {
                     container.setVisible(false);
                 } else if (loggedInUser instanceof Admin) {
                     // If the logged-in user is an instance of Admin
-                    new AdminHome((Admin) loggedInUser); // Replace AdminHome with the actual Admin home view
+                    new HomeAdmin((Admin) loggedInUser); // Replace AdminHome with the actual Admin home view
                     container.setVisible(false);
                 } else if (loggedInUser instanceof Publisher) {
                     // If the logged-in user is an instance of Publisher

@@ -13,6 +13,8 @@ import javax.swing.JLabel;
 import javax.swing.JSeparator;
 import javax.swing.JTable;
 
+import model.Admin;
+
 
 /**
  *
@@ -24,7 +26,7 @@ public class ViewAllUsers {
     JButton btnBack;
     JTable todoTable;
 
-    public ViewAllUsers() {
+    public ViewAllUsers(Admin admin) {
         container = new JFrame("View All Users");
         container.setSize(480, 300);
         container.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -53,7 +55,7 @@ public class ViewAllUsers {
         btnBack.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new HomeAdmin();
+                new HomeAdmin(admin);
                 container.setVisible(false);
             }
         });

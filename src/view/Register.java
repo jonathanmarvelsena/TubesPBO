@@ -92,7 +92,7 @@ public class Register {
                 String name = username.getText();
                 String pass = new String(password.getPassword());
                 ArrayList<User> listUser = con.getUserList();
-                User newUser = new User(name, pass, listUser.size() + 1);
+                User newUser = new User(name, pass, listUser.size());
                 boolean cek = con.insertNewUser(newUser);
                 if (cek) {
                     new HomeUser(newUser);
@@ -116,7 +116,6 @@ public class Register {
         btnBack.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
                 new Login();
                 container.setVisible(false);
             }
