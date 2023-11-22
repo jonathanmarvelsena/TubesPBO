@@ -36,47 +36,66 @@ public class Controller {
 
     public Account getUser(String username, String password) {
         conn.connect();
-        String query = "SELECT * FROM Account WHERE username = ? AND password = ?";
+        String queryUser = "SELECT * FROM users WHERE username = ? AND password = ?";
+        String queryAdmin = "SELECT * FROM admin WHERE username = ? AND password = ?";
+        String queryPublisher = "SELECT * FROM publisher WHERE username = ? AND password = ?";
+    
         Account account = null;
     
         try {
-            PreparedStatement stmt = conn.con.prepareStatement(query);
-            stmt.setString(1, username);
-            stmt.setString(2, password);
-            ResultSet rs = stmt.executeQuery();
+            // Check for user
+            PreparedStatement stmtUser = conn.con.prepareStatement(queryUser);
+            stmtUser.setString(1, username);
+            stmtUser.setString(2, password);
+            ResultSet rsUser = stmtUser.executeQuery();
     
-            if (rs.next()) {
-                // Determine user type based on the columns or attributes present in the result set
-                if (rs.getObject("user_id") != null) {
-                    // User type is "User"
-                    User user = new User();
-                    user.setId(rs.getInt("user_id"));
-                    user.setName(rs.getString("username"));
-                    user.setPassword(rs.getString("password"));
-                    user.setStatus(AccountStatus.valueOf(rs.getString("status")));
-                    user.setWallet(rs.getDouble("wallet"));
-                    account = user;
-                } else if (rs.getObject("admin_id") != null) {
-                    // User type is "Admin"
+            if (rsUser.next()) {
+                User user = new User();
+                user.setId(rsUser.getInt("user_id"));
+                user.setName(rsUser.getString("username"));
+                user.setPassword(rsUser.getString("password"));
+                user.setStatus(AccountStatus.valueOf(rsUser.getString("user_status")));
+                user.setWallet(rsUser.getDouble("wallet"));
+                account = user;
+            }
+    
+            // Check for admin if not found
+            if (account == null) {
+                PreparedStatement stmtAdmin = conn.con.prepareStatement(queryAdmin);
+                stmtAdmin.setString(1, username);
+                stmtAdmin.setString(2, password);
+                ResultSet rsAdmin = stmtAdmin.executeQuery();
+    
+                if (rsAdmin.next()) {
                     Admin admin = new Admin();
-                    admin.setId(rs.getInt("admin_id")); 
-                    admin.setName(rs.getString("username"));
-                    admin.setPassword(rs.getString("password"));
-                    admin.setStatus(AccountStatus.valueOf(rs.getString("status")));
+                    admin.setId(rsAdmin.getInt("admin_id"));
+                    admin.setName(rsAdmin.getString("username"));
+                    admin.setPassword(rsAdmin.getString("password"));
+                    admin.setStatus(AccountStatus.valueOf(rsAdmin.getString("admin_status")));
                     account = admin;
-                } else if (rs.getObject("publisher_id") != null) {
-                    // User type is "Publisher"
+                }
+            }
+    
+            // Check for publisher if not found
+            if (account == null) {
+                PreparedStatement stmtPublisher = conn.con.prepareStatement(queryPublisher);
+                stmtPublisher.setString(1, username);
+                stmtPublisher.setString(2, password);
+                ResultSet rsPublisher = stmtPublisher.executeQuery();
+    
+                if (rsPublisher.next()) {
                     Publisher publisher = new Publisher();
-                    publisher.setId(rs.getInt("publisher_id")); 
-                    publisher.setName(rs.getString("username"));
-                    publisher.setPassword(rs.getString("password"));
-                    publisher.setStatus(AccountStatus.valueOf(rs.getString("status")));
+                    publisher.setId(rsPublisher.getInt("publisher_id"));
+                    publisher.setName(rsPublisher.getString("username"));
+                    publisher.setPassword(rsPublisher.getString("password"));
+                    publisher.setStatus(AccountStatus.valueOf(rsPublisher.getString("publisher_status")));
                     account = publisher;
                 }
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    
         conn.disconnect();
         return account;
     }
@@ -91,16 +110,26 @@ public class Controller {
             stmt.setString(2, user.getName());
             stmt.setString(3, user.getPassword());
             String statusString = user.getStatus().toString();
-            stmt.setString(4, statusString);  
+            stmt.setString(4, statusString);
             stmt.setDouble(5, user.getWallet());
-            conn.disconnect();
-            return (true);
+    
+            // Execute the SQL statement
+            int rowsAffected = stmt.executeUpdate();
+    
+            // Check if the insertion was successful
+            if (rowsAffected > 0) {
+                return true;
+            } else {
+                return false;
+            }
         } catch (SQLException e) {
             e.printStackTrace();
-            conn.disconnect();
-            return (false);
+            return false;
+        } finally {
+            conn.disconnect(); // Make sure to close the connection in the finally block
         }
     }
+    
 
     public ArrayList<User> getUserList(){
         conn.connect();
@@ -111,9 +140,9 @@ public class Controller {
             ResultSet rs = stmt.executeQuery(query);
             while (rs.next()) {
                 User user = new User();
-                user.setId(rs.getInt("id"));
-                user.setName(rs.getString("name"));
-                user.setPassword(rs.getString("description"));
+                user.setId(rs.getInt("user_id"));
+                user.setName(rs.getString("username"));
+                user.setPassword(rs.getString("password"));
                 user.setStatus(AccountStatus.valueOf(rs.getString("user_status")));
                 user.setWallet(rs.getDouble("wallet"));
 

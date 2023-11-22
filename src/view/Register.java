@@ -96,9 +96,9 @@ public class Register {
                 boolean cek = con.insertNewUser(newUser);
                 if (cek) {
                     new HomeUser(newUser);
-                    container.setVisible(false);
+                    container.dispose();
                 } else {
-                    JOptionPane.showMessageDialog(container, "Email or password incorrect", "User not found",
+                    JOptionPane.showMessageDialog(container, "Register Error", "Error",
                             JOptionPane.WARNING_MESSAGE);
                 }
 

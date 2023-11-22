@@ -17,14 +17,14 @@ public class HomePublisher {
 
 
     public HomePublisher (Publisher publisher){
-        home_publisher = new JFrame("Home Publisher");
+        home_publisher = new JFrame("Home");
         home_publisher.setSize(320, 270);
         home_publisher.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         home_publisher.setLocationRelativeTo(null);
         home_publisher.setLayout(null);
         home_publisher.getContentPane().setBackground(Color.DARK_GRAY);
 
-        JLabel welcomePublisher = new JLabel(" welcome to menu publisher ");
+        JLabel welcomePublisher = new JLabel(" Welcome to Publisher Menu ");
         welcomePublisher.setBounds(77, 25, 170, 23);
         welcomePublisher.setForeground(Color.WHITE);
         home_publisher.add(welcomePublisher);
@@ -46,26 +46,26 @@ public class HomePublisher {
         btnEditItem.setBackground(Color.decode("#717D7E"));
         home_publisher.add(btnEditItem);
 
-        btnShowRemovedGame = new JButton("Show Removed Game");
+        btnShowRemovedGame = new JButton("Show Removed Items");
         btnShowRemovedGame.setBounds(70, 120, 170, 23);
         btnShowRemovedGame.setForeground(Color.WHITE);
         btnShowRemovedGame.setBackground(Color.decode("#717D7E"));
         home_publisher.add(btnShowRemovedGame);
 
-        btnRemovedGame = new JButton("Removed Game");
+        btnRemovedGame = new JButton("Remove Item");
         btnRemovedGame.setBounds(80, 150, 150, 23);
         btnRemovedGame.setForeground(Color.WHITE);
         btnRemovedGame.setBackground(Color.decode("#717D7E"));
         home_publisher.add(btnRemovedGame);
 
-        // btnAddItem.addActionListener(new ActionListener() {
-        //     @Override
-        //     public void actionPerformed(ActionEvent e) {
-        //         new HomeUser(publisher);
-        //         home_publisher.setVisible(false);
-        //     }
-        // });
-        // home_publisher.setVisible(true);
+        btnAddItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new HomePublisher(publisher);
+                home_publisher.setVisible(false);
+            }
+        });
+        home_publisher.setVisible(true);
     }
 
 }
