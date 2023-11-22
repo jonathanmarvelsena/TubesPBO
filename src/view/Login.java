@@ -12,13 +12,11 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
-
 import controller.Controller;
 import model.Account;
 import model.Admin;
 import model.Publisher;
 import model.User;
-
 import javax.swing.JPasswordField;
 import javax.swing.JSeparator;
 
@@ -85,6 +83,7 @@ public class Login {
                 } else if (loggedInUser instanceof Admin) {
                     new HomeAdmin((Admin) loggedInUser);
                     container.dispose();
+
                 } else if (loggedInUser instanceof Publisher) {
                     new HomePublisher((Publisher) loggedInUser);
                     container.dispose();

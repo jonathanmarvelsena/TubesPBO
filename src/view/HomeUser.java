@@ -25,7 +25,6 @@ public class HomeUser {
         home_user.setLayout(null);
         home_user.getContentPane().setBackground(Color.DARK_GRAY);
 
-
         JLabel welcomeUser = new JLabel(" welcome to steam ");
         welcomeUser.setBounds(100, 25, 170, 23);
         welcomeUser.setForeground(Color.WHITE);
@@ -101,7 +100,7 @@ public class HomeUser {
         btnShowUserTransaction.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new ShowUserTransaction();
+                new ShowTransactionUser(user);
                 home_user.dispose();
             }
         });
@@ -115,5 +114,4 @@ public class HomeUser {
         });
         home_user.setVisible(true);
     }
-
 }

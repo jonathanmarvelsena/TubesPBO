@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package view;
 
 import java.awt.Color;
@@ -18,20 +14,20 @@ import model.Admin;
  *
  * @author abil
  */
-public class ShowMonthlyTransaction {
+public class ShowUserTransactionAdmin {
 
     JFrame container;
     JButton btnBack;
 
-    public ShowMonthlyTransaction(Admin admin) {
-        container = new JFrame("Show Monthly Transaction");
+    public ShowUserTransactionAdmin(Admin admin) {
+        container = new JFrame("Show User Transaction");
         container.setSize(480, 300);
         container.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         container.setLocationRelativeTo(null);
         container.setLayout(null);
         container.getContentPane().setBackground(Color.DARK_GRAY);
 
-        JLabel title = new JLabel("Show Monthly Transaction");
+        JLabel title = new JLabel("Show User Transaction");
         title.setBounds(15, 15, 150, 23);
         title.setForeground(Color.WHITE);
         container.add(title);

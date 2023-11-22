@@ -56,7 +56,7 @@ public class HomeAdmin {
         btnViewAllUser.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new ViewAllUsers();
+                new ViewAllUsers(admin);
                 homeAdmin.setVisible(false);
             }
         });
@@ -71,7 +71,7 @@ public class HomeAdmin {
         btnBanUser.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new BanUser();
+                new BanUser(admin);
                 homeAdmin.setVisible(false);
             }
         });
@@ -86,7 +86,7 @@ public class HomeAdmin {
         btnShowBanUser.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new ShowBanUser();
+                new ShowBanUser(admin);
                 homeAdmin.setVisible(false);
             }
         });
@@ -101,7 +101,7 @@ public class HomeAdmin {
         btnShowMonthlyTransaction.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new ShowMonthlyTransaction();
+                new ShowMonthlyTransaction(admin);
                 homeAdmin.setVisible(false);
             }
         });
@@ -116,13 +116,11 @@ public class HomeAdmin {
         btnShowUserTransaction.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new ShowUserTransaction();
+                new ShowUserTransactionAdmin(admin);
                 homeAdmin.setVisible(false);
             }
         });
 
         homeAdmin.setVisible(true);
     }
-
-  
 }
