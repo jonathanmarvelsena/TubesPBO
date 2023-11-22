@@ -87,7 +87,7 @@ public class HomeUser {
         btnTopup.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new TopUp();
+                new TopUp(user);
                 home_user.dispose();
             }
         });

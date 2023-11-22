@@ -80,18 +80,14 @@ public class Login {
                 Account loggedInUser = con.getUser(userName, userPassword);
 
                 if (loggedInUser instanceof User) {
-                    // If the logged-in user is an instance of User
                     new HomeUser((User) loggedInUser);
-                    container.setVisible(false);
+                    container.dispose();
                 } else if (loggedInUser instanceof Admin) {
-                    // If the logged-in user is an instance of Admin
-                    new AdminHome((Admin) loggedInUser); // Replace AdminHome with the actual Admin home view
-                    container.setVisible(false);
+                    new HomeAdmin((Admin) loggedInUser);
+                    container.dispose();
                 } else if (loggedInUser instanceof Publisher) {
-                    // If the logged-in user is an instance of Publisher
-                    new HomePublisher((Publisher) loggedInUser); // Replace PublisherHome with the actual Publisher home
-                    container.setVisible(false);
-                    // view
+                    new HomePublisher((Publisher) loggedInUser);
+                    container.dispose();
                 } else {
                     JOptionPane.showMessageDialog(container, "Email or password incorrect", "User not found",
                             JOptionPane.WARNING_MESSAGE);

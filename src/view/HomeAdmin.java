@@ -12,6 +12,8 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JSeparator;
 
+import model.Admin;
+
 /**
  *
  * @author abil
@@ -25,15 +27,15 @@ public class HomeAdmin {
     JButton btnShowMonthlyTransaction;
     JButton btnShowUserTransaction;
 
-    public HomeAdmin() {
-        homeAdmin = new JFrame("Main Menu Admin");
+    public HomeAdmin(Admin admin) {
+        homeAdmin = new JFrame("Admin Main Menu");
         homeAdmin.setSize(300, 400);
         homeAdmin.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         homeAdmin.setLocationRelativeTo(null);
         homeAdmin.setLayout(null);
         homeAdmin.getContentPane().setBackground(Color.DARK_GRAY);
 
-        JLabel title = new JLabel("Main Menu Admin");
+        JLabel title = new JLabel("Admin Main Menu");
         title.setBounds(90, 30, 150, 23);
         title.setForeground(Color.WHITE);
         homeAdmin.add(title);
@@ -60,7 +62,7 @@ public class HomeAdmin {
         });
 
         //Bagian Button Ban User
-        btnBanUser = new JButton("Ban Users");
+        btnBanUser = new JButton("Ban User");
         btnBanUser.setBounds(50, 120, 190, 23);
         btnBanUser.setForeground(Color.WHITE);
         btnBanUser.setBackground(Color.decode("#717D7E"));
@@ -75,7 +77,7 @@ public class HomeAdmin {
         });
 
         //Bagian Button Show Ban User
-        btnShowBanUser = new JButton("Show Ban Users");
+        btnShowBanUser = new JButton("Show Banned Users");
         btnShowBanUser.setBounds(50, 150, 190, 23);
         btnShowBanUser.setForeground(Color.WHITE);
         btnShowBanUser.setBackground(Color.decode("#717D7E"));
@@ -122,7 +124,5 @@ public class HomeAdmin {
         homeAdmin.setVisible(true);
     }
 
-    public static void main(String[] args) {
-        HomeAdmin home = new HomeAdmin();
-    }
+  
 }
