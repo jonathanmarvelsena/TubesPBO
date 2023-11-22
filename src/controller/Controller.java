@@ -33,48 +33,44 @@ public class Controller {
         return instance;
     }
 
-    // SELECT WHERE ini usn sama pw (punya user)
-    public Account getUser(String username, String password, String userType) {
+    public Account getUser(String username, String password) {
         conn.connect();
         String query = "SELECT * FROM Account WHERE username = ? AND password = ?";
         Account account = null;
-        
+    
         try {
             PreparedStatement stmt = conn.con.prepareStatement(query);
             stmt.setString(1, username);
             stmt.setString(2, password);
             ResultSet rs = stmt.executeQuery();
-
+    
             if (rs.next()) {
-                switch (userType) {
-                    case "User":
-                        User user = new User();
-                        user.setId(rs.getInt("id"));
-                        user.setName(rs.getString("username"));
-                        user.setPassword(rs.getString("password"));
-                        user.setStatus(AccountStatus.valueOf(rs.getString("status")));
-                        user.setWallet(rs.getDouble("wallet"));
-                        account = user;
-                        break;
-                    case "Admin":
-                        Admin admin = new Admin();
-                        admin.setId(rs.getInt("id"));
-                        admin.setName(rs.getString("username"));
-                        admin.setPassword(rs.getString("password"));
-                        admin.setStatus(AccountStatus.valueOf(rs.getString("status")));
-                        account = admin;
-                        break;
-                    case "Publisher":
-                        Publisher publisher = new Publisher();
-                        publisher.setId(rs.getInt("id"));
-                        publisher.setName(rs.getString("username"));
-                        publisher.setPassword(rs.getString("password"));
-                        publisher.setStatus(AccountStatus.valueOf(rs.getString("status")));
-                        account = publisher;
-                        break;
-                    default:
-                        // Handle default case
-                        break;
+                // Determine user type based on the columns or attributes present in the result set
+                if (rs.getObject("user_id") != null) {
+                    // User type is "User"
+                    User user = new User();
+                    user.setId(rs.getInt("user_id"));
+                    user.setName(rs.getString("username"));
+                    user.setPassword(rs.getString("password"));
+                    user.setStatus(AccountStatus.valueOf(rs.getString("status")));
+                    user.setWallet(rs.getDouble("wallet"));
+                    account = user;
+                } else if (rs.getObject("admin_id") != null) {
+                    // User type is "Admin"
+                    Admin admin = new Admin();
+                    admin.setId(rs.getInt("admin_id")); 
+                    admin.setName(rs.getString("username"));
+                    admin.setPassword(rs.getString("password"));
+                    admin.setStatus(AccountStatus.valueOf(rs.getString("status")));
+                    account = admin;
+                } else if (rs.getObject("publisher_id") != null) {
+                    // User type is "Publisher"
+                    Publisher publisher = new Publisher();
+                    publisher.setId(rs.getInt("publisher_id")); 
+                    publisher.setName(rs.getString("username"));
+                    publisher.setPassword(rs.getString("password"));
+                    publisher.setStatus(AccountStatus.valueOf(rs.getString("status")));
+                    account = publisher;
                 }
             }
         } catch (SQLException e) {
@@ -83,7 +79,6 @@ public class Controller {
         conn.disconnect();
         return account;
     }
-
     // INSERT (punya user)
     public boolean insertNewUser(User user) {
         conn.connect();
@@ -93,9 +88,8 @@ public class Controller {
             stmt.setInt(1, user.getId());
             stmt.setString(2, user.getName());
             stmt.setString(3, user.getPassword());
-            // Mengambil nilai string dari enum GenderEnum
             String statusString = user.getStatus().toString();
-            stmt.setString(4, statusString); // Menyimpan nilai string ke dalam kolom gender  
+            stmt.setString(4, statusString);  
             stmt.setDouble(5, user.getWallet());
             conn.disconnect();
             return (true);
@@ -106,6 +100,29 @@ public class Controller {
         }
     }
 
+    public ArrayList<User> getUserList(){
+        conn.connect();
+        String query = "SELECT * FROM users";
+        ArrayList<User> users = new ArrayList<>();
+
+        try{
+            Statement stmt = conn.con.createStatement();
+            ResultSet rs = stmt.executeQuery(query);
+            while (rs.next()) {
+                User user = new User();
+                user.setId(rs.getInt("id"));
+                user.setName(rs.getString("name"));
+                user.setPassword(rs.getString("description"));
+                user.setStatus(AccountStatus.valueOf(rs.getString("user_status")));
+                user.setWallet(rs.getDouble("wallet"));
+
+                users.add(user);
+            }
+        }catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return users;
+    }
     public ArrayList<Game> getGames() {
         conn.connect();
         String query = "SELECT * FROM game";

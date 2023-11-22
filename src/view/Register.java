@@ -8,17 +8,24 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
+
+import controller.Controller;
+import model.User;
 
 /**
  *
  * @author abil
  */
 public class Register {
+    Controller con = Controller.getInstance();
 
     JFrame container;
     JTextField username;
@@ -40,7 +47,7 @@ public class Register {
         title.setForeground(Color.WHITE);
         container.add(title);
 
-        //Username
+        // Username
         JLabel labelUsername = new JLabel("Username");
         username = new JTextField();
         labelUsername.setBounds(15, 70, 150, 23);
@@ -51,29 +58,29 @@ public class Register {
         container.add(username);
         container.add(labelUsername);
 
-        //Email
-        JLabel email = new JLabel("Email");
-        username = new JTextField();
-        email.setBounds(15, 102, 150, 23);
-        username.setBounds(100, 102, 320, 23);
-        email.setForeground(Color.WHITE);
-        username.setForeground(Color.WHITE);
-        username.setBackground(Color.DARK_GRAY);
-        container.add(username);
-        container.add(email);
+        // Email
+        // JLabel email = new JLabel("Email");
+        // username = new JTextField();
+        // email.setBounds(15, 102, 150, 23);
+        // username.setBounds(100, 102, 320, 23);
+        // email.setForeground(Color.WHITE);
+        // username.setForeground(Color.WHITE);
+        // username.setBackground(Color.DARK_GRAY);
+        // container.add(username);
+        // container.add(email);
 
-        //Password
+        // Password
         JLabel labelPassword = new JLabel("Password ");
         password = new JPasswordField();
-        labelPassword.setBounds(15, 134, 150, 23);
-        password.setBounds(100, 134, 320, 23);
+        labelPassword.setBounds(15, 102, 150, 23);
+        password.setBounds(100, 102, 320, 23);
         labelPassword.setForeground(Color.WHITE);
         password.setForeground(Color.WHITE);
         password.setBackground(Color.DARK_GRAY);
         container.add(labelPassword);
         container.add(password);
 
-        //Bagian Button Registrasi
+        // Bagian Button Registrasi
         btnRegistrasi = new JButton("Create Account");
         btnRegistrasi.setBounds(100, 182, 150, 23);
         btnRegistrasi.setForeground(Color.WHITE);
@@ -83,13 +90,24 @@ public class Register {
         btnRegistrasi.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new Register();
-                container.setVisible(false);
+                String name = username.getText();
+                String pass = new String(password.getPassword());
+                ArrayList<User> listUser = con.getUserList();
+                User newUser = new User(name, pass, listUser.size() + 1);
+                boolean cek = con.insertNewUser(newUser);
+                if (cek) {
+                    new HomeUser(newUser);
+                    container.setVisible(false);
+                } else {
+                    JOptionPane.showMessageDialog(container, "Email or password incorrect", "User not found",
+                            JOptionPane.WARNING_MESSAGE);
+                }
+
             }
         });
         container.setVisible(true);
 
-        //Bagian Button Back
+        // Bagian Button Back
         btnBack = new JButton("Back");
         btnBack.setBounds(270, 182, 150, 23);
         btnBack.setForeground(Color.WHITE);
@@ -99,6 +117,7 @@ public class Register {
         btnBack.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+
                 new Login();
                 container.setVisible(false);
             }
