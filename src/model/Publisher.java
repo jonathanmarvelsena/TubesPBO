@@ -2,18 +2,12 @@ package model;
 
 import java.util.ArrayList;
 
-public class Publisher extends User{
+public class Publisher extends Account{
     private ArrayList<Game> publishedGames;
     private ArrayList<DLC> publishedDLCs;
 
-    
-
-    public Publisher(String name, String password, AccountStatus status, double wallet, ArrayList<Game> ownedGames,
-            ArrayList<DLC> ownedDLCs, ArrayList<Transaction> history, ShoppingCart cart, ArrayList<Game> publishedGames,
-            ArrayList<DLC> publishedDLCs) {
-        super(name, password, AccountStatus.NOT_BANNED, wallet, ownedGames, ownedDLCs, history, cart);
-        this.publishedGames = publishedGames;
-        this.publishedDLCs = publishedDLCs;
+    public Publisher(String name, String password, int id) {
+        super(name, password, id);
     }
 
     public ArrayList<Game> getPublishedGames() {

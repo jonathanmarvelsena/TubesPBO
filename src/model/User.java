@@ -9,13 +9,8 @@ public class User extends Account{
     private ArrayList<Transaction> history;
     private ShoppingCart cart;
 
-    public User(String name, String password, AccountStatus status, double wallet, ArrayList<Game> ownedGames, ArrayList<DLC> ownedDLCs, ArrayList<Transaction> history, ShoppingCart cart) {
-        super(name, password, status);
-        this.wallet = wallet;
-        this.ownedGames = ownedGames;
-        this.ownedDLCs = ownedDLCs;
-        this.history = history;
-        this.cart = cart;
+    public User(String name, String password, int id) {
+        super(name, password, id);
     }
 
     public double getWallet() {
