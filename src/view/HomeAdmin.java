@@ -12,6 +12,8 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JSeparator;
 
+import model.Admin;
+
 /**
  *
  * @author abil
@@ -25,7 +27,7 @@ public class HomeAdmin {
     JButton btnShowMonthlyTransaction;
     JButton btnShowUserTransaction;
 
-    public HomeAdmin() {
+    public HomeAdmin(Admin admin) {
         homeAdmin = new JFrame("Main Menu Admin");
         homeAdmin.setSize(300, 400);
         homeAdmin.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -54,7 +56,7 @@ public class HomeAdmin {
         btnViewAllUser.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new ViewAllUsers();
+                new ViewAllUsers(admin);
                 homeAdmin.setVisible(false);
             }
         });
@@ -69,7 +71,7 @@ public class HomeAdmin {
         btnBanUser.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new BanUser();
+                new BanUser(admin);
                 homeAdmin.setVisible(false);
             }
         });
@@ -84,7 +86,7 @@ public class HomeAdmin {
         btnShowBanUser.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new ShowBanUser();
+                new ShowBanUser(admin);
                 homeAdmin.setVisible(false);
             }
         });
@@ -99,7 +101,7 @@ public class HomeAdmin {
         btnShowMonthlyTransaction.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new ShowMonthlyTransaction();
+                new ShowMonthlyTransaction(admin);
                 homeAdmin.setVisible(false);
             }
         });
@@ -114,15 +116,11 @@ public class HomeAdmin {
         btnShowUserTransaction.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new ShowUserTransaction();
+                new ShowUserTransactionAdmin(admin);
                 homeAdmin.setVisible(false);
             }
         });
 
         homeAdmin.setVisible(true);
-    }
-
-    public static void main(String[] args) {
-        HomeAdmin home = new HomeAdmin();
     }
 }
