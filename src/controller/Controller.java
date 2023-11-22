@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import model.Account;
 import model.AccountStatus;
 import model.Admin;
 import model.DLC;
@@ -17,6 +18,7 @@ import model.Review;
 import model.User;
 
 public class Controller {
+    private static Controller instance;
 
     static DatabaseHandler conn = new DatabaseHandler();
 
@@ -24,68 +26,62 @@ public class Controller {
 
     }
 
+    public static Controller getInstance() {
+        if (instance == null) {
+            instance = new Controller();
+        }
+        return instance;
+    }
+
     // SELECT WHERE ini usn sama pw (punya user)
-    public User getUser(String username, String password) {
+    public Account getUser(String username, String password, String userType) {
         conn.connect();
-        String query = "SELECT * FROM Account WHERE username ='" + username + "'&&password='" + password + "'";
-        User user = new User();
+        String query = "SELECT * FROM Account WHERE username = ? AND password = ?";
+        Account account = null;
+        
         try {
-            Statement stmt = conn.con.createStatement();
-            ResultSet rs = stmt.executeQuery(query);
-            while (rs.next()) {
-                user.setId(rs.getInt("id"));
-                user.setName(rs.getString("username"));
-                user.setPassword(rs.getString("password"));
-                user.setStatus(AccountStatus.valueOf(rs.getString("status")));
-                user.setWallet(rs.getDouble("wallet"));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        conn.disconnect();
-        return (user);
-    }
+            PreparedStatement stmt = conn.con.prepareStatement(query);
+            stmt.setString(1, username);
+            stmt.setString(2, password);
+            ResultSet rs = stmt.executeQuery();
 
-    // SELECT WHERE ini usn sama pw (punya admin)
-    public Admin getAdmin(String username, String password) {
-        conn.connect();
-        String query = "SELECT * FROM Account WHERE username ='" + username + "'&&password='" + password + "'";
-        Admin admin = new Admin();
-        try {
-            Statement stmt = conn.con.createStatement();
-            ResultSet rs = stmt.executeQuery(query);
-            while (rs.next()) {
-                admin.setId(rs.getInt("id"));
-                admin.setName(rs.getString("username"));
-                admin.setPassword(rs.getString("password"));
-                admin.setStatus(AccountStatus.valueOf(rs.getString("status")));
+            if (rs.next()) {
+                switch (userType) {
+                    case "User":
+                        User user = new User();
+                        user.setId(rs.getInt("id"));
+                        user.setName(rs.getString("username"));
+                        user.setPassword(rs.getString("password"));
+                        user.setStatus(AccountStatus.valueOf(rs.getString("status")));
+                        user.setWallet(rs.getDouble("wallet"));
+                        account = user;
+                        break;
+                    case "Admin":
+                        Admin admin = new Admin();
+                        admin.setId(rs.getInt("id"));
+                        admin.setName(rs.getString("username"));
+                        admin.setPassword(rs.getString("password"));
+                        admin.setStatus(AccountStatus.valueOf(rs.getString("status")));
+                        account = admin;
+                        break;
+                    case "Publisher":
+                        Publisher publisher = new Publisher();
+                        publisher.setId(rs.getInt("id"));
+                        publisher.setName(rs.getString("username"));
+                        publisher.setPassword(rs.getString("password"));
+                        publisher.setStatus(AccountStatus.valueOf(rs.getString("status")));
+                        account = publisher;
+                        break;
+                    default:
+                        // Handle default case
+                        break;
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
         conn.disconnect();
-        return (admin);
-    }
-
-    // SELECT WHERE ini usn sama pw (punya publisher)
-    public Publisher getPublisher(String username, String password) {
-        conn.connect();
-        String query = "SELECT * FROM Account WHERE username ='" + username + "'&&password='" + password + "'";
-        Publisher publisher = new Publisher();
-        try {
-            Statement stmt = conn.con.createStatement();
-            ResultSet rs = stmt.executeQuery(query);
-            while (rs.next()) {
-                publisher.setId(rs.getInt("id"));
-                publisher.setName(rs.getString("username"));
-                publisher.setPassword(rs.getString("password"));
-                publisher.setStatus(AccountStatus.valueOf(rs.getString("status")));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        conn.disconnect();
-        return (publisher);
+        return account;
     }
 
     // INSERT (punya user)
