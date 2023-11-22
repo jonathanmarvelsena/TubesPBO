@@ -194,7 +194,7 @@ public class Controller {
 
     public ArrayList<Game> getGames() {
         conn.connect();
-        String query = "SELECT * FROM game";
+        String query = "SELECT * FROM item WHERE type = 'Game'";
         ArrayList<Game> games = new ArrayList<>();
 
         try {
@@ -234,7 +234,7 @@ public class Controller {
 
     public ArrayList<DLC> getDLCs(Game game) {
         conn.connect();
-        String query = "SELECT * FROM dlc d JOIN game g ON g.game_id = '" + game.getItemID() + "'";
+        String query = "SELECT * FROM item i JOIN game_dlc_relation g ON g.game_id = '" + game.getItemID() + "' WHERE i.type = 'DLC'";
         ArrayList<DLC> dlcs = new ArrayList<>();
 
         try {
@@ -361,7 +361,7 @@ public class Controller {
 
     public Game getGameById(int gameId) {
         conn.connect();
-        String query = "SELECT * FROM game WHERE id = " + gameId;
+        String query = "SELECT * FROM item WHERE item_id = " + gameId;
 
         try {
             Statement stmt = conn.con.createStatement();
@@ -391,7 +391,7 @@ public class Controller {
 
     public DLC getDLCById(int dlcId) {
         conn.connect();
-        String query = "SELECT * FROM dlc WHERE dlc_id = " + dlcId;
+        String query = "SELECT * FROM item WHERE item_id = " + dlcId;
 
         try {
             Statement stmt = conn.con.createStatement();
@@ -421,7 +421,7 @@ public class Controller {
 
     public void getGameDetails(Game game) {
         conn.connect();
-        String query = "SELECT * FROM games WHERE game_id = " + game.getItemID();
+        String query = "SELECT * FROM item WHERE item_id = " + game.getItemID();
 
         try {
             Statement stmt = conn.con.createStatement();
@@ -454,7 +454,7 @@ public class Controller {
 
     public void getDLCDetails(DLC dlc) {
         conn.connect();
-        String query = "SELECT * FROM dlcs WHERE dlc_id = " + dlc.getItemID();
+        String query = "SELECT * FROM item i WHERE item_id = " + dlc.getItemID();
 
         try {
             Statement stmt = conn.con.createStatement();
