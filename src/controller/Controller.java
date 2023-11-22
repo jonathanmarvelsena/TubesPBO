@@ -223,7 +223,7 @@ public class Controller {
 
     public DLC getDLCById(int dlcId) {
         conn.connect();
-        String query = "SELECT * FROM dlc WHERE id = " + dlcId;
+        String query = "SELECT * FROM dlc WHERE dlc_id = " + dlcId;
 
         try {
             Statement stmt = conn.con.createStatement();
@@ -249,5 +249,68 @@ public class Controller {
 
         // Return null if the DLC is not found
         return null;
+    }
+
+    public void getGameDetails(Game game) {
+        conn.connect();
+        String query = "SELECT * FROM games WHERE game_id = " + game.getItemID();
+        
+        try {
+            Statement stmt = conn.con.createStatement();
+            ResultSet rs = stmt.executeQuery(query);
+            
+            if (rs.next()) {
+                game.setItemID(rs.getInt("id"));
+                game.setName(rs.getString("name"));
+                game.setDescription(rs.getString("description"));
+                game.setPrice(rs.getInt("price"));
+                game.setDiscountID(rs.getInt("discountid"));
+                game.setCover(rs.getString("cover"));
+                
+                String statusString = rs.getString("status");
+                ItemStatus status = ItemStatus.valueOf(statusString);
+                game.setStatus(status);
+    
+                ArrayList<Review> reviews = getReviewsForGame(game);
+                game.setReviews(reviews);
+    
+                ArrayList<DLC> dlcList = getDLCs(game);
+                game.setDLC(dlcList);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            conn.disconnect(); 
+        }
+    }
+
+    public void getDLCDetails(DLC dlc) {
+        conn.connect();
+        String query = "SELECT * FROM dlcs WHERE dlc_id = " + dlc.getItemID();
+        
+        try {
+            Statement stmt = conn.con.createStatement();
+            ResultSet rs = stmt.executeQuery(query);
+            
+            if (rs.next()) {
+                dlc.setItemID(rs.getInt("id"));
+                dlc.setName(rs.getString("name"));
+                dlc.setDescription(rs.getString("description"));
+                dlc.setPrice(rs.getInt("price"));
+                dlc.setDiscountID(rs.getInt("discountid"));
+                dlc.setCover(rs.getString("cover"));
+                
+                String statusString = rs.getString("status");
+                ItemStatus status = ItemStatus.valueOf(statusString);
+                dlc.setStatus(status);
+    
+                ArrayList<Review> reviews = getReviewsForDLC(dlc);
+                dlc.setReviews(reviews);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            conn.disconnect(); 
+        }
     }
 }
