@@ -40,6 +40,8 @@ public class HomePublisher {
         btnAddItem.setBackground(Color.decode("#717D7E"));
         home_publisher.add(btnAddItem);
 
+        
+
         btnEditItem = new JButton("Edit Item");
         btnEditItem.setBounds(80, 90, 150, 23);
         btnEditItem.setForeground(Color.WHITE);
@@ -61,8 +63,8 @@ public class HomePublisher {
         btnAddItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new HomePublisher(publisher);
-                home_publisher.setVisible(false);
+                new addItem(publisher);
+                home_publisher.dispose();
             }
         });
         home_publisher.setVisible(true);
