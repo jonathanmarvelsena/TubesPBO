@@ -1,6 +1,9 @@
 package view;
 
 import javax.swing.*;
+
+import model.Publisher;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -13,7 +16,7 @@ public class HomePublisher {
     JButton btnShowRemovedGame;
 
 
-    public HomePublisher (){
+    public HomePublisher (Publisher publisher){
         home_publisher = new JFrame("Home Publisher");
         home_publisher.setSize(320, 270);
         home_publisher.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -55,19 +58,14 @@ public class HomePublisher {
         btnRemovedGame.setBackground(Color.decode("#717D7E"));
         home_publisher.add(btnRemovedGame);
 
-        btnAddItem.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                new HomeUser();
-                home_publisher.setVisible(false);
-            }
-        });
-        home_publisher.setVisible(true);
+        // btnAddItem.addActionListener(new ActionListener() {
+        //     @Override
+        //     public void actionPerformed(ActionEvent e) {
+        //         new HomeUser(publisher);
+        //         home_publisher.setVisible(false);
+        //     }
+        // });
+        // home_publisher.setVisible(true);
     }
-
-    public static void main(String[] args) {
-        new HomePublisher();
-    }
-
 
 }
