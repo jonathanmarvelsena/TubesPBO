@@ -1,6 +1,5 @@
 package model;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class Game extends Item{
@@ -15,7 +14,6 @@ public class Game extends Item{
         this.DLC = DLC;
     }
 
-    
     public ArrayList<model.DLC> getDLC() {
         return DLC;
     }

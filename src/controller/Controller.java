@@ -9,10 +9,12 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
+import model.AccountStatus;
 import model.DLC;
 import model.Game;
 import model.ItemStatus;
 import model.Review;
+import model.User;
 
 public class Controller {
 
@@ -44,7 +46,7 @@ public class Controller {
                 game.setStatus(status);
 
                 // Handling reviews
-                ArrayList<Review> reviews = getReviewsForGame(game.getItemID()); // Implement getReviewsForGame method
+                ArrayList<Review> reviews = getReviewsForGame(game); // Implement getReviewsForGame method
                 game.setReviews(reviews);
 
                 // Handling DLC
@@ -64,7 +66,7 @@ public class Controller {
 
     public ArrayList<DLC> getDLCs(Game game) {
         conn.connect();
-        String query = "SELECT * FROM dlc d JOIN game g ON g.name = '" +game.getName() + "'";
+        String query = "SELECT * FROM dlc d JOIN game g ON g.game_id = '" + game.getItemID() + "'";
         ArrayList<DLC> dlcs = new ArrayList<>();
 
         try {
@@ -84,7 +86,7 @@ public class Controller {
                 dlc.setStatus(status);
 
                 // Handling reviews
-                ArrayList<Review> reviews = getReviewsForGame(game.getItemID()); // Implement getReviewsForGame method
+                ArrayList<Review> reviews = getReviewsForDLC(dlc); // Implement getReviewsForGame method
                 dlc.setReviews(reviews);
 
                 dlcs.add(dlc);
@@ -97,6 +99,155 @@ public class Controller {
 
         return dlcs;
     }
+
+    public ArrayList<Review> getReviewsForGame(Game game) {
+        conn.connect();
+        String query = "SELECT * FROM review WHERE item_id = " + game.getItemID();
+        ArrayList<Review> reviews = new ArrayList<>();
+    
+        try {
+            Statement stmt = conn.con.createStatement();
+            ResultSet rs = stmt.executeQuery(query);
+            while (rs.next()) {
+                Review review = new Review();
+                review.setReviewID(rs.getInt("review_id"));
+                
+                // Set the associated game
+                review.setItem(game);
+                
+                // Fetch the associated user (you need to implement getUserById method)
+                User user = getUserById(rs.getInt("user_id"));
+                review.setUser(user);
+    
+                // Set the review text
+                review.setReviewText(rs.getString("comment"));
+                
+                reviews.add(review);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            conn.disconnect();
+        }
+    
+        return reviews;
     }
 
+    public ArrayList<Review> getReviewsForDLC(DLC dlc) {
+        conn.connect();
+        String query = "SELECT * FROM review WHERE item_id = " + dlc.getItemID();
+        ArrayList<Review> reviews = new ArrayList<>();
+    
+        try {
+            Statement stmt = conn.con.createStatement();
+            ResultSet rs = stmt.executeQuery(query);
+            while (rs.next()) {
+                Review review = new Review();
+                review.setReviewID(rs.getInt("review_id"));
+    
+                // Set the associated DLC
+                review.setItem(dlc);
+    
+                // Fetch the associated user (you need to implement getUserById method)
+                User user = getUserById(rs.getInt("user_id"));
+                review.setUser(user);
+    
+                // Set the review text
+                review.setReviewText(rs.getString("comment"));
+    
+                reviews.add(review);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            conn.disconnect();
+        }
+    
+        return reviews;
+    }
+
+    public User getUserById(int userId) {
+        conn.connect();
+        String query = "SELECT * FROM user WHERE id = " + userId;
+
+        try {
+            Statement stmt = conn.con.createStatement();
+            ResultSet rs = stmt.executeQuery(query);
+
+            if (rs.next()) {
+                String name = rs.getString("name");
+                String password = rs.getString("password");
+                int id = rs.getInt("id");
+
+                return new User(name, password, id);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            conn.disconnect();
+        }
+
+        // Return null if user not found
+        return null;
+    }
+
+    public Game getGameById(int gameId) {
+        conn.connect();
+        String query = "SELECT * FROM game WHERE id = " + gameId;
+
+        try {
+            Statement stmt = conn.con.createStatement();
+            ResultSet rs = stmt.executeQuery(query);
+
+            if (rs.next()) {
+                // Retrieve other attributes based on your database schema
+                String name = rs.getString("name");
+                String description = rs.getString("description");
+                double price = rs.getDouble("price");
+                int discountId = rs.getInt("discountid");
+                String statusString = rs.getString("status");
+                ItemStatus status = ItemStatus.valueOf(statusString);
+                // Fetch other attributes as needed
+
+                return new Game(gameId, name, description, price, discountId, null, status, null);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            conn.disconnect();
+        }
+
+        // Return null if the game is not found
+        return null;
+    }
+
+    public DLC getDLCById(int dlcId) {
+        conn.connect();
+        String query = "SELECT * FROM dlc WHERE id = " + dlcId;
+
+        try {
+            Statement stmt = conn.con.createStatement();
+            ResultSet rs = stmt.executeQuery(query);
+
+            if (rs.next()) {
+                // Retrieve other attributes based on your database schema
+                String name = rs.getString("name");
+                String description = rs.getString("description");
+                double price = rs.getDouble("price");
+                int discountId = rs.getInt("discountid");
+                String statusString = rs.getString("status");
+                ItemStatus status = ItemStatus.valueOf(statusString);
+                // Fetch other attributes as needed
+
+                return new DLC(dlcId, name, description, price, discountId, null, status);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            conn.disconnect();
+        }
+
+        // Return null if the DLC is not found
+        return null;
+    }
 }
