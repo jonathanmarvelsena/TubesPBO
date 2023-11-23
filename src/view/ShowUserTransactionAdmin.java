@@ -66,12 +66,12 @@ public class ShowUserTransactionAdmin {
         container.add(garisPemisah);
 
         JLabel inputid = new JLabel("User ID");
-        inputid.setBounds(28, 170, 100, 5);
+        inputid.setBounds(28, 170, 100, 23);
         inputid.setForeground(Color.WHITE);
         inputid.setBackground(Color.decode("#717D7E"));
         container.add(inputid);
         JTextField input = new JTextField();
-        input.setBounds(150, 170, 200, 5);
+        input.setBounds(150, 170, 200, 23);
         input.setForeground(Color.WHITE);
         input.setBackground(Color.DARK_GRAY);
         container.add(input);
