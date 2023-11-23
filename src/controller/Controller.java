@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.ArrayList;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import model.Account;
@@ -197,7 +198,7 @@ public class Controller {
     
     public ArrayList<User> getUserList(){
         conn.connect();
-        String query = "SELECT * FROM users";
+        String query = "SELECT * FROM users WHERE user_status = 'NOT_BANNED'";
         ArrayList<User> users = new ArrayList<>();
         try{
             Statement stmt = conn.con.createStatement();
@@ -219,10 +220,10 @@ public class Controller {
     }
 
     //UPDATE status jadi banned
-    public boolean updateStatusUser(String nama) {
+    public boolean updateStatusUser(int id) {
         conn.connect();
-        String query = "UPDATE users SET status= 'BANNED'"
-                + "WHERE username='" + nama + "'";
+        String query = "UPDATE users SET user_status= 'BANNED'"
+                + "WHERE user_id='" + id + "'";
         try {
             Statement stmt = conn.con.createStatement();
             stmt.executeUpdate(query);
@@ -243,7 +244,7 @@ public class Controller {
             while (rs.next()) {
                 User user = new User();
                 user.setId(rs.getInt("id"));
-                user.setName(rs.getString("name"));
+                user.setName(rs.getString("username"));
                 user.setPassword(rs.getString("description"));
                 user.setStatus(AccountStatus.valueOf(rs.getString("user_status")));
                 user.setWallet(rs.getDouble("wallet"));
@@ -258,7 +259,7 @@ public class Controller {
 
     public ArrayList<Game> getGames() {
         conn.connect();
-        String query = "SELECT * FROM game";
+        String query = "SELECT * FROM item WHERE type = 'Game'";
         ArrayList<Game> games = new ArrayList<>();
 
         try {
@@ -298,7 +299,7 @@ public class Controller {
 
     public ArrayList<DLC> getDLCs(Game game) {
         conn.connect();
-        String query = "SELECT * FROM dlc d JOIN game g ON g.game_id = '" + game.getItemID() + "'";
+        String query = "SELECT * FROM item i JOIN game_dlc_relation g ON g.game_id = '" + game.getItemID() + "' WHERE i.type = 'DLC'";
         ArrayList<DLC> dlcs = new ArrayList<>();
 
         try {
@@ -425,7 +426,7 @@ public class Controller {
 
     public Game getGameById(int gameId) {
         conn.connect();
-        String query = "SELECT * FROM game WHERE id = " + gameId;
+        String query = "SELECT * FROM item WHERE item_id = " + gameId;
 
         try {
             Statement stmt = conn.con.createStatement();
@@ -455,7 +456,7 @@ public class Controller {
 
     public DLC getDLCById(int dlcId) {
         conn.connect();
-        String query = "SELECT * FROM dlc WHERE dlc_id = " + dlcId;
+        String query = "SELECT * FROM item WHERE item_id = " + dlcId;
 
         try {
             Statement stmt = conn.con.createStatement();
@@ -485,7 +486,7 @@ public class Controller {
 
     public void getGameDetails(Game game) {
         conn.connect();
-        String query = "SELECT * FROM games WHERE game_id = " + game.getItemID();
+        String query = "SELECT * FROM item WHERE item_id = " + game.getItemID();
 
         try {
             Statement stmt = conn.con.createStatement();
@@ -518,7 +519,7 @@ public class Controller {
 
     public void getDLCDetails(DLC dlc) {
         conn.connect();
-        String query = "SELECT * FROM dlcs WHERE dlc_id = " + dlc.getItemID();
+        String query = "SELECT * FROM item i WHERE item_id = " + dlc.getItemID();
 
         try {
             Statement stmt = conn.con.createStatement();
@@ -545,4 +546,77 @@ public class Controller {
             conn.disconnect();
         }
     }
+
+    public boolean updateGame(Game game, String name, String price, String description) {
+        conn.connect();
+        String query = "UPDATE item"
+                + " SET name='" + name + "',"
+                + "price='" + price + "',"
+                + "description='" + description
+                + "WHERE item_id = " + game.getItemID();
+        PreparedStatement stmt;
+        try {
+            stmt = conn.con.prepareStatement(query);
+            stmt.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public boolean updateDLC(DLC dlc, String name, String price, String description) {
+        conn.connect();
+        String query = "UPDATE item"
+                + " SET name='" + name + "',"
+                + "price='" + price + "',"
+                + "description='" + description
+                + "WHERE item_id = " + dlc.getItemID();
+        PreparedStatement stmt;
+        try {
+            stmt = conn.con.prepareStatement(query);
+            stmt.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public boolean removeGame(Game game){
+        conn.connect();
+        String query = "UPDATE item"
+                + " SET item_status='NOT_AVAILABLE'" 
+                + "WHERE item_id = " + game.getItemID();
+        PreparedStatement stmt;
+        try {
+            stmt = conn.con.prepareStatement(query);
+            stmt.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public boolean removeDLC(DLC dlc){
+        conn.connect();
+        String query = "UPDATE item"
+                + " SET item_status='NOT_AVAILABLE'" 
+                + "WHERE item_id = " + dlc.getItemID();
+        PreparedStatement stmt;
+        try {
+            stmt = conn.con.prepareStatement(query);
+            stmt.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    // public boolean showTransactionHistory(User user){
+    //     conn.connect();
+    //     String query = "SELECT * FROM transaction WHERE user_id = " + user.getId() + "";
+    // }
 }

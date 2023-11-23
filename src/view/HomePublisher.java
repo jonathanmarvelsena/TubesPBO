@@ -11,6 +11,7 @@ import java.awt.event.ActionListener;
 public class HomePublisher {
     JFrame home_publisher;
     JButton btnAddItem;
+    JButton btnBack;
     JButton btnEditItem;
     JButton btnRemovedGame;
     JButton btnShowRemovedGame;
@@ -18,51 +19,69 @@ public class HomePublisher {
 
     public HomePublisher (Publisher publisher){
         home_publisher = new JFrame("Home");
-        home_publisher.setSize(320, 270);
+        home_publisher.setSize(300, 400);
         home_publisher.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         home_publisher.setLocationRelativeTo(null);
         home_publisher.setLayout(null);
         home_publisher.getContentPane().setBackground(Color.DARK_GRAY);
 
         JLabel welcomePublisher = new JLabel(" Welcome to Publisher Menu ");
-        welcomePublisher.setBounds(77, 25, 170, 23);
+        welcomePublisher.setBounds(70, 25, 170, 23);
         welcomePublisher.setForeground(Color.WHITE);
         home_publisher.add(welcomePublisher);
 
         JSeparator garisPemisah = new JSeparator();
-        garisPemisah.setBounds(77, 45, 160, 5);
+        garisPemisah.setBounds(50, 45, 190, 5);
         garisPemisah.setForeground(Color.LIGHT_GRAY);
         home_publisher.add(garisPemisah);
 
         btnAddItem = new JButton("Add Item");
-        btnAddItem.setBounds(80, 60, 150, 23);
+        btnAddItem.setBounds(50, 90, 190, 23);
         btnAddItem.setForeground(Color.WHITE);
         btnAddItem.setBackground(Color.decode("#717D7E"));
         home_publisher.add(btnAddItem);
 
+        
+
         btnEditItem = new JButton("Edit Item");
-        btnEditItem.setBounds(80, 90, 150, 23);
+        btnEditItem.setBounds(50, 120, 190, 23);
         btnEditItem.setForeground(Color.WHITE);
         btnEditItem.setBackground(Color.decode("#717D7E"));
         home_publisher.add(btnEditItem);
 
         btnShowRemovedGame = new JButton("Show Removed Items");
-        btnShowRemovedGame.setBounds(70, 120, 170, 23);
+        btnShowRemovedGame.setBounds(50, 150, 190, 23);
         btnShowRemovedGame.setForeground(Color.WHITE);
         btnShowRemovedGame.setBackground(Color.decode("#717D7E"));
         home_publisher.add(btnShowRemovedGame);
 
         btnRemovedGame = new JButton("Remove Item");
-        btnRemovedGame.setBounds(80, 150, 150, 23);
+        btnRemovedGame.setBounds(50, 180, 190, 23);
         btnRemovedGame.setForeground(Color.WHITE);
         btnRemovedGame.setBackground(Color.decode("#717D7E"));
         home_publisher.add(btnRemovedGame);
 
+        // Bagian Button Logout
+        btnBack = new JButton("Logout");
+        btnBack.setBounds(50, 270, 190, 23);
+        btnBack.setForeground(Color.WHITE);
+        btnBack.setBackground(Color.decode("#717D7E"));
+        home_publisher.add(btnBack);
+
+        btnBack.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new Login();
+                home_publisher.setVisible(false);
+            }
+        });
+
         btnAddItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new HomePublisher(publisher);
-                home_publisher.setVisible(false);
+                new addItem(publisher);
+
+                home_publisher.dispose();
             }
         });
         home_publisher.setVisible(true);

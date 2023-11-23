@@ -7,26 +7,37 @@ package view;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
+import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.table.DefaultTableModel;
 
+import controller.Controller;
 import model.Admin;
+import model.User;
 
 /**
  *
  * @author abil
  */
 public class BanUser {
+    Controller con = Controller.getInstance();
     JFrame container;
     JButton btnBack;
+    JTextField id;
     JButton btnViewAllUser;
     JButton btnRegistrasi;
 
-    public BanUser(Admin admin) {
+    public BanUser(Admin admin,ArrayList<User> nonBannedUsers) {
         container = new JFrame("Ban User");
-        container.setSize(480, 300);
+        container.setSize(500, 380);
         container.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         container.setLocationRelativeTo(null);
         container.setLayout(null);
@@ -37,14 +48,45 @@ public class BanUser {
         title.setForeground(Color.WHITE);
         container.add(title);
 
+        String[] columnNames = {"ID", "Name", "Status", "Wallet"};
+
+        Object[][] data = new Object[nonBannedUsers.size()][4]; 
+
+        for (int i = 0; i < nonBannedUsers.size(); i++) {
+            User user = nonBannedUsers.get(i);
+            data[i][0] = user.getId(); 
+            data[i][1] = user.getName(); 
+            data[i][2] = user.getStatus().toString();
+            data[i][3] = user.getWallet(); 
+        }
+    
+        DefaultTableModel model = new DefaultTableModel(data, columnNames);
+
+        JTable userTable = new JTable(model);
+
+        JScrollPane scrollPane = new JScrollPane(userTable);
+        scrollPane.setBounds(15, 50, 450, 150);
+        container.add(scrollPane);
+
         JSeparator garisPemisah = new JSeparator();
-        garisPemisah.setBounds(28, 150, 410, 5);
+        garisPemisah.setBounds(15, 230, 450, 5);
         garisPemisah.setForeground(Color.LIGHT_GRAY);
         container.add(garisPemisah);
 
+        // Account Id
+        JLabel labelName = new JLabel("ID of user to be banned");
+        id = new JTextField();
+        labelName.setBounds(15, 250, 150, 23);
+        id.setBounds(140, 250, 325, 23);
+        labelName.setForeground(Color.WHITE);
+        id.setForeground(Color.WHITE);
+        id.setBackground(Color.DARK_GRAY);
+        container.add(labelName);
+        container.add(id);
+
         //Bagian Button Back
         btnBack = new JButton("Back");
-        btnBack.setBounds(270, 182, 150, 23);
+        btnBack.setBounds(315, 290, 150, 23);
         btnBack.setForeground(Color.WHITE);
         btnBack.setBackground(Color.decode("#717D7E"));
         container.add(btnBack);
@@ -53,6 +95,29 @@ public class BanUser {
             @Override
             public void actionPerformed(ActionEvent e) {
                 new HomeAdmin(admin);
+                container.setVisible(false);
+            }
+        });
+
+        //Bagian Button Banned
+        btnBack = new JButton("Ban User");
+        btnBack.setBounds(140, 290, 150, 23);
+        btnBack.setForeground(Color.WHITE);
+        btnBack.setBackground(Color.decode("#717D7E"));
+        container.add(btnBack);
+
+        btnBack.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                
+                boolean ban = con.updateStatusUser(Integer.parseInt(id.getText()));
+                if (ban){
+                    JOptionPane.showMessageDialog(container, "User Succesfully banned","Success",JOptionPane.WARNING_MESSAGE);
+                } else {
+                    JOptionPane.showMessageDialog(container, "User Not Found","Error",
+                            JOptionPane.WARNING_MESSAGE);
+                }
+                new BanUser(admin, nonBannedUsers);
                 container.setVisible(false);
             }
         });

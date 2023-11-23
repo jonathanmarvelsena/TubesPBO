@@ -23,14 +23,14 @@ public class ShowBanUser {
     JButton btnBack;
 
     public ShowBanUser(Admin admin) {
-        container = new JFrame("Show Ban User");
+        container = new JFrame("Show Banned User");
         container.setSize(480, 300);
         container.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         container.setLocationRelativeTo(null);
         container.setLayout(null);
         container.getContentPane().setBackground(Color.DARK_GRAY);
 
-        JLabel title = new JLabel("Show Ban User");
+        JLabel title = new JLabel("Show Banned User");
         title.setBounds(15, 15, 150, 23);
         title.setForeground(Color.WHITE);
         container.add(title);
@@ -54,6 +54,8 @@ public class ShowBanUser {
                 container.setVisible(false);
             }
         });
+
+        
 
         container.setVisible(true);
     }
