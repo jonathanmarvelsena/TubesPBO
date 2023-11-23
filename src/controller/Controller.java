@@ -171,10 +171,11 @@ public class Controller {
         }
     }
 
+
     // INSERT (punya item = dlc)
     public boolean insertNewDLC(DLC game, Publisher publisher) {
         conn.connect();
-        String query = "INSERT INTO items VALUES(?,?,?,?,?,?,?)";
+        String query = "INSERT INTO item VALUES(?,?,?,?,?,?,?)";
         try {
             PreparedStatement stmt = conn.con.prepareStatement(query);
             stmt.setInt(1, game.getItemID());
@@ -183,7 +184,8 @@ public class Controller {
             stmt.setDouble(4, game.getPrice());
             stmt.setString(5, game.getDescription());
             stmt.setInt(6, publisher.getId());
-            String statusString = game.getStatus().toString();
+            // Handling null status
+            String statusString = (game.getStatus() != null) ? game.getStatus().toString() : "AVAILABLE";
             stmt.setString(7, statusString);
 
             // Execute the SQL statement

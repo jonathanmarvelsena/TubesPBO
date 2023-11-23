@@ -3,6 +3,7 @@
         "lib/**/*.jar",
         "c:\\Users\\ACER\\Documents\\NetBeansProjects\\PBO\\lib\\mysql-connector-java-8.0.20.jar",
         "c:\\Users\\jonat\\Downloads\\mysql-connector-java-8.0.20.jar",
-        "c:\\Users\\abil\\OneDrive\\Documents\\NetBeansProjects\\LatihanDatabase\\libs\\mysql-connector-java-8.0.20.jar"
+        "c:\\Users\\abil\\OneDrive\\Documents\\NetBeansProjects\\LatihanDatabase\\libs\\mysql-connector-java-8.0.20.jar",
+        "d:\\mysql-connector-java-8.0.20.jar"
     ]
 }

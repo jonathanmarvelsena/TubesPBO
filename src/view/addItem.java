@@ -12,6 +12,7 @@ import javax.swing.JSeparator;
 import javax.swing.JTextField;
 import controller.Controller;
 import model.Publisher;
+import model.DLC;
 import model.Game;
 import javax.swing.JOptionPane;
 
@@ -132,16 +133,38 @@ public class addItem {
                         boolean insert = con.insertNewGame(game, publisher);
                         if (insert) {
                             JOptionPane.showMessageDialog(null, "Insert successful");
+                            new HomePublisher(publisher);
+                            add_item.dispose();
                         } else {
                             JOptionPane.showMessageDialog(null, "Insert failed");
                         }
                     } else {
                         JOptionPane.showMessageDialog(null, "Publisher information missing");
                     }
+                }else if(addDLC.isSelected()){
+                    DLC dlc = new DLC();
+                    dlc.setName(namaGame);
+                    dlc.setDescription(deskripsiGame);
+                    dlc.setPrice(hargaGame);
+        
+                    // Check if publisher is not null before passing to insertNewGame
+                    if (publisher != null) {
+                        boolean insert = con.insertNewDLC(dlc, publisher);
+                        if (insert) {
+                            JOptionPane.showMessageDialog(null, "Insert successful");
+                            new HomePublisher(publisher);
+                            add_item.dispose();
+                        } else {
+                            JOptionPane.showMessageDialog(null, "Insert failed");
+                        }
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Publisher information missing");
+                    }
+                } else{
+                    JOptionPane.showMessageDialog(null, "select game or DLC !!!", "Error", JOptionPane.ERROR_MESSAGE);
                 }
             }
         });
-         
         add_item.setVisible(true);
     }
 }
