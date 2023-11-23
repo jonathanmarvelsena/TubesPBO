@@ -325,6 +325,85 @@ public class Controller {
         return games;
     }
 
+    public ArrayList<Game> getPublishedGames(Publisher publisher) {
+        conn.connect();
+        String query = "SELECT * FROM item WHERE type = 'Game' AND publisher_id = "+ publisher.getId();
+        ArrayList<Game> games = new ArrayList<>();
+
+        try {
+            Statement stmt = conn.con.createStatement();
+            ResultSet rs = stmt.executeQuery(query);
+            while (rs.next()) {
+                Game game = new Game();
+                game.setItemID(rs.getInt("item_id"));
+                game.setName(rs.getString("name"));
+                game.setType(rs.getString("type"));
+                game.setDescription(rs.getString("description"));
+                game.setPrice(rs.getInt("price"));
+                game.setPublisherID(rs.getInt("publisher_id"));
+
+                // Handling the ItemStatus enum
+                String statusString = rs.getString("item_status");
+                ItemStatus status = ItemStatus.valueOf(statusString); // Assuming statusString is a valid enum name
+                game.setStatus(status);
+
+                // Handling reviews
+                ArrayList<Review> reviews = getReviewsForGame(game); // Implement getReviewsForGame method
+                game.setReviews(reviews);
+
+                // Handling DLC
+                ArrayList<DLC> dlcList = getDLCs(game); // Implement getDLCForGame method
+                game.setDLC(dlcList);
+
+                games.add(game);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            conn.disconnect(); // Close the connection when done
+        }
+
+        return games;
+    }
+
+    public ArrayList<DLC> getPublishedDLC(Publisher publisher) {
+        conn.connect();
+        String query = "SELECT * FROM item WHERE type = 'DLC' AND publisher_id = "+ publisher.getId();
+        ArrayList<DLC> games = new ArrayList<>();
+
+        try {
+            Statement stmt = conn.con.createStatement();
+            ResultSet rs = stmt.executeQuery(query);
+            while (rs.next()) {
+                DLC game = new DLC();
+                game.setItemID(rs.getInt("item_id"));
+                game.setName(rs.getString("name"));
+                game.setType(rs.getString("type"));
+                game.setDescription(rs.getString("description"));
+                game.setPrice(rs.getInt("price"));
+                game.setPublisherID(rs.getInt("publisher_id"));
+
+                // Handling the ItemStatus enum
+                String statusString = rs.getString("item_status");
+                ItemStatus status = ItemStatus.valueOf(statusString); // Assuming statusString is a valid enum name
+                game.setStatus(status);
+
+                // Handling reviews
+                ArrayList<Review> reviews = getReviewsForDLC(game); // Implement getReviewsForGame method
+                game.setReviews(reviews);
+
+
+                games.add(game);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            conn.disconnect(); // Close the connection when done
+        }
+
+        return games;
+    }
+
     public ArrayList<DLC> getDLCs(Game game) {
         conn.connect();
         String query = "SELECT * FROM item i JOIN game_dlc_relation g ON g.game_id = '" + game.getItemID()
