@@ -2,6 +2,7 @@ package view;
 
 import javax.swing.*;
 
+import controller.Controller;
 import model.User;
 
 import java.awt.*;
@@ -9,8 +10,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class TopUp {
+    Controller con = Controller.getInstance();
     JFrame top_up;
-
     JLabel isiWallet = new JLabel("Isi Wallet");
     JTextField isiNominalTopUP ;
     JLabel nominalTopUP = new JLabel("Masukan Nominal Top Up : ");
@@ -62,8 +63,11 @@ public class TopUp {
         btnBayar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new HomeUser(user);
+                double topUpAmount = Double.parseDouble(isiNominalTopUP.getText()); 
+                user.setWallet(topUpAmount);
+                con.updateWallet(user, topUpAmount);
                 top_up.setVisible(false);
+                new HomeUser(user);
             }
         });
         top_up.setVisible(true);
