@@ -5,25 +5,26 @@ import java.util.ArrayList;
 public abstract class Item {
     private int itemID;
     private String name;
+    private String type;
     private String description;
     private double price;
-    private int discountID;
+    private int publisherID;
     private ArrayList<Review> reviews;
     private ItemStatus status;
-    private String cover;
 
-    public Item(){
+    public Item() {
 
     }
 
-    public Item(int itemID, String name, String description, double price, int discountID, ArrayList<Review> reviews, ItemStatus status) {
+    public Item(int itemID, String name, String type, String description, double price, int publisherID, ArrayList<Review> reviews) {
         this.itemID = itemID;
         this.name = name;
+        this.type = type;
         this.description = description;
         this.price = price;
-        this.discountID = discountID;
+        this.publisherID = publisherID;
         this.reviews = reviews;
-        this.status = status;
+        this.status = ItemStatus.AVAILABLE;
     }
 
     public int getItemID() {
@@ -58,14 +59,6 @@ public abstract class Item {
         this.price = price;
     }
 
-    public int getDiscountID() {
-        return discountID;
-    }
-
-    public void setDiscountID(int discountID) {
-        this.discountID = discountID;
-    }
-
     public ArrayList<Review> getReviews() {
         return reviews;
     }
@@ -82,11 +75,22 @@ public abstract class Item {
         this.status = status;
     }
 
-    public String getCover() {
-        return cover;
+    public String getType() {
+        return type;
     }
 
-    public void setCover(String cover) {
-        this.cover = cover;
+    public void setType(String type) {
+        this.type = type;
     }
+
+
+    public int getPublisherID() {
+        return publisherID;
+    }
+
+
+    public void setPublisherID(int publisherID) {
+        this.publisherID = publisherID;
+    }
+
 }

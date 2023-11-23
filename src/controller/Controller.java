@@ -290,14 +290,15 @@ public class Controller {
             ResultSet rs = stmt.executeQuery(query);
             while (rs.next()) {
                 Game game = new Game();
-                game.setItemID(rs.getInt("id"));
+                game.setItemID(rs.getInt("item_id"));
                 game.setName(rs.getString("name"));
+                game.setType(rs.getString("type"));
                 game.setDescription(rs.getString("description"));
                 game.setPrice(rs.getInt("price"));
-                game.setDiscountID(rs.getInt("discountid"));
-                game.setCover(rs.getString("cover"));
+                game.setPublisherID(rs.getInt("publisher_id"));
+
                 // Handling the ItemStatus enum
-                String statusString = rs.getString("status");
+                String statusString = rs.getString("item_status");
                 ItemStatus status = ItemStatus.valueOf(statusString); // Assuming statusString is a valid enum name
                 game.setStatus(status);
 
@@ -333,12 +334,13 @@ public class Controller {
                 DLC dlc = new DLC();
                 dlc.setItemID(rs.getInt("id"));
                 dlc.setName(rs.getString("name"));
+                dlc.setType(rs.getString("type"));
                 dlc.setDescription(rs.getString("description"));
                 dlc.setPrice(rs.getInt("price"));
-                dlc.setDiscountID(rs.getInt("discountid"));
-                dlc.setCover(rs.getString("cover"));
+                dlc.setPublisherID(rs.getInt("publisher_id"));
+                // dlc.setStatus(ItemStatus.valueOf(rs.getString("item_status")));
                 // Handling the ItemStatus enum
-                String statusString = rs.getString("status");
+                String statusString = rs.getString("item_status");
                 ItemStatus status = ItemStatus.valueOf(statusString); // Assuming statusString is a valid enum name
                 dlc.setStatus(status);
 
@@ -448,65 +450,66 @@ public class Controller {
         return null;
     }
 
-    public Game getGameById(int gameId) {
-        conn.connect();
-        String query = "SELECT * FROM item WHERE item_id = " + gameId;
+    // public Game getGameById(int gameId) {
+    //     conn.connect();
+    //     String query = "SELECT * FROM item WHERE item_id = " + gameId;
 
-        try {
-            Statement stmt = conn.con.createStatement();
-            ResultSet rs = stmt.executeQuery(query);
+    //     try {
+    //         Statement stmt = conn.con.createStatement();
+    //         ResultSet rs = stmt.executeQuery(query);
 
-            if (rs.next()) {
-                // Retrieve other attributes based on your database schema
-                String name = rs.getString("name");
-                String description = rs.getString("description");
-                double price = rs.getDouble("price");
-                int discountId = rs.getInt("discountid");
-                String statusString = rs.getString("status");
-                ItemStatus status = ItemStatus.valueOf(statusString);
-                // Fetch other attributes as needed
+    //         if (rs.next()) {
+    //             // Retrieve other attributes based on your database schema
+    //             String name = rs.getString("name");
+    //             String description = rs.getString("description");
+    //             String type = "Game";
+    //             double price = rs.getDouble("price");
+    //             int publisherID = rs.getInt("publisher_id");
+    //             String statusString = rs.getString("item_status");
+    //             ItemStatus status = ItemStatus.valueOf(statusString);
+    //             // Fetch other attributes as needed
 
-                return new Game(gameId, name, description, price, discountId, null, status, null);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            conn.disconnect();
-        }
+    //             return new Game(gameId, name, type, description, price, publisherID, null);
+    //         }
+    //     } catch (SQLException e) {
+    //         e.printStackTrace();
+    //     } finally {
+    //         conn.disconnect();
+    //     }
 
-        // Return null if the game is not found
-        return null;
-    }
+    //     // Return null if the game is not found
+    //     return null;
+    // }
 
-    public DLC getDLCById(int dlcId) {
-        conn.connect();
-        String query = "SELECT * FROM item WHERE item_id = " + dlcId;
+    // public DLC getDLCById(int dlcId) {
+    //     conn.connect();
+    //     String query = "SELECT * FROM item WHERE item_id = " + dlcId;
 
-        try {
-            Statement stmt = conn.con.createStatement();
-            ResultSet rs = stmt.executeQuery(query);
+    //     try {
+    //         Statement stmt = conn.con.createStatement();
+    //         ResultSet rs = stmt.executeQuery(query);
 
-            if (rs.next()) {
-                // Retrieve other attributes based on your database schema
-                String name = rs.getString("name");
-                String description = rs.getString("description");
-                double price = rs.getDouble("price");
-                int discountId = rs.getInt("discountid");
-                String statusString = rs.getString("status");
-                ItemStatus status = ItemStatus.valueOf(statusString);
-                // Fetch other attributes as needed
+    //         if (rs.next()) {
+    //             // Retrieve other attributes based on your database schema
+    //             String name = rs.getString("name");
+    //             String description = rs.getString("description");
+    //             double price = rs.getDouble("price");
+    //             int discountId = rs.getInt("discountid");
+    //             String statusString = rs.getString("status");
+    //             ItemStatus status = ItemStatus.valueOf(statusString);
+    //             // Fetch other attributes as needed
 
-                return new DLC(dlcId, name, description, price, discountId, null, status);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            conn.disconnect();
-        }
+    //             return new DLC(dlcId, name, description, price, discountId, null, status);
+    //         }
+    //     } catch (SQLException e) {
+    //         e.printStackTrace();
+    //     } finally {
+    //         conn.disconnect();
+    //     }
 
-        // Return null if the DLC is not found
-        return null;
-    }
+    //     // Return null if the DLC is not found
+    //     return null;
+    // }
 
     public void getGameDetails(Game game) {
         conn.connect();
@@ -517,14 +520,14 @@ public class Controller {
             ResultSet rs = stmt.executeQuery(query);
 
             if (rs.next()) {
-                game.setItemID(rs.getInt("id"));
+                game.setItemID(rs.getInt("item_id"));
                 game.setName(rs.getString("name"));
+                game.setType(rs.getString("type"));
                 game.setDescription(rs.getString("description"));
                 game.setPrice(rs.getInt("price"));
-                game.setDiscountID(rs.getInt("discountid"));
-                game.setCover(rs.getString("cover"));
+                game.setPublisherID(rs.getInt("publisher_id"));
 
-                String statusString = rs.getString("status");
+                String statusString = rs.getString("item_status");
                 ItemStatus status = ItemStatus.valueOf(statusString);
                 game.setStatus(status);
 
@@ -550,17 +553,15 @@ public class Controller {
             ResultSet rs = stmt.executeQuery(query);
 
             if (rs.next()) {
-                dlc.setItemID(rs.getInt("id"));
+                dlc.setItemID(rs.getInt("item_id"));
                 dlc.setName(rs.getString("name"));
+                dlc.setType(rs.getString("type"));
                 dlc.setDescription(rs.getString("description"));
                 dlc.setPrice(rs.getInt("price"));
-                dlc.setDiscountID(rs.getInt("discountid"));
-                dlc.setCover(rs.getString("cover"));
-
-                String statusString = rs.getString("status");
+                dlc.setPublisherID(rs.getInt("publisher_id"));
+                String statusString = rs.getString("item_status");
                 ItemStatus status = ItemStatus.valueOf(statusString);
                 dlc.setStatus(status);
-
                 ArrayList<Review> reviews = getReviewsForDLC(dlc);
                 dlc.setReviews(reviews);
             }
