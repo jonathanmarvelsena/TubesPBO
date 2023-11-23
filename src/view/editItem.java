@@ -2,9 +2,9 @@ package view;
 
 import model.Publisher;
 
-public class editItem {
+public class EditItem {
 
-    public editItem (){
+    public EditItem (){
 
     }
     

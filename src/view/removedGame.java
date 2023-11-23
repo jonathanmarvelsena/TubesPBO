@@ -1,5 +1,5 @@
 package view;
 
-public class removedGame {
+public class RemovedGame {
     
 }
