@@ -807,4 +807,52 @@ public class Controller {
             conn.disconnect();
         }
     }
+
+    public ArrayList<ShoppingCart> getShoppingCart(User user) {
+        conn.connect();
+        String query = "SELECT * FROM shoppingcart sc JOIN transaction t ON t.transaction_id = sc.transaction_id WHERE t.user_id = "+user.getId();
+        ArrayList<ShoppingCart> transactions = new ArrayList<>();
+
+        try {
+            Statement stmt = conn.con.createStatement();
+            ResultSet rs = stmt.executeQuery(query);
+            while (rs.next()) {
+                ShoppingCart transaction = new ShoppingCart();
+                transaction.setTransactionID(rs.getInt("transaction_id"));
+                transaction.setitemID(rs.getInt("item_id"));
+                transaction.setDescription(rs.getString("description"));
+                transactions.add(transaction);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            conn.disconnect(); // Close the connection when done
+        }
+
+        return transactions;
+    }
+
+    public ArrayList<ShoppingCart> getShoppingCart(User user, int month, int year) {
+        conn.connect();
+        String query = "SELECT * FROM shoppingcart sc JOIN transaction t ON t.transaction_id = sc.transaction_id WHERE MONTH(t.transaction_date) = "+month+" YEAR(t.transaction_id)";
+        ArrayList<ShoppingCart> transactions = new ArrayList<>();
+
+        try {
+            Statement stmt = conn.con.createStatement();
+            ResultSet rs = stmt.executeQuery(query);
+            while (rs.next()) {
+                ShoppingCart transaction = new ShoppingCart();
+                transaction.setTransactionID(rs.getInt("transaction_id"));
+                transaction.setitemID(rs.getInt("item_id"));
+                transaction.setDescription(rs.getString("description"));
+                transactions.add(transaction);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            conn.disconnect(); // Close the connection when done
+        }
+
+        return transactions;
+    }
 }
