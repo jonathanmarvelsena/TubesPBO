@@ -106,6 +106,16 @@ public class HomePublisher {
             }
         });
         home_publisher.setVisible(true);
+
+        btnEditItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ArrayList<Item> itemPublisher = con.getItem();
+                new EditItem(publisher,itemPublisher);
+                home_publisher.dispose();
+            }
+        });
+        home_publisher.setVisible(true);
     }
 
 }
