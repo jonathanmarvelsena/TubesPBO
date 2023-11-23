@@ -132,7 +132,7 @@ public class Controller {
         }
     }
 
-    // INSERT (punya item)
+    // INSERT (punya item = game)
     public boolean insertNewGame(Game game, Publisher publisher) {
         conn.connect();
         String query = "INSERT INTO items VALUES(?,?,?,?,?,?,?)";
@@ -164,7 +164,7 @@ public class Controller {
         }
     }
 
-    // INSERT (punya item)
+    // INSERT (punya item  = dlc)
     public boolean insertNewDLC(DLC game, Publisher publisher) {
         conn.connect();
         String query = "INSERT INTO items VALUES(?,?,?,?,?,?,?)";
@@ -192,9 +192,28 @@ public class Controller {
             e.printStackTrace();
             return false;
         } finally {
-            conn.disconnect(); // Make sure to close the connection in the finally block
+            conn.disconnect(); 
         }
     }
+
+    //update wallet user
+    public boolean updateWallet(User user, double topUpAmount) {
+        conn.connect();
+        double currentWalletAmount = user.getWallet();   
+        double updatedWalletAmount = currentWalletAmount + topUpAmount;
+        String query = "UPDATE users SET wallet = " + updatedWalletAmount + " WHERE user_id = " + user.getId(); 
+        try {
+            Statement stmt = conn.con.createStatement();
+            stmt.executeUpdate(query);
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        } finally {
+            conn.disconnect(); 
+        }
+    }
+    
     
     public ArrayList<User> getUserList(){
         conn.connect();
