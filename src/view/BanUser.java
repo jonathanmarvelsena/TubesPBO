@@ -77,7 +77,7 @@ public class BanUser {
         JLabel labelName = new JLabel("ID of user to be banned");
         id = new JTextField();
         labelName.setBounds(15, 250, 150, 23);
-        id.setBounds(140, 250, 325, 23);
+        id.setBounds(160, 250, 305, 23);
         labelName.setForeground(Color.WHITE);
         id.setForeground(Color.WHITE);
         id.setBackground(Color.DARK_GRAY);
@@ -86,7 +86,7 @@ public class BanUser {
 
         //Bagian Button Back
         btnBack = new JButton("Back");
-        btnBack.setBounds(315, 290, 150, 23);
+        btnBack.setBounds(326, 290, 140, 23);
         btnBack.setForeground(Color.WHITE);
         btnBack.setBackground(Color.decode("#717D7E"));
         container.add(btnBack);
@@ -101,7 +101,7 @@ public class BanUser {
 
         //Bagian Button Banned
         btnBack = new JButton("Ban User");
-        btnBack.setBounds(140, 290, 150, 23);
+        btnBack.setBounds(160, 290, 140, 23);
         btnBack.setForeground(Color.WHITE);
         btnBack.setBackground(Color.decode("#717D7E"));
         container.add(btnBack);

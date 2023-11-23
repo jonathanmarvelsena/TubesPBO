@@ -255,16 +255,16 @@ public class Controller {
 
     public ArrayList<User> getUserBanned(){
         conn.connect();
-        String query = "SELECT * FROM users WHERE status= 'BANNED'";
+        String query = "SELECT * FROM users WHERE user_status= 'BANNED'";
         ArrayList<User> users = new ArrayList<>();
         try{
             Statement stmt = conn.con.createStatement();
             ResultSet rs = stmt.executeQuery(query);
             while (rs.next()) {
                 User user = new User();
-                user.setId(rs.getInt("id"));
+                user.setId(rs.getInt("user_id"));
                 user.setName(rs.getString("username"));
-                user.setPassword(rs.getString("description"));
+                user.setPassword(rs.getString("password"));
                 user.setStatus(AccountStatus.valueOf(rs.getString("user_status")));
                 user.setWallet(rs.getDouble("wallet"));
 

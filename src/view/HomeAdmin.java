@@ -92,7 +92,8 @@ public class HomeAdmin {
         btnShowBanUser.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new ShowBanUser(admin);
+                ArrayList<User> bannedUsers = con.getUserBanned();
+                new ShowBanUser(admin, bannedUsers);
                 homeAdmin.setVisible(false);
             }
         });
