@@ -14,7 +14,6 @@ import model.User;
  * @author abil
  */
 public class ShowTransactionUser {
-
     JFrame container;
     JButton btnBack;
 
