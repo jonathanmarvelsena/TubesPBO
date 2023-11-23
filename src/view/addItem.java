@@ -100,8 +100,7 @@ public class addItem {
         btnSubmit.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new HomePublisher(publisher);
-                add_item.setVisible(false);
+                
             }
         });
         add_item.setVisible(true);

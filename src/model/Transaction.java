@@ -1,50 +1,46 @@
 package model;
 
-import java.time.LocalTime;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 
 public class Transaction {
-    private LocalTime date;
-    private String description;
-    private double final_price;
-    private ArrayList<Item> item;
-
-    public Transaction(LocalTime date, String description, double final_price, ArrayList<Item> item) {
+    private int transactionID;
+    private int userID;
+    private Timestamp date;
+    private ShoppingCart shoppingCart;
+    
+    public Transaction(int transactionID, int userID, Timestamp date, ShoppingCart shoppingCart) {
+        this.transactionID = transactionID;
+        this.userID = userID;
         this.date = date;
-        this.description = description;
-        this.final_price = final_price;
-        this.item = item;
+        this.shoppingCart = shoppingCart;
     }
-
-    public LocalTime getDate() {
+    public Transaction() {
+    }
+    public int getTransactionID() {
+        return transactionID;
+    }
+    public void setTransactionID(int transactionID) {
+        this.transactionID = transactionID;
+    }
+    public int getUserID() {
+        return userID;
+    }
+    public void setUserID(int userID) {
+        this.userID = userID;
+    }
+    public Timestamp getDate() {
         return date;
     }
-
-    public void setDate(LocalTime date) {
+    public void setDate(Timestamp date) {
         this.date = date;
     }
-
-    public String getDescription() {
-        return description;
+    public ShoppingCart getShoppingCart() {
+        return shoppingCart;
     }
-
-    public void setDescription(String description) {
-        this.description = description;
+    public void setShoppingCart(ShoppingCart shoppingCart) {
+        this.shoppingCart = shoppingCart;
     }
-
-    public double getFinal_price() {
-        return final_price;
-    }
-
-    public void setFinal_price(double final_price) {
-        this.final_price = final_price;
-    }
-
-    public ArrayList<Item> getItem() {
-        return item;
-    }
-
-    public void setItem(ArrayList<Item> item) {
-        this.item = item;
-    }
+    
+    
 }
