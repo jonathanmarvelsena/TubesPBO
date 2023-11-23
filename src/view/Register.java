@@ -92,7 +92,7 @@ public class Register {
                 String name = username.getText();
                 String pass = new String(password.getPassword());
                 ArrayList<User> listUser = con.getUserList();
-                User newUser = new User(name, pass, listUser.size());
+                User newUser = new User(name, pass, listUser.size() + 1);
                 boolean cek = con.insertNewUser(newUser);
                 if (cek) {
                     new HomeUser(newUser);
