@@ -88,7 +88,7 @@ public class RemovedGame {
         btnBack.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                boolean ban = con.updateStatusUser(Integer.parseInt(id.getText()));
+                boolean ban = con.updateStatusItem(Integer.parseInt(id.getText()));
                 if (ban){
                     JOptionPane.showMessageDialog(container, "Item Succesfully banned","Success",JOptionPane.WARNING_MESSAGE);
                 } else {
