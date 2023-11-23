@@ -66,7 +66,16 @@ public class TopUp {
                 double topUpAmount = Double.parseDouble(isiNominalTopUP.getText()); 
                 con.updateWallet(user, topUpAmount);
                 top_up.setVisible(false);
-                new HomeUser(user);
+                boolean insert = con.updateWallet(user, topUpAmount);
+                if (insert) {
+                    if (insert) {
+                        JOptionPane.showMessageDialog(null, "Top Up successful");
+                        new HomeUser(user);
+                        top_up.dispose();
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Top Up failed");
+                    }
+                }
             }
         });
         top_up.setVisible(true);

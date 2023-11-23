@@ -655,13 +655,13 @@ public class Controller {
         }
     }
 
-    public boolean updateGame(Game game, String name, String price, String description) {
+    public boolean updateGame(int gameID, String name, String price, String description) {
         conn.connect();
         String query = "UPDATE item"
                 + " SET name='" + name + "',"
                 + "price='" + price + "',"
                 + "description='" + description
-                + "WHERE item_id = " + game.getItemID();
+                + "' WHERE item_id = " + gameID;
         PreparedStatement stmt;
         try {
             stmt = conn.con.prepareStatement(query);
