@@ -92,7 +92,16 @@ public class HomePublisher {
             @Override
             public void actionPerformed(ActionEvent e) {
                 ArrayList<Item> removeItems = con.getRemoveItem();
-                new RemovedGame(publisher, removeItems);
+                new showRemovedGame(publisher, removeItems);
+                home_publisher.dispose();
+            }
+        });
+
+        btnRemovedGame.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ArrayList<Item> items = con.getItem();
+                new RemovedGame(publisher, items);
                 home_publisher.dispose();
             }
         });

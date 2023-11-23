@@ -329,7 +329,6 @@ public class Controller {
         conn.connect();
         String query = "SELECT * FROM item WHERE type = 'Game'";
         ArrayList<Game> games = new ArrayList<>();
-
         try {
             Statement stmt = conn.con.createStatement();
             ResultSet rs = stmt.executeQuery(query);
@@ -899,7 +898,7 @@ public class Controller {
 
     public ArrayList<Item> getItem() {
         conn.connect();
-        String query = "SELECT * FROM item";
+        String query = "SELECT * FROM item WHERE item_status= 'AVAILABLE'";
         ArrayList<Item> items = new ArrayList<>();
 
         try {
