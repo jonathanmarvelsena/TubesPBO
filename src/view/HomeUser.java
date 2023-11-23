@@ -63,7 +63,7 @@ public class HomeUser {
             }
         });
 
-        btnShopingCart = new JButton("Shoping Cart");
+        btnShopingCart = new JButton("Shopping Cart");
         btnShopingCart.setBounds(80, 120, 150, 23);
         btnShopingCart.setForeground(Color.WHITE);
         btnShopingCart.setBackground(Color.decode("#717D7E"));
