@@ -899,7 +899,7 @@ public class Controller {
 
     public ArrayList<Item> getItem() {
         conn.connect();
-        String query = "SELECT * FROM item";
+        String query = "SELECT * FROM item WHERE item_status= 'AVAILABLE'";
         ArrayList<Item> items = new ArrayList<>();
 
         try {
