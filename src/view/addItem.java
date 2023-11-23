@@ -155,7 +155,7 @@ public class addItem {
         });
         for (Item item : con.getItem())
         {
-            if (item.getType().equals("Game")) { comboBox.addItem(item.getName()); }
+            if (item.getType().equals("Game") && item.getPublisherID() == publisher.getId()) { comboBox.addItem(item.getName()); }
         }
         btnSubmit.addActionListener(new ActionListener() {
             @Override
