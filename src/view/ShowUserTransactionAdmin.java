@@ -8,9 +8,13 @@ import java.util.ArrayList;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
+import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.table.DefaultTableModel;
 
+import controller.Controller;
 import model.Admin;
 import model.User;
 
@@ -19,6 +23,7 @@ import model.User;
  * @author abil
  */
 public class ShowUserTransactionAdmin {
+    Controller con = Controller.getInstance();
     JFrame container;
     JButton btnBack, btnSelect;
 
@@ -46,6 +51,15 @@ public class ShowUserTransactionAdmin {
             data[i][2] = user.getStatus().toString();
             data[i][3] = user.getWallet(); 
         }
+    
+        DefaultTableModel model = new DefaultTableModel(data, columnNames);
+
+        JTable userTable = new JTable(model);
+
+        JScrollPane scrollPane = new JScrollPane(userTable);
+        scrollPane.setBounds(15, 50, 450, 100);
+        container.add(scrollPane);
+
         JSeparator garisPemisah = new JSeparator();
         garisPemisah.setBounds(28, 150, 410, 5);
         garisPemisah.setForeground(Color.LIGHT_GRAY);
@@ -55,10 +69,12 @@ public class ShowUserTransactionAdmin {
         inputid.setBounds(28, 170, 100, 5);
         inputid.setForeground(Color.WHITE);
         inputid.setBackground(Color.decode("#717D7E"));
+        container.add(inputid);
         JTextField input = new JTextField();
         input.setBounds(150, 170, 200, 5);
         input.setForeground(Color.WHITE);
         input.setBackground(Color.DARK_GRAY);
+        container.add(input);
 
         btnSelect = new JButton("Select");
         btnSelect.setBounds(370, 170, 150, 23);
@@ -66,9 +82,18 @@ public class ShowUserTransactionAdmin {
         btnSelect.setBackground(Color.decode("#717D7E"));
         container.add(btnSelect);
 
+        btnSelect.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                User user = con.getUserById(Integer.parseInt(input.getText()));
+                new ShowTransactionUser(user);
+                container.setVisible(false);
+            }
+        });
+
         //Bagian Button Back
         btnBack = new JButton("Back");
-        btnBack.setBounds(270, 200, 150, 23);
+        btnBack.setBounds(270, 230, 150, 23);
         btnBack.setForeground(Color.WHITE);
         btnBack.setBackground(Color.decode("#717D7E"));
         container.add(btnBack);
