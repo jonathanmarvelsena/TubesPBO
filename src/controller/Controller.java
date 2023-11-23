@@ -131,8 +131,71 @@ public class Controller {
             conn.disconnect(); // Make sure to close the connection in the finally block
         }
     }
-    
 
+    // INSERT (punya item)
+    public boolean insertNewGame(Game game, Publisher publisher) {
+        conn.connect();
+        String query = "INSERT INTO items VALUES(?,?,?,?,?,?,?)";
+        try {
+            PreparedStatement stmt = conn.con.prepareStatement(query);
+            stmt.setInt(1, game.getItemID());
+            stmt.setString(2, game.getName());
+            stmt.setString(3, "Game");
+            stmt.setDouble(4, game.getPrice());
+            stmt.setString(5, game.getDescription());
+            stmt.setInt(6, publisher.getId());
+            String statusString = game.getStatus().toString();
+            stmt.setString(7, statusString);
+    
+            // Execute the SQL statement
+            int rowsAffected = stmt.executeUpdate();
+    
+            // Check if the insertion was successful
+            if (rowsAffected > 0) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        } finally {
+            conn.disconnect(); // Make sure to close the connection in the finally block
+        }
+    }
+
+    // INSERT (punya item)
+    public boolean insertNewDLC(DLC game, Publisher publisher) {
+        conn.connect();
+        String query = "INSERT INTO items VALUES(?,?,?,?,?,?,?)";
+        try {
+            PreparedStatement stmt = conn.con.prepareStatement(query);
+            stmt.setInt(1, game.getItemID());
+            stmt.setString(2, game.getName());
+            stmt.setString(3, "DLC");
+            stmt.setDouble(4, game.getPrice());
+            stmt.setString(5, game.getDescription());
+            stmt.setInt(6, publisher.getId());
+            String statusString = game.getStatus().toString();
+            stmt.setString(7, statusString);
+    
+            // Execute the SQL statement
+            int rowsAffected = stmt.executeUpdate();
+    
+            // Check if the insertion was successful
+            if (rowsAffected > 0) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        } finally {
+            conn.disconnect(); // Make sure to close the connection in the finally block
+        }
+    }
+    
     public ArrayList<User> getUserList(){
         conn.connect();
         String query = "SELECT * FROM users WHERE user_status = 'NOT_BANNED'";
