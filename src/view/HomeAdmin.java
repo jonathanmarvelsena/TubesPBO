@@ -7,22 +7,26 @@ package view;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JSeparator;
 
+import controller.Controller;
 import model.Admin;
+import model.User;
 
 /**
  *
  * @author abil
  */
 public class HomeAdmin {
-
+    Controller con = Controller.getInstance();
     JFrame homeAdmin;
     JButton btnViewAllUser;
     JButton btnBanUser;
+    JButton btnBack;
     JButton btnShowBanUser;
     JButton btnShowMonthlyTransaction;
     JButton btnShowUserTransaction;
@@ -35,14 +39,14 @@ public class HomeAdmin {
         homeAdmin.setLayout(null);
         homeAdmin.getContentPane().setBackground(Color.DARK_GRAY);
 
-        JLabel title = new JLabel("Admin Main Menu");
-        title.setBounds(90, 30, 150, 23);
+        JLabel title = new JLabel("Welcome to Admin Menu");
+        title.setBounds(75, 30, 150, 23);
         title.setForeground(Color.WHITE);
         homeAdmin.add(title);
 
         //Garis Pemisah
         JSeparator garisPemisah = new JSeparator();
-        garisPemisah.setBounds(90, 55, 100, 5);
+        garisPemisah.setBounds(50, 55, 190, 5);
         garisPemisah.setForeground(Color.LIGHT_GRAY);
         homeAdmin.add(garisPemisah);
 
@@ -56,7 +60,8 @@ public class HomeAdmin {
         btnViewAllUser.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new ViewAllUsers(admin);
+                ArrayList<User> nonBannedUsers = con.getUserList();
+                new ViewAllUsers(admin, nonBannedUsers);
                 homeAdmin.setVisible(false);
             }
         });
@@ -71,7 +76,8 @@ public class HomeAdmin {
         btnBanUser.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new BanUser(admin);
+                ArrayList<User> nonBannedUsers = con.getUserList();
+                new BanUser(admin, nonBannedUsers);
                 homeAdmin.setVisible(false);
             }
         });
@@ -120,6 +126,22 @@ public class HomeAdmin {
                 homeAdmin.setVisible(false);
             }
         });
+        
+        // Bagian Button Logout
+        btnBack = new JButton("Logout");
+        btnBack.setBounds(50, 270, 190, 23);
+        btnBack.setForeground(Color.WHITE);
+        btnBack.setBackground(Color.decode("#717D7E"));
+        homeAdmin.add(btnBack);
+
+        btnBack.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new Login();
+                homeAdmin.setVisible(false);
+            }
+        });
+
 
         homeAdmin.setVisible(true);
     }
