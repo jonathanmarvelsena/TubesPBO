@@ -329,7 +329,6 @@ public class Controller {
         conn.connect();
         String query = "SELECT * FROM item WHERE type = 'Game'";
         ArrayList<Game> games = new ArrayList<>();
-
         try {
             Statement stmt = conn.con.createStatement();
             ResultSet rs = stmt.executeQuery(query);
