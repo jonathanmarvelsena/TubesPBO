@@ -64,7 +64,6 @@ public class TopUp {
             @Override
             public void actionPerformed(ActionEvent e) {
                 double topUpAmount = Double.parseDouble(isiNominalTopUP.getText()); 
-                user.setWallet(topUpAmount);
                 con.updateWallet(user, topUpAmount);
                 top_up.setVisible(false);
                 new HomeUser(user);
