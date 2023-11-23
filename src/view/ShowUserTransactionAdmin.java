@@ -15,7 +15,6 @@ import model.Admin;
  * @author abil
  */
 public class ShowUserTransactionAdmin {
-
     JFrame container;
     JButton btnBack;
 

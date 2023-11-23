@@ -284,6 +284,47 @@ public class Controller {
         return users;
     }
 
+    public boolean updateStatusItem(int id) {
+        conn.connect();
+        String query = "UPDATE item SET item_status= 'NOT_AVAILABLE'"
+                + "WHERE item_id='" + id + "'";
+        try {
+            Statement stmt = conn.con.createStatement();
+            stmt.executeUpdate(query);
+            return (true);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return (false);
+        }
+    }
+
+    public ArrayList<Item> getRemoveItem() {
+        conn.connect();
+        String query = "SELECT * FROM item WHERE item_status = 'NOT_AVAILABLE'";
+    
+        ArrayList<Item> items = new ArrayList<>();
+    
+        try {
+            Statement stmt = conn.con.createStatement();
+            ResultSet rsGame = stmt.executeQuery(query);
+            while (rsGame.next()) {
+                Item game = new Item();
+                game.setItemID(rsGame.getInt("item_id"));
+                game.setName(rsGame.getString("name"));
+                game.setType(rsGame.getString("type"));
+                game.setPrice(rsGame.getDouble("price"));
+                game.setDescription(rsGame.getString("description"));
+                game.setPublisherID(rsGame.getInt("publisher_id"));
+                game.setStatus(ItemStatus.valueOf(rsGame.getString("item_status")));
+                items.add(game);
+            }  
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }   
+        return items;
+    }
+    
+
     public ArrayList<Game> getGames() {
         conn.connect();
         String query = "SELECT * FROM item WHERE type = 'Game'";
