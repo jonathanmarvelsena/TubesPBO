@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -12,10 +11,11 @@ import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
 import javax.swing.JTable;
-import javax.swing.JTextField;
+//import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
+//import java.util.Iterator;
 import controller.Controller;
-import model.Item;
+//import model.Item;
 import model.ShoppingCart;
 import model.User;
 
@@ -79,43 +79,51 @@ public class ShowShoppingCart {
         btnBuy.setForeground(Color.WHITE);
         btnBuy.setBackground(Color.decode("#717D7E"));
         container.add(btnBuy);
-        double total = 0;
-        for (int i = 0; i < cart.size(); i++) {
-            total += con.getItemById(cart.get(i).getitemID()).getPrice();
-        }
-        final double finalTotal = total;
+        //final double finalTotal = total;
         btnBuy.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (user.getWallet() < finalTotal) {
-                    JOptionPane.showMessageDialog(null, "Wallet funds not enough");
+                double total = 0;
+                for (int i = 0; i < cart.size(); i++) {
+                    total += con.getItemById(cart.get(i).getitemID()).getPrice();
+                }
+        
+                System.out.println("Saldo sekarang: " + user.getWallet());
+                System.out.println("Total belanja: " + total);
+        
+                if (user.getWallet() < total) {
+                    double remainingAmount = total - user.getWallet();
+                    System.out.println("Kekurangan dana: " + remainingAmount);
+                    JOptionPane.showMessageDialog(null, "Wallet funds not enough. Need additional: " + remainingAmount);
                 } else {
-                    for (ShoppingCart c : cart) {
-                        if (cart != null) {
-                            con.purchase(user, c);
-                        }
+                    // Buat salinan ArrayList untuk operasi pembelian
+                    ArrayList<ShoppingCart> copyCart = new ArrayList<>(cart);
+        
+                    for (ShoppingCart c : copyCart) {
+                        con.purchase(user, c);
+                        cart.remove(c); // Hapus item yang sudah dibeli dari keranjang
                     }
-                    con.updateWallet(user, -finalTotal);
+                    con.updateWallet(user, -total);
                 }
             }
         });
-
+                
         btnGift.setBounds(235, 210, 205, 23);
         btnGift.setForeground(Color.WHITE);
         btnGift.setBackground(Color.decode("#717D7E"));
         container.add(btnGift);
 
-        btnGift.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (user.getWallet() < finalTotal) {
-                    JOptionPane.showMessageDialog(null, "Wallet funds not enough");
-                } else {
-                    new SelectGiftUser(user, cart, finalTotal);
-                    container.dispose();
-                }
-            }
-        });
+        // btnGift.addActionListener(new ActionListener() {
+        //     @Override
+        //     public void actionPerformed(ActionEvent e) {
+        //         if (user.getWallet() < finalTotal) {
+        //             JOptionPane.showMessageDialog(null, "Wallet funds not enough");
+        //         } else {
+        //             new SelectGiftUser(user, cart, finalTotal);
+        //             container.dispose();
+        //         }
+        //     }
+        // });
 
         btnBack.setBounds(20, 250, 420, 23);
         btnBack.setForeground(Color.WHITE);
