@@ -14,6 +14,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import controller.Controller;
 import model.Account;
+import model.AccountStatus;
 import model.Admin;
 import model.Publisher;
 import model.User;
@@ -78,6 +79,10 @@ public class Login {
                 Account loggedInUser = con.getUser(userName, userPassword);
 
                 if (loggedInUser instanceof User) {
+                    if(loggedInUser.getStatus() == AccountStatus.BANNED){
+                        JOptionPane.showMessageDialog(null, "This account is banned");
+                        return;
+                    }
                     container.dispose();
                     JOptionPane.showMessageDialog(null, "login success");
                     new HomeUser((User) loggedInUser);
