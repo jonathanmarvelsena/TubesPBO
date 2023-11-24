@@ -526,7 +526,7 @@ public class Controller {
 
     public User getUserById(int userId) {
         conn.connect();
-        String query = "SELECT * FROM user WHERE id = " + userId;
+        String query = "SELECT * FROM user WHERE user_id = " + userId;
 
         try {
             Statement stmt = conn.con.createStatement();
@@ -535,7 +535,7 @@ public class Controller {
             if (rs.next()) {
                 String name = rs.getString("name");
                 String password = rs.getString("password");
-                int id = rs.getInt("id");
+                int id = rs.getInt("user_id");
 
                 return new User(name, password, id);
             }
@@ -740,20 +740,35 @@ public class Controller {
     }
 
     public boolean insertIntoShoppingCart(User user, Item item) {
-        ShoppingCart cart = user.getCart();
-        if(cart != null){
-        for (Item cartItem : cart.getItems()) {
-            if (cartItem.getItemID() == item.getItemID()) {
-                // Item is already in the cart
-                // You can update the quantity or take other actions
-                return false; // Indicates that the item was not added to the cart
+        ArrayList<ShoppingCart> cart = user.getCart();
+
+        // Check if the cart is not null and not empty
+        if (cart != null && !cart.isEmpty()) {
+            for (ShoppingCart shoppingCart : cart) {
+                if (shoppingCart.getitemID() == item.getItemID()) {
+                    return false; // item is already in cart
                 }
             }
-        }
 
-        // Item is not in the cart, add it
-        cart.addItem(item);
-        return true; // Indicates successful addition to the cart
+            // Assuming getTransactionID() is a valid method in the ShoppingCart class
+            int transactionId = cart.get(0).getTransactionID();
+            ShoppingCart temp = new ShoppingCart(transactionId, item.getItemID(), null);
+            cart.add(temp);
+            return true;
+        } else {
+            // If the cart is null or empty, create a new transaction ID
+            int transactionId = getTransactions().size() + 1;
+            ShoppingCart temp = new ShoppingCart(transactionId, item.getItemID(), null);
+
+            // Ensure that the user's cart is initialized
+            if (cart == null) {
+                cart = new ArrayList<>();
+                user.setCart(cart);
+            }
+
+            cart.add(temp);
+            return true;
+        }
     }
 
     public ArrayList<Transaction> getTransactions() {
@@ -780,56 +795,7 @@ public class Controller {
         return transactions;
     }
 
-    public boolean gift(int user, int target, ShoppingCart cart) {
-        conn.connect();
-    
-        try {
-            // Insert into transaction table
-            String transactionQuery = "INSERT INTO transaction (user_id, transaction_date) VALUES (?, ?)";
-            PreparedStatement transactionStmt = conn.con.prepareStatement(transactionQuery, PreparedStatement.RETURN_GENERATED_KEYS);
-            transactionStmt.setInt(1, target);
-            transactionStmt.setTimestamp(2, Timestamp.from(Instant.now()));
-    
-            int rowsAffected = transactionStmt.executeUpdate();
-    
-            // Check if the insertion into transaction was successful
-            if (rowsAffected > 0) {
-                // Retrieve the generated transaction ID
-                ResultSet generatedKeys = transactionStmt.getGeneratedKeys();
-                if (generatedKeys.next()) {
-                    int transactionId = generatedKeys.getInt(1);
-    
-                    // Insert into shoppingcart table
-                    String shoppingCartQuery = "INSERT INTO shoppingcart (transaction_id, item_id, description) VALUES (?, ?, ?)";
-                    PreparedStatement shoppingCartStmt = conn.con.prepareStatement(shoppingCartQuery);
-    
-                    ArrayList<Item> items = cart.getItems();
-                    // Iterate through each item in the cart and add it to the shopping cart
-                    if (items != null)
-                    {
-                        for (Item item : cart.getItems()) {
-                            shoppingCartStmt.setInt(1, transactionId);
-                            shoppingCartStmt.setInt(2, item.getItemID());
-                            shoppingCartStmt.setString(3, "Gifted by user id" + user);
-        
-                            // Execute the SQL statement for shopping cart
-                            shoppingCartStmt.executeUpdate();
-                        }
-                    }
-    
-                    return true;
-                }
-            }
-    
-            return false;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        } finally {
-            conn.disconnect();
-        }
-    }
-    public boolean purchase(int user, ShoppingCart cart) {
+    public boolean purchase(User user, ShoppingCart cart) {
         conn.connect();
 
         try {
@@ -837,7 +803,7 @@ public class Controller {
             String transactionQuery = "INSERT INTO transaction (user_id, transaction_date) VALUES (?, ?)";
             PreparedStatement transactionStmt = conn.con.prepareStatement(transactionQuery,
                     PreparedStatement.RETURN_GENERATED_KEYS);
-            transactionStmt.setInt(1, user);
+            transactionStmt.setInt(1, user.getId());
             transactionStmt.setTimestamp(2, Timestamp.from(Instant.now()));
 
             int rowsAffected = transactionStmt.executeUpdate();
@@ -853,26 +819,34 @@ public class Controller {
                     String shoppingCartQuery = "INSERT INTO shoppingcart (transaction_id, item_id, description) VALUES (?, ?, ?)";
                     PreparedStatement shoppingCartStmt = conn.con.prepareStatement(shoppingCartQuery);
 
-                    for (Item item : cart.getItems()) {
-                        shoppingCartStmt.setInt(1, transactionId);
-                        shoppingCartStmt.setInt(2, item.getItemID());
-                        shoppingCartStmt.setString(3, "Item purchase"); // Adjust this accordingly
+                    shoppingCartStmt.setInt(1, transactionId);
+                    shoppingCartStmt.setInt(2, cart.getitemID());
+                    shoppingCartStmt.setString(3, "Item purchase"); // Adjust this accordingly
 
-                        // Execute the SQL statement for shoppingcart
-                        shoppingCartStmt.executeUpdate();
-                    }
+                    // Execute the SQL statement for shoppingcart
+                    shoppingCartStmt.executeUpdate();
 
-                    return true;
+                    String libraryQuery = "INSERT INTO library (user_id, item_id) VALUES (?, ?)";
+                    PreparedStatement libraryQueryStmt = conn.con.prepareStatement(libraryQuery);
+
+                    libraryQueryStmt.setInt(1, user.getId());
+                    libraryQueryStmt.setInt(2, cart.getitemID());
+
+                    // Execute the SQL statement for shoppingcart
+                    libraryQueryStmt.executeUpdate();
                 }
+                user.getCart().clear();
+                return true;
+
             }
 
-            return false;
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
         } finally {
             conn.disconnect();
         }
+        return false;
     }
 
     public ArrayList<ShoppingCart> getShoppingCart(int userID) {
@@ -903,7 +877,7 @@ public class Controller {
     public ArrayList<ShoppingCart> getShoppingCartByMonth(int month, int year) {
         conn.connect();
         String query = "SELECT * FROM shoppingcart sc JOIN transaction t ON t.transaction_id = sc.transaction_id WHERE MONTH(t.transaction_date) = "
-                + month + " YEAR(t.transaction_id)";
+                + month + " AND YEAR(t.transaction_date) = " + year;
         ArrayList<ShoppingCart> transactions = new ArrayList<>();
 
         try {
@@ -921,6 +895,7 @@ public class Controller {
         } finally {
             conn.disconnect(); // Close the connection when done
         }
+
         return transactions;
     }
 
@@ -1008,25 +983,9 @@ public class Controller {
         return items;
     }
 
-
     public boolean updateStatusItem(int id) {
         conn.connect();
         String query = "UPDATE item SET item_status= 'NOT_AVAILABLE'"
-                + "WHERE item_id='" + id + "'";
-        try {
-            Statement stmt = conn.con.createStatement();
-            stmt.executeUpdate(query);
-            return (true);
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return (false);
-        }
-    }
-
-    
-    public boolean updateStatusItem(int id, String status) {
-        conn.connect();
-        String query = "UPDATE item SET item_status= '" + status + "'"
                 + "WHERE item_id='" + id + "'";
         try {
             Statement stmt = conn.con.createStatement();
@@ -1108,7 +1067,7 @@ public class Controller {
 
     public ArrayList<Item> getPublisherItem(Publisher publisher) {
         conn.connect();
-        String query = "SELECT * FROM item WHERE item_status = 'AVAILABLE' AND publisher_id = "+ publisher.getId();
+        String query = "SELECT * FROM item WHERE item_status = 'AVAILABLE' AND publisher_id = " + publisher.getId();
         ArrayList<Item> items = new ArrayList<>();
 
         try {
@@ -1129,14 +1088,14 @@ public class Controller {
                 item.setStatus(status);
 
                 // Handling reviews
-                if(item instanceof Game){
+                if (item instanceof Game) {
                     Game game = (Game) item;
-                ArrayList<Review> reviews = getReviewsForGame(game); // Implement getReviewsForGame method
-                item.setReviews(reviews);
-                }else if(item instanceof DLC){
+                    ArrayList<Review> reviews = getReviewsForGame(game); // Implement getReviewsForGame method
+                    item.setReviews(reviews);
+                } else if (item instanceof DLC) {
                     DLC dlc = (DLC) item;
                     ArrayList<Review> reviews = getReviewsForDLC(dlc); // Implement getReviewsForGame method
-                item.setReviews(reviews);
+                    item.setReviews(reviews);
                 }
                 items.add(item);
             }
@@ -1151,7 +1110,7 @@ public class Controller {
 
     public Transaction getTransactionByID(int id) {
         conn.connect();
-        String query = "SELECT * FROM transaction WHERE transaction_id = " +id;
+        String query = "SELECT * FROM transaction WHERE transaction_id = " + id;
 
         try {
             Statement stmt = conn.con.createStatement();
@@ -1204,7 +1163,60 @@ public class Controller {
         // Return null if the DLC is not found
         return null;
     }
-    
+
+    public boolean gift(User user, int target, ShoppingCart cart) {
+        conn.connect();
+
+        try {
+            // Insert into transaction table
+            String transactionQuery = "INSERT INTO transaction (user_id, transaction_date) VALUES (?, ?)";
+            PreparedStatement transactionStmt = conn.con.prepareStatement(transactionQuery,
+                    PreparedStatement.RETURN_GENERATED_KEYS);
+            transactionStmt.setInt(1, target);
+            transactionStmt.setTimestamp(2, Timestamp.from(Instant.now()));
+
+            int rowsAffected = transactionStmt.executeUpdate();
+
+            // Check if the insertion into transaction was successful
+            if (rowsAffected > 0) {
+                // Retrieve the generated transaction ID
+                ResultSet generatedKeys = transactionStmt.getGeneratedKeys();
+                if (generatedKeys.next()) {
+                    int transactionId = generatedKeys.getInt(1);
+
+                    // Insert into shoppingcart table
+                    String shoppingCartQuery = "INSERT INTO shoppingcart (transaction_id, item_id, description) VALUES (?, ?, ?)";
+                    PreparedStatement shoppingCartStmt = conn.con.prepareStatement(shoppingCartQuery);
+
+                    // Iterate through each item in the cart and add it to the shopping cart
+                    shoppingCartStmt.setInt(1, transactionId);
+                    shoppingCartStmt.setInt(2, cart.getitemID());
+                    shoppingCartStmt.setString(3, "Gifted by " + user.getName());
+
+                    // Execute the SQL statement for shopping cart
+                    shoppingCartStmt.executeUpdate();
+
+                    String libraryQuery = "INSERT INTO library (user_id, item_id) VALUES (?, ?)";
+                    PreparedStatement libraryQueryStmt = conn.con.prepareStatement(libraryQuery);
+
+                    libraryQueryStmt.setInt(1, target);
+                    libraryQueryStmt.setInt(2, cart.getitemID());
+
+                    // Execute the SQL statement for shoppingcart
+                    libraryQueryStmt.executeUpdate();
+                }
+                user.getCart().clear();
+                return true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        } finally {
+            conn.disconnect();
+        }
+        return false;
+    }
+
     public ArrayList<Item> getLibrary(User user) {
         conn.connect();
         String query = "SELECT * FROM item i JOIN library l ON l.item_id = i.item_id WHERE l.user_id = " + user.getId();
@@ -1243,6 +1255,7 @@ public class Controller {
         } finally {
             conn.disconnect(); // Close the connection when done
         }
+
         return items;
     }
 }

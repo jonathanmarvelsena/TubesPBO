@@ -48,7 +48,7 @@ public class SelectGiftUser {
         itemTable.setModel(model);
     }
 
-    public SelectGiftUser (User user, ArrayList<ShoppingCart> cart) {
+    public SelectGiftUser (User user, ArrayList<ShoppingCart> cart, double total) {
         this.user = user;
         this.cart = cart;
         update_item = new JFrame("Add Item");
@@ -145,9 +145,10 @@ public class SelectGiftUser {
                 {
                     if (cart != null)
                     {
-                        con.gift(user.getId(), Integer.parseInt(isiIdGameOrDLC.getText()), c);
+                        con.gift(user, Integer.parseInt(isiIdGameOrDLC.getText()), c);
                     }
-                }       
+                }
+                con.updateWallet(user, -total);       
             }
         });
         update_item.setVisible(true);

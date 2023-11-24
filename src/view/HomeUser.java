@@ -77,7 +77,7 @@ public class HomeUser {
         btnShopingCart.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                ArrayList<ShoppingCart> cart = con.getShoppingCart(user.getId());
+                ArrayList<ShoppingCart> cart = user.getCart();
                 new ShowShoppingCart(user,cart);
                 home_user.dispose();
             }
