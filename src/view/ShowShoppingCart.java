@@ -116,17 +116,23 @@ public class ShowShoppingCart {
         btnGift.setBackground(Color.decode("#717D7E"));
         container.add(btnGift);
 
-        // btnGift.addActionListener(new ActionListener() {
-        // @Override
-        // public void actionPerformed(ActionEvent e) {
-        // if (user.getWallet() < finalTotal) {
-        // JOptionPane.showMessageDialog(null, "Wallet funds not enough");
-        // } else {
-        // new SelectGiftUser(user, cart, finalTotal);
-        // container.dispose();
-        // }
-        // }
-        // });
+        btnGift.addActionListener(new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+
+            double total = 0;
+            for (int i = 0; i < cart.size(); i++) {
+                total += con.getItemById(cart.get(i).getitemID()).getPrice();
+            }
+
+            if (user.getWallet() < total) {
+                JOptionPane.showMessageDialog(null, "Wallet funds not enough");
+            } else {
+            new SelectGiftUser(user, cart, total);
+                container.dispose();
+            }
+        }
+        });
 
         btnBack.setBounds(20, 250, 420, 23);
         btnBack.setForeground(Color.WHITE);

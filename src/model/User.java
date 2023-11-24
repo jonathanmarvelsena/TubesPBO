@@ -1,6 +1,7 @@
 package model;
 
 import java.util.ArrayList;
+import controller.Controller;
 
 public class User extends Account{
     private double wallet;
@@ -17,6 +18,7 @@ public class User extends Account{
     }
 
     public double getWallet() {
+        this.wallet = new Controller().getWallet(getId());
         return wallet;
     }
 
