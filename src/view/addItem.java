@@ -13,8 +13,7 @@ import javax.swing.JRadioButton;
 import javax.swing.JSeparator;
 import javax.swing.JTextField;
 import controller.Controller;
-
-import javax.scene.control.RadioButton;
+//import javax.scene.control.RadioButton;
 
 import model.Publisher;
 import model.DLC;
