@@ -1274,6 +1274,7 @@ public class Controller {
         return items;
     }
 
+
     public double getWallet(int id) {
         conn.connect();
         String query = "SELECT wallet from users WHERE user_id = " + id;
@@ -1292,5 +1293,6 @@ public class Controller {
         }
         return wallet;
     } 
+
 }
 
