@@ -23,7 +23,7 @@ import javax.swing.table.DefaultTableModel;
 
 import controller.Controller;
 
-public class editItem {
+public class EditItem {
         Controller con = Controller.getInstance();
         JFrame update_item;
         JLabel UpdateItemMenu = new JLabel("Update Item");
@@ -76,7 +76,7 @@ public class editItem {
         itemTable.setModel(model);
     }
 
-    public editItem (Publisher publisher,ArrayList<Item> itemList){
+    public EditItem (Publisher publisher,ArrayList<Item> itemList){
         this.publisher = publisher;
         update_item = new JFrame("Add Item");
         update_item.setSize(450, 400);
