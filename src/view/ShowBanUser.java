@@ -8,7 +8,6 @@ import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -16,7 +15,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
-
 import controller.Controller;
 import model.Admin;
 import model.User;
@@ -82,9 +80,6 @@ public class ShowBanUser {
                 container.setVisible(false);
             }
         });
-
-        
-
         container.setVisible(true);
     }
 }

@@ -29,7 +29,7 @@ public class ShowUserTransactionAdmin {
 
     public ShowUserTransactionAdmin(Admin admin, ArrayList<User> users) {
         container = new JFrame("Show User Transaction");
-        container.setSize(480, 300);
+        container.setSize(500, 380);
         container.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         container.setLocationRelativeTo(null);
         container.setLayout(null);
@@ -61,23 +61,23 @@ public class ShowUserTransactionAdmin {
         container.add(scrollPane);
 
         JSeparator garisPemisah = new JSeparator();
-        garisPemisah.setBounds(28, 150, 410, 5);
+        garisPemisah.setBounds(15, 180, 450, 5);
         garisPemisah.setForeground(Color.LIGHT_GRAY);
         container.add(garisPemisah);
 
         JLabel inputid = new JLabel("User ID");
-        inputid.setBounds(28, 170, 100, 23);
+        inputid.setBounds(15, 200, 100, 23);
         inputid.setForeground(Color.WHITE);
         inputid.setBackground(Color.decode("#717D7E"));
         container.add(inputid);
         JTextField input = new JTextField();
-        input.setBounds(150, 170, 200, 23);
+        input.setBounds(90, 200, 375, 23);
         input.setForeground(Color.WHITE);
         input.setBackground(Color.DARK_GRAY);
         container.add(input);
 
         btnSelect = new JButton("Select");
-        btnSelect.setBounds(370, 170, 150, 23);
+        btnSelect.setBounds(90, 240, 180, 23);
         btnSelect.setForeground(Color.WHITE);
         btnSelect.setBackground(Color.decode("#717D7E"));
         container.add(btnSelect);
@@ -93,7 +93,7 @@ public class ShowUserTransactionAdmin {
 
         //Bagian Button Back
         btnBack = new JButton("Back");
-        btnBack.setBounds(270, 230, 150, 23);
+        btnBack.setBounds(290, 240, 180, 23);
         btnBack.setForeground(Color.WHITE);
         btnBack.setBackground(Color.decode("#717D7E"));
         container.add(btnBack);

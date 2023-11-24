@@ -2,14 +2,16 @@ package view;
 
 import javax.swing.*;
 
+import controller.Controller;
+import model.Item;
 import model.User;
-
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
+import java.util.ArrayList;
 
 public class HomeUser {
+    Controller con = Controller.getInstance();
     JFrame home_user;
     JButton btnShowGameList;
     JButton btnTopup;
@@ -59,7 +61,8 @@ public class HomeUser {
         btnShowGameLibrary.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new ShowGameLibrary();
+                ArrayList<Item> library = con.getLibrary(user);
+                new ShowGameLibrary(user, library);
                 home_user.dispose();
             }
         });
@@ -128,6 +131,5 @@ public class HomeUser {
             }
         });
         home_user.setVisible(true);
-        
     }
 }

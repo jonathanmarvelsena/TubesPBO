@@ -92,7 +92,7 @@ public class HomePublisher {
             @Override
             public void actionPerformed(ActionEvent e) {
                 ArrayList<Item> removeItems = con.getRemoveItem();
-                new showRemovedGame(publisher, removeItems);
+                new ShowRemovedGame(publisher, removeItems);
                 home_publisher.dispose();
             }
         });

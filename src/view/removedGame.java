@@ -59,6 +59,7 @@ public class RemovedGame {
         scrollPane.setBounds(15, 50, 450, 150);
         container.add(scrollPane);
 
+
         itemTable.setBackground(Color.DARK_GRAY);
         itemTable.setForeground(Color.WHITE);
         itemTable.getTableHeader().setBackground(Color.DARK_GRAY);
@@ -84,7 +85,7 @@ public class RemovedGame {
 
     
 
-        JLabel labelName = new JLabel("ID of item to be remove");
+        JLabel labelName = new JLabel("ID of item to be removed");
         id = new JTextField();
         labelName.setBounds(15, 250, 150, 23);
         id.setBounds(160, 250, 305, 23);
@@ -116,7 +117,7 @@ public class RemovedGame {
         btnSubmit.setBackground(Color.decode("#717D7E"));
         container.add(btnSubmit);
 
-<<<<<<< Updated upstream
+
         btnSubmit.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -132,22 +133,5 @@ public class RemovedGame {
             }
         });
         container.setVisible(true);
-=======
-        // btnBack.addActionListener(new ActionListener() {
-        //     @Override
-        //     public void actionPerformed(ActionEvent e) {
-        //         boolean ban = con.updateStatusItem(Integer.parseInt(id.getText()));
-        //         if (ban){
-        //             JOptionPane.showMessageDialog(container, "Item Succesfully banned","Success",JOptionPane.WARNING_MESSAGE);
-        //         } else {
-        //             JOptionPane.showMessageDialog(container, "Item Not Found","Error",
-        //                     JOptionPane.WARNING_MESSAGE);
-        //         }
-        //         new RemovedGame(publisher, nonBannedItems);
-        //         container.setVisible(false);
-        //     }
-        // });
-        // container.setVisible(true);
->>>>>>> Stashed changes
     }
 }
