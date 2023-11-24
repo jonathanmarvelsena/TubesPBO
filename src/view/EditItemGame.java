@@ -3,17 +3,16 @@ package view;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import javax.swing.ButtonGroup;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JSeparator;
 import javax.swing.JTextField;
-import javax.swing.table.DefaultTableModel;
 import controller.Controller;
 import model.Item;
+import model.ItemStatus;
 import model.Publisher;
 
 public class EditItemGame {
@@ -26,6 +25,8 @@ public class EditItemGame {
     JLabel deskripsi = new JLabel("Deskripsi              : ");
     JTextField isiHarga;
     JLabel harga = new JLabel("Price                      : ");
+    JCheckBox statusCheckBox = new JCheckBox("Available");
+    JLabel status =  new JLabel("status                    : ");
     JButton btnSubmit = new JButton("Submit");
     JButton btnBack = new JButton("Back");
     String nameType = "";
@@ -38,7 +39,7 @@ public class EditItemGame {
         }
         this.nameType = nameType;
         updateItemMenu = new JLabel("Update " + nameType);
-        namaItem = new JLabel(nameType + " Name : ");
+        namaItem = new JLabel(nameType + " Name               : ");
         update_item = new JFrame("Edit " + nameType);
         update_item.setSize(400, 300);
         update_item.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -85,12 +86,22 @@ public class EditItemGame {
         isiHarga.setBackground(Color.DARK_GRAY);
         update_item.add(isiHarga);
 
-        btnSubmit.setBounds(40, 165, 100, 23);
+        status.setBounds(20, 150, 200, 23);
+        status.setForeground(Color.WHITE);
+        update_item.add(status);
+
+        statusCheckBox.setBounds(127, 150, 100, 23);
+        statusCheckBox.setForeground(Color.WHITE);
+        statusCheckBox.setBackground(Color.DARK_GRAY);
+        update_item.add(statusCheckBox);
+        
+
+        btnSubmit.setBounds(40, 195, 100, 23);
         btnSubmit.setForeground(Color.WHITE);
         btnSubmit.setBackground(Color.decode("#717D7E"));
         update_item.add(btnSubmit);
 
-        btnBack.setBounds(200, 165, 100, 23);
+        btnBack.setBounds(200, 195, 100, 23);
         btnBack.setForeground(Color.WHITE);
         btnBack.setBackground(Color.decode("#717D7E"));
         update_item.add(btnBack);
@@ -99,6 +110,7 @@ public class EditItemGame {
             public void actionPerformed(ActionEvent e) {
                 if (con.updateGame(id, isiNamaItem.getText(), isiHarga.getText(), isiDeskripsi.getText()))
                 {
+                    con.updateStatusItem(id, statusCheckBox.isSelected() ? "AVAILABLE" : "NOT_AVAILABLE");
                     new EditItem(publisher, con.getItem());
                     JOptionPane.showMessageDialog(null, "your update is succeed");
                     update_item.dispose();
@@ -124,6 +136,7 @@ public class EditItemGame {
             isiNamaItem.setText(item.getName());
             isiHarga.setText(String.valueOf(item.getPrice()));
             isiDeskripsi.setText(item.getDescription());
+            statusCheckBox.setSelected(item.getStatus() == ItemStatus.AVAILABLE);
         }
         update_item.setVisible(true);
     }
