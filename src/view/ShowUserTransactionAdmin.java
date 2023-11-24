@@ -113,7 +113,7 @@ public class ShowUserTransactionAdmin {
             @Override
             public void actionPerformed(ActionEvent e) {
                 User user = con.getUserById(Integer.parseInt(input.getText()));
-                new ShowTransactionUser(user);
+                new ShowTransactionUserByAdmin(user,admin);
                 container.setVisible(false);
             }
         });
