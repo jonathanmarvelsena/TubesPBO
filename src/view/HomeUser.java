@@ -47,7 +47,7 @@ public class HomeUser {
         btnShowGameList.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new ShowGameList();
+                new ShowGameList(user);
                 home_user.dispose();
             }
         });

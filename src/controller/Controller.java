@@ -958,6 +958,49 @@ public class Controller {
         return items;
     }
 
+    public ArrayList<Item> getItemListRemove() {
+        conn.connect();
+        String query = "SELECT * FROM item WHERE item_status= 'AVAILABLE'";
+        ArrayList<Item> items = new ArrayList<>();
+
+        try {
+            Statement stmt = conn.con.createStatement();
+            ResultSet rs = stmt.executeQuery(query);
+            while (rs.next()) {
+                Item item = new Item();
+                item.setItemID(rs.getInt("item_id"));
+                item.setName(rs.getString("name"));
+                item.setType(rs.getString("type"));
+                item.setDescription(rs.getString("description"));
+                item.setPrice(rs.getInt("price"));
+                item.setPublisherID(rs.getInt("publisher_id"));
+
+                // Handling the ItemStatus enum
+                String statusString = rs.getString("item_status");
+                ItemStatus status = ItemStatus.valueOf(statusString); // Assuming statusString is a valid enum name
+                item.setStatus(status);
+
+                // Handling reviews
+                if(item instanceof Game){
+                    Game game = (Game) item;
+                ArrayList<Review> reviews = getReviewsForGame(game); // Implement getReviewsForGame method
+                item.setReviews(reviews);
+                }else if(item instanceof DLC){
+                    DLC dlc = (DLC) item;
+                    ArrayList<Review> reviews = getReviewsForDLC(dlc); // Implement getReviewsForGame method
+                item.setReviews(reviews);
+                }
+                items.add(item);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            conn.disconnect(); // Close the connection when done
+        }
+
+        return items;
+    }
+
     public boolean updateStatusItem(int id) {
         conn.connect();
         String query = "UPDATE item SET item_status= 'NOT_AVAILABLE'"
