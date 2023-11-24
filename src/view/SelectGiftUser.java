@@ -13,6 +13,7 @@ import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
@@ -141,6 +142,7 @@ public class SelectGiftUser {
             public void actionPerformed(ActionEvent e) {
                 new ShowShoppingCart(user, cart);
                 update_item.dispose();
+                con.updateWallet(user, -total);
                 for (ShoppingCart c : cart)
                 {
                     if (cart != null)
@@ -148,7 +150,7 @@ public class SelectGiftUser {
                         con.gift(user, Integer.parseInt(isiIdGameOrDLC.getText()), c);
                     }
                 }
-                con.updateWallet(user, -total);       
+                JOptionPane.showMessageDialog(null, "gift success");       
             }
         });
         update_item.setVisible(true);

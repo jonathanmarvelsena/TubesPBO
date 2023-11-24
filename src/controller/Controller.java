@@ -1273,4 +1273,24 @@ public class Controller {
 
         return items;
     }
+
+    public double getWallet(int id) {
+        conn.connect();
+        String query = "SELECT wallet from users WHERE user_id = " + id;
+        double wallet = 0;
+        try {
+            Statement stmt = conn.con.createStatement();
+            ResultSet rs = stmt.executeQuery(query);
+
+            if (rs.next()) {
+                wallet = rs.getDouble("wallet");
+
+                return wallet;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return wallet;
+    } 
 }
+

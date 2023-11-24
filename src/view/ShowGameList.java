@@ -56,9 +56,15 @@ public class ShowGameList {
         if (updateDLC.isSelected()) { game = "DLC"; }
         else if (updateGame.isSelected()) { game = "Game"; }
         int cnt = 0;
+        ArrayList<Item> items = con.getLibrary(user);
         for (int i = 0; i < data.length; i++) {
             if (game.equals((String)data[i][2]))
             {
+                boolean found = false;
+                for (Item item : items)
+                {
+                    if (item.getItemID() == (Integer)data[i][0]) { found = true; break; }
+                }
                 cnt++;
             }
         }
@@ -67,8 +73,15 @@ public class ShowGameList {
         for (int i = 0; i < data.length; i++) {
             if (game.equals(data[i][2]) )
             {
-                data2[cnt2] = data[i];
-                cnt2++;
+                boolean found = false;
+                for (Item item : items)
+                {
+                    if (item.getItemID() == (Integer)data[i][0]) { found = true; break; }
+                }
+            
+                    data2[cnt2] = data[i];
+                    cnt2++; 
+                
             }
         }
         return data2;
