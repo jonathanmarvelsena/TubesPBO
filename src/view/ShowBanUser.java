@@ -61,6 +61,12 @@ public class ShowBanUser {
         scrollPane.setBounds(15, 50, 450, 150);
         container.add(scrollPane);
 
+        userTable.setBackground(Color.DARK_GRAY);
+        userTable.setForeground(Color.WHITE);
+        userTable.getTableHeader().setBackground(Color.DARK_GRAY);
+        userTable.getTableHeader().setForeground(Color.WHITE);
+        scrollPane.getViewport().setBackground(Color.DARK_GRAY);
+
         JSeparator garisPemisah = new JSeparator();
         garisPemisah.setBounds(15, 230, 450, 5);
         garisPemisah.setForeground(Color.LIGHT_GRAY);

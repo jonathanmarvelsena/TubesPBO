@@ -853,7 +853,8 @@ public class Controller {
 
     public ArrayList<ShoppingCart> getShoppingCartByMonth(int month, int year) {
         conn.connect();
-        String query = "SELECT * FROM shoppingcart sc JOIN transaction t ON t.transaction_id = sc.transaction_id WHERE MONTH(t.transaction_date) = "+month+" AND YEAR(t.transaction_date) = "+year;
+        String query = "SELECT * FROM shoppingcart sc JOIN transaction t ON t.transaction_id = sc.transaction_id WHERE MONTH(t.transaction_date) = "
+                + month + " YEAR(t.transaction_id)";
         ArrayList<ShoppingCart> transactions = new ArrayList<>();
 
         try {
@@ -871,7 +872,6 @@ public class Controller {
         } finally {
             conn.disconnect(); // Close the connection when done
         }
-
         return transactions;
     }
 
@@ -1123,9 +1123,9 @@ public class Controller {
                 item.setName(rs.getString("name"));
                 item.setDescription(rs.getString("description"));
                 item.setPrice(rs.getDouble("price"));
-                item.setType(rs.getString("type"));
+                item.setType(rs.getString("item_type"));
                 item.setPublisherID(rs.getInt("publisher_id"));
-                String statusString = rs.getString("item_status");
+                String statusString = rs.getString("status");
                 ItemStatus status = ItemStatus.valueOf(statusString);
                 item.setStatus(status);
                 // Fetch other attributes as needed
@@ -1139,5 +1139,46 @@ public class Controller {
 
         // Return null if the DLC is not found
         return null;
+    }
+    
+    public ArrayList<Item> getLibrary(User user) {
+        conn.connect();
+        String query = "SELECT * FROM item i JOIN library l ON l.item_id = i.item_id WHERE l.user_id = " + user.getId();
+        ArrayList<Item> items = new ArrayList<>();
+
+        try {
+            Statement stmt = conn.con.createStatement();
+            ResultSet rs = stmt.executeQuery(query);
+            while (rs.next()) {
+                Item item = new Item();
+                item.setItemID(rs.getInt("item_id"));
+                item.setName(rs.getString("name"));
+                item.setType(rs.getString("type"));
+                item.setDescription(rs.getString("description"));
+                item.setPrice(rs.getInt("price"));
+                item.setPublisherID(rs.getInt("publisher_id"));
+
+                // Handling the ItemStatus enum
+                String statusString = rs.getString("item_status");
+                ItemStatus status = ItemStatus.valueOf(statusString); // Assuming statusString is a valid enum name
+                item.setStatus(status);
+                // Handling reviews
+                if (item instanceof Game) {
+                    Game game = (Game) item;
+                    ArrayList<Review> reviews = getReviewsForGame(game); // Implement getReviewsForGame method
+                    item.setReviews(reviews);
+                } else if (item instanceof DLC) {
+                    DLC dlc = (DLC) item;
+                    ArrayList<Review> reviews = getReviewsForDLC(dlc); // Implement getReviewsForGame method
+                    item.setReviews(reviews);
+                }
+                items.add(item);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            conn.disconnect(); // Close the connection when done
+        }
+        return items;
     }
 }

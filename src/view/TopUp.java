@@ -14,11 +14,12 @@ public class TopUp {
     JFrame top_up;
     JLabel isiWallet = new JLabel("Isi Wallet");
     JTextField isiNominalTopUP ;
-    JLabel nominalTopUP = new JLabel("Masukan Nominal Top Up : ");
-    JLabel pembayaran = new JLabel("pilih pembayaran :");
+    JLabel nominalTopUP = new JLabel("Masukan Nominal Top Up  : ");
+    JLabel pembayaran = new JLabel("pilih pembayaran                 :");
     String arrPembayaran[] = {"Paypal","Visa"};
     JComboBox<String> isiPembayaran = new JComboBox<>(arrPembayaran);
     JButton btnBayar = new JButton("Bayar");
+    JButton btnBack = new JButton("Back");
 
     public TopUp(User user){
         top_up = new JFrame("isi wallet");
@@ -50,16 +51,22 @@ public class TopUp {
         pembayaran.setBounds(20,100, 160, 23);
         pembayaran.setForeground(Color.WHITE);
         top_up.add(pembayaran);
-        isiPembayaran.setBounds(130,100, 160, 23);
+        isiPembayaran.setBounds(180,100, 160, 23);
         isiPembayaran.setForeground(Color.WHITE);
         isiPembayaran.setBackground(Color.decode("#717D7E"));
         top_up.add(isiPembayaran);
 
-        btnBayar.setBounds(20,140, 160, 23);
+        btnBayar.setBounds(20,140, 140, 23);
         btnBayar.setForeground(Color.WHITE);
         btnBayar.setBackground(Color.decode("#717D7E"));
         top_up.add(btnBayar);
 
+        btnBack.setBounds(200,140, 140, 23);
+        btnBack.setForeground(Color.WHITE);
+        btnBack.setBackground(Color.decode("#717D7E"));
+        top_up.add(btnBack);
+
+        
         btnBayar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -79,5 +86,16 @@ public class TopUp {
             }
         });
         top_up.setVisible(true);
+
+        btnBack.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new HomeUser(user);
+                top_up.setVisible(false);
+            }
+        });
+
+        top_up.setVisible(true);
+
     }
 }

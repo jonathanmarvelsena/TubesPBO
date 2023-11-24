@@ -3,6 +3,8 @@ package view;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -12,6 +14,7 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
 import controller.Controller;
+import model.Item;
 import model.User;
 
 /**
@@ -19,9 +22,10 @@ import model.User;
  * @author abil
  */
 public class ShowTransactionUser {
-
+    Controller con = Controller.getInstance();
     JFrame container;
     JButton btnBack;
+
 
     public ShowTransactionUser(User user) {
         container = new JFrame("Show User Transaction");
@@ -40,6 +44,35 @@ public class ShowTransactionUser {
         garisPemisah.setBounds(28, 150, 410, 5);
         garisPemisah.setForeground(Color.LIGHT_GRAY);
         container.add(garisPemisah);
+
+        ArrayList<ShoppingCart> transaction = con.getShoppingCart(user.getId());
+
+        String[] columnNames = {"Transaction_Id", "Item_id","User_id","Item_Name","Description"};
+
+        Object[][] data = new Object[transaction.size()][5]; 
+
+        for (int i = 0; i < transaction.size(); i++) {
+            ShoppingCart user = transaction.get(i);
+            data[i][0] = user.getTransactionID(); 
+            data[i][1] = user.getitemID(); 
+            data[i][2] = con.getTransactionByID(user.getTransactionID()).getUserID();
+            data[i][3] = con.getItemById(user.getitemID()).getName(); 
+            data[i][4] = user.getDescription() ;
+        }
+    
+        DefaultTableModel model = new DefaultTableModel(data, columnNames);
+
+        JTable userTable = new JTable(model);
+
+        JScrollPane scrollPane = new JScrollPane(userTable);
+        scrollPane.setBounds(15, 50, 450, 150);
+        container.add(scrollPane);
+
+        userTable.setBackground(Color.DARK_GRAY);
+        userTable.setForeground(Color.WHITE);
+        userTable.getTableHeader().setBackground(Color.DARK_GRAY);
+        userTable.getTableHeader().setForeground(Color.WHITE);
+        scrollPane.getViewport().setBackground(Color.DARK_GRAY);
 
         //Bagian Button Back
         btnBack = new JButton("Back");

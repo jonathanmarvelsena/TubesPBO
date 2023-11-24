@@ -78,15 +78,17 @@ public class Login {
                 Account loggedInUser = con.getUser(userName, userPassword);
 
                 if (loggedInUser instanceof User) {
+                    container.dispose();
+                    JOptionPane.showMessageDialog(null, "login success");
                     new HomeUser((User) loggedInUser);
-                    container.dispose();
                 } else if (loggedInUser instanceof Admin) {
+                    container.dispose();
+                    JOptionPane.showMessageDialog(null, "login success");
                     new HomeAdmin((Admin) loggedInUser);
-                    container.dispose();
-
                 } else if (loggedInUser instanceof Publisher) {
-                    new HomePublisher((Publisher) loggedInUser);
                     container.dispose();
+                    JOptionPane.showMessageDialog(null, "login success");
+                    new HomePublisher((Publisher) loggedInUser);
                 } else {
                     JOptionPane.showMessageDialog(container, "Email or password incorrect", "User not found",
                             JOptionPane.WARNING_MESSAGE);

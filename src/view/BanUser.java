@@ -16,6 +16,9 @@ import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 import controller.Controller;
 import model.Admin;
@@ -65,6 +68,12 @@ public class BanUser {
         JScrollPane scrollPane = new JScrollPane(userTable);
         scrollPane.setBounds(15, 50, 450, 150);
         container.add(scrollPane);
+        
+        userTable.setBackground(Color.DARK_GRAY);
+        userTable.setForeground(Color.WHITE);
+        userTable.getTableHeader().setBackground(Color.DARK_GRAY);
+        userTable.getTableHeader().setForeground(Color.WHITE);
+        scrollPane.getViewport().setBackground(Color.DARK_GRAY);
 
         JSeparator garisPemisah = new JSeparator();
         garisPemisah.setBounds(15, 230, 450, 5);
@@ -81,6 +90,23 @@ public class BanUser {
         id.setBackground(Color.DARK_GRAY);
         container.add(labelName);
         container.add(id);
+
+        userTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        userTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+            @Override
+            public void valueChanged(ListSelectionEvent e)
+            {
+                if (e.getValueIsAdjusting()) { return; }
+                String src = e.getSource().toString();
+                int start = src.indexOf("{") + 1;
+                int stop = src.length() - 1;
+                String s = src.substring(start, stop);
+                if (s.isEmpty()) { return; }
+                int index = Integer.parseInt(s);
+                id.setText(String.valueOf((Integer)data[index][0]));
+
+            }
+        });
 
         //Bagian Button Back
         btnBack = new JButton("Back");
