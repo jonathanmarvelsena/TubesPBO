@@ -6,7 +6,6 @@ import controller.Controller;
 import model.Item;
 import model.Publisher;
 import model.User;
-
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -20,7 +19,6 @@ public class HomePublisher {
     JButton btnEditItem;
     JButton btnRemovedGame;
     JButton btnShowRemovedGame;
-
 
     public HomePublisher (Publisher publisher){
         home_publisher = new JFrame("Home");
@@ -111,7 +109,7 @@ public class HomePublisher {
             @Override
             public void actionPerformed(ActionEvent e) {
                 ArrayList<Item> itemPublisher = con.getItem();
-                new EditItem(publisher,itemPublisher);
+                new EditItem(publisher, itemPublisher);
                 home_publisher.dispose();
             }
         });

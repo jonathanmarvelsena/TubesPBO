@@ -95,6 +95,8 @@ public class Register {
                 User newUser = new User(name, pass, listUser.size() + 1);
                 boolean cek = con.insertNewUser(newUser);
                 if (cek) {
+                    JOptionPane.showMessageDialog(container, "Register Succes", "Error",
+                            JOptionPane.WARNING_MESSAGE);
                     new HomeUser(newUser);
                     container.dispose();
                 } else {

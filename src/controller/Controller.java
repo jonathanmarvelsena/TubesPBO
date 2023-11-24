@@ -998,48 +998,6 @@ public class Controller {
         return items;
     }
 
-    public ArrayList<Item> getLibrary(User user) {
-        conn.connect();
-        String query = "SELECT * FROM item i JOIN library l ON l.item_id = i.item_id WHERE l.user_id = " + user.getId();
-        ArrayList<Item> items = new ArrayList<>();
-
-        try {
-            Statement stmt = conn.con.createStatement();
-            ResultSet rs = stmt.executeQuery(query);
-            while (rs.next()) {
-                Item item = new Item();
-                item.setItemID(rs.getInt("item_id"));
-                item.setName(rs.getString("name"));
-                item.setType(rs.getString("type"));
-                item.setDescription(rs.getString("description"));
-                item.setPrice(rs.getInt("price"));
-                item.setPublisherID(rs.getInt("publisher_id"));
-
-                // Handling the ItemStatus enum
-                String statusString = rs.getString("item_status");
-                ItemStatus status = ItemStatus.valueOf(statusString); // Assuming statusString is a valid enum name
-                item.setStatus(status);
-                // Handling reviews
-                if (item instanceof Game) {
-                    Game game = (Game) item;
-                    ArrayList<Review> reviews = getReviewsForGame(game); // Implement getReviewsForGame method
-                    item.setReviews(reviews);
-                } else if (item instanceof DLC) {
-                    DLC dlc = (DLC) item;
-                    ArrayList<Review> reviews = getReviewsForDLC(dlc); // Implement getReviewsForGame method
-                    item.setReviews(reviews);
-                }
-                items.add(item);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            conn.disconnect(); // Close the connection when done
-        }
-
-        return items;
-    }
-
     public ArrayList<Item> getUserItem(User user) {
         conn.connect();
         String query = "SELECT * FROM library WHERE user_id = " + user.getId();
