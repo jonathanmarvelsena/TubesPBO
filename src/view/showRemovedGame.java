@@ -16,13 +16,13 @@ import model.Publisher;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class showRemovedGame {
+public class ShowRemovedGame {
     Controller con = Controller.getInstance();
     JTextField id;
     JFrame container;
     JButton btnBack;
 
-    public showRemovedGame(Publisher publisher, ArrayList<Item> bannedItems) {
+    public ShowRemovedGame(Publisher publisher, ArrayList<Item> bannedItems) {
         container = new JFrame("Ban User");
         container.setSize(500, 380);
         container.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
