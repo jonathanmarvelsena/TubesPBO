@@ -15,15 +15,21 @@ import model.Item;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JOptionPane;
+import javax.swing.ListSelectionModel;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 public class RemovedGame {
     Controller con = Controller.getInstance();
     JTextField id;
     JFrame container;
+    JButton btnSubmit;
     JButton btnBack;
 
+    
+
     public RemovedGame(Publisher publisher, ArrayList<Item> nonBannedItems) {
-        container = new JFrame("Ban User");
+        container = new JFrame("Removed Item");
         container.setSize(500, 380);
         container.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         container.setLocationRelativeTo(null);
@@ -53,6 +59,31 @@ public class RemovedGame {
         scrollPane.setBounds(15, 50, 450, 150);
         container.add(scrollPane);
 
+        itemTable.setBackground(Color.DARK_GRAY);
+        itemTable.setForeground(Color.WHITE);
+        itemTable.getTableHeader().setBackground(Color.DARK_GRAY);
+        itemTable.getTableHeader().setForeground(Color.WHITE);
+        scrollPane.getViewport().setBackground(Color.DARK_GRAY);
+
+        itemTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        itemTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+            @Override
+            public void valueChanged(ListSelectionEvent e)
+            {
+                if (e.getValueIsAdjusting()) { return; }
+                String src = e.getSource().toString();
+                int start = src.indexOf("{") + 1;
+                int stop = src.length() - 1;
+                String s = src.substring(start, stop);
+                if (s.isEmpty()) { return; }
+                int index = Integer.parseInt(s);
+                id.setText(String.valueOf((Integer)data[index][0]));
+
+            }
+        });
+
+    
+
         JLabel labelName = new JLabel("ID of item to be remove");
         id = new JTextField();
         labelName.setBounds(15, 250, 150, 23);
@@ -79,24 +110,24 @@ public class RemovedGame {
         });
 
         //Bagian Button remove
-        btnBack = new JButton("Remove Item");
-        btnBack.setBounds(160, 290, 140, 23);
-        btnBack.setForeground(Color.WHITE);
-        btnBack.setBackground(Color.decode("#717D7E"));
-        container.add(btnBack);
+        btnSubmit = new JButton("Remove Item");
+        btnSubmit.setBounds(160, 290, 140, 23);
+        btnSubmit.setForeground(Color.WHITE);
+        btnSubmit.setBackground(Color.decode("#717D7E"));
+        container.add(btnSubmit);
 
-        btnBack.addActionListener(new ActionListener() {
+        btnSubmit.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 boolean ban = con.updateStatusItem(Integer.parseInt(id.getText()));
                 if (ban){
                     JOptionPane.showMessageDialog(container, "Item Succesfully banned","Success",JOptionPane.WARNING_MESSAGE);
+                    new HomePublisher(publisher);
+                    container.dispose();
                 } else {
                     JOptionPane.showMessageDialog(container, "Item Not Found","Error",
                             JOptionPane.WARNING_MESSAGE);
                 }
-                new RemovedGame(publisher, nonBannedItems);
-                container.setVisible(false);
             }
         });
         container.setVisible(true);

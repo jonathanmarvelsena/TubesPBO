@@ -120,8 +120,4 @@ public class Login {
         });
         container.setVisible(true);
     }
-
-    public static void main(String[] args) {
-        Login login = new Login();
-    }
 }

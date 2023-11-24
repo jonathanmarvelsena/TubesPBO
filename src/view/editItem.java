@@ -42,7 +42,7 @@ public class EditItem {
         JRadioButton updateDLC = new JRadioButton("DLC");
         Object[][] data = null;
         JTable itemTable = null;
-        String[] columnNames = {"ID", "Name", "Type", "Description","Price","Publisher ID"};
+        String[] columnNames = {"ID", "Name", "Type", "Description","Price","Publisher Name"};
         Publisher publisher;
 
     Object[][] getDataItem()
@@ -123,7 +123,7 @@ public class EditItem {
         bgUpdateItem.add(updateDLC);
 
         JSeparator garisPemisah2 = new JSeparator();
-        garisPemisah2.setBounds(20, 90, 370, 5);
+        garisPemisah2.setBounds(20, 90, 390, 5);
         garisPemisah2.setForeground(Color.LIGHT_GRAY);
         update_item.add(garisPemisah2);
 
@@ -144,7 +144,7 @@ public class EditItem {
 
         itemTable = new JTable(model);
         JScrollPane scrollPane = new JScrollPane(itemTable);
-        scrollPane.setBounds(15, 110, 380, 80);
+        scrollPane.setBounds(20, 110, 390, 80);
         update_item.add(scrollPane);
         itemTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         itemTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
@@ -163,25 +163,31 @@ public class EditItem {
             }
         });
   
-        idItem.setBounds(20, 200, 200, 23);
+        idItem.setBounds(20, 210, 200, 23);
         idItem.setForeground(Color.WHITE);
         update_item.add(idItem);
 
         isiIdGameOrDLC = new JTextField();
-        isiIdGameOrDLC.setBounds(130, 200, 260, 23);
+        isiIdGameOrDLC.setBounds(130, 210, 260, 23);
         isiIdGameOrDLC.setForeground(Color.WHITE);
         isiIdGameOrDLC.setBackground(Color.DARK_GRAY);
         update_item.add(isiIdGameOrDLC);
 
-        btnSubmit.setBounds(40, 250, 160, 23);
+        btnSubmit.setBounds(40, 255, 160, 23);
         btnSubmit.setForeground(Color.WHITE);
         btnSubmit.setBackground(Color.decode("#717D7E"));
         update_item.add(btnSubmit);
 
-        btnBack.setBounds(210, 250, 160, 23);
+        btnBack.setBounds(210, 255, 160, 23);
         btnBack.setForeground(Color.WHITE);
         btnBack.setBackground(Color.decode("#717D7E"));
         update_item.add(btnBack);
+
+        itemTable.setBackground(Color.DARK_GRAY);
+        itemTable.setForeground(Color.WHITE);
+        itemTable.getTableHeader().setBackground(Color.DARK_GRAY);
+        itemTable.getTableHeader().setForeground(Color.WHITE);
+        scrollPane.getViewport().setBackground(Color.DARK_GRAY);
 
 
         btnSubmit.addActionListener(new ActionListener() {

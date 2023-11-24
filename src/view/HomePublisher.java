@@ -100,7 +100,7 @@ public class HomePublisher {
         btnRemovedGame.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                ArrayList<Item> items = con.getItem();
+                ArrayList<Item> items = con.getItemListRemove();
                 new RemovedGame(publisher, items);
                 home_publisher.dispose();
             }
