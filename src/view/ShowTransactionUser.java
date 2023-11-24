@@ -6,7 +6,12 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+
+import controller.Controller;
 import model.User;
 
 /**
@@ -14,6 +19,7 @@ import model.User;
  * @author abil
  */
 public class ShowTransactionUser {
+
     JFrame container;
     JButton btnBack;
 

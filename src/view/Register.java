@@ -91,7 +91,7 @@ public class Register {
             public void actionPerformed(ActionEvent e) {
                 String name = username.getText();
                 String pass = new String(password.getPassword());
-                ArrayList<User> listUser = con.getUserList();
+                ArrayList<User> listUser = con.getAllUserList();
                 User newUser = new User(name, pass, listUser.size() + 1);
                 boolean cek = con.insertNewUser(newUser);
                 if (cek) {
