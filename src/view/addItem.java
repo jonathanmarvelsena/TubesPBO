@@ -1,19 +1,24 @@
 package view;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JRadioButton;
 import javax.swing.JSeparator;
 import javax.swing.JTextField;
 import controller.Controller;
+import javax.scene.control.RadioButton;
 import model.Publisher;
 import model.DLC;
 import model.Game;
+import model.Item;
+
 import javax.swing.JOptionPane;
 
 public class addItem {
@@ -22,84 +27,136 @@ public class addItem {
     JLabel addItemMenu = new JLabel("Add Item");
     JLabel gameOrDLC = new JLabel("Add Game or DLC : ");
     JTextField isiNamaGame;
-    JLabel namaGame = new JLabel("Game/DLC Name : ");
+    JLabel namaGame = new JLabel("Name : ");
     JTextField isideskripsi;
     JLabel deskripsi = new JLabel("Deskripsi              : ");
     JTextField isiHarga;
     JLabel harga = new JLabel("Price                      : ");
+    JLabel gameList = new JLabel("Game                      : ");
     JButton btnSubmit = new JButton("Submit");
+    JButton btnBack = new JButton("Back");
     JRadioButton addGame = new JRadioButton("Game");
     JRadioButton addDLC = new JRadioButton("DLC");
+    JComboBox<String> comboBox = null;
+    
+
+    int currY = 25;
+    public void addItemPair(Component left, Component right, int width, int height)
+    {
+        if (left != null) { left.setBounds(20, currY, width, height); add_item.add(left); }
+        if (right != null) { right.setBounds(130, currY, width, height); add_item.add(right); }
+        currY += height + 5;
+    }
+
+    public void addItemPair(Component left, JRadioButton[] right, int width, int height, int interval)
+    {
+        if (left != null) { left.setBounds(20, currY, width, height); add_item.add(left); }
+        int temp = 130;
+        ButtonGroup bgAddItem = new ButtonGroup();
+        for (JRadioButton c : right)
+        {
+            c.setBounds(temp, currY, interval, height);
+            temp += interval;
+            bgAddItem.add(c);
+            add_item.add(c);
+        }
+        currY += height + 5;
+    }
 
     public addItem(Publisher publisher) {
         add_item = new JFrame("Add Item");
-        add_item.setSize(430, 300);
         add_item.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         add_item.setLocationRelativeTo(null);
         add_item.setLayout(null);
         add_item.getContentPane().setBackground(Color.DARK_GRAY);
 
-        addItemMenu.setBounds(20, 25, 170, 23);
         addItemMenu.setForeground(Color.WHITE);
-        add_item.add(addItemMenu);
+        addItemPair(addItemMenu, null, 170, 23);
 
         JSeparator garisPemisah = new JSeparator();
-        garisPemisah.setBounds(20, 45, 60, 5);
         garisPemisah.setForeground(Color.LIGHT_GRAY);
-        add_item.add(garisPemisah);
+        addItemPair(garisPemisah, null, 60, 23);
 
-        gameOrDLC.setBounds(20, 60, 200, 23);
         gameOrDLC.setForeground(Color.WHITE);
-        add_item.add(gameOrDLC);
-
-        addGame.setBounds(130, 60, 70, 23);
-        addDLC.setBounds(200, 60, 80, 23);
         addGame.setBackground(Color.DARK_GRAY);
         addGame.setForeground(Color.WHITE);
         addDLC.setBackground(Color.DARK_GRAY);
         addDLC.setForeground(Color.WHITE);
-        add_item.add(addGame);
-        add_item.add(addDLC);
+        addItemPair(gameOrDLC, new JRadioButton[]{addGame, addDLC}, 250, 23, 70);
 
-        ButtonGroup bgAddItem = new ButtonGroup();
-        bgAddItem.add(addGame);
-        bgAddItem.add(addDLC);
-
-        namaGame.setBounds(20, 90, 200, 23);
         namaGame.setForeground(Color.WHITE);
-        add_item.add(namaGame);
-
         isiNamaGame = new JTextField();
-        isiNamaGame.setBounds(130, 90, 250, 23);
         isiNamaGame.setForeground(Color.WHITE);
         isiNamaGame.setBackground(Color.DARK_GRAY);
-        add_item.add(isiNamaGame);
+        addItemPair(namaGame, isiNamaGame, 250, 23);
 
-        deskripsi.setBounds(20, 120, 200, 23);
         deskripsi.setForeground(Color.WHITE);
-        add_item.add(deskripsi);
-
         isideskripsi = new JTextField();
-        isideskripsi.setBounds(130, 120, 250, 23);
         isideskripsi.setForeground(Color.WHITE);
         isideskripsi.setBackground(Color.DARK_GRAY);
-        add_item.add(isideskripsi);
+        addItemPair(deskripsi, isideskripsi, 250, 23);
 
-        harga.setBounds(20, 150, 200, 23);
         harga.setForeground(Color.WHITE);
-        add_item.add(harga);
-
         isiHarga = new JTextField();
-        isiHarga.setBounds(130, 150, 250, 23);
         isiHarga.setForeground(Color.WHITE);
         isiHarga.setBackground(Color.DARK_GRAY);
-        add_item.add(isiHarga);
+        addItemPair(harga, isiHarga, 250, 23);
 
-        btnSubmit.setBounds(20, 200, 170, 23);
+        gameList.setForeground(Color.WHITE);
+        comboBox = new JComboBox<>();
+        addItemPair(gameList, comboBox, 250, 23);
+
+        JSeparator garisPemisah2 = new JSeparator();
+        garisPemisah2.setForeground(Color.LIGHT_GRAY);
+        garisPemisah2.setVisible(false);
+        addItemPair(garisPemisah2, null, 350, 23);
+
         btnSubmit.setForeground(Color.WHITE);
         btnSubmit.setBackground(Color.decode("#717D7E"));
-        add_item.add(btnSubmit);
+        btnBack.setForeground(Color.WHITE);
+        btnBack.setBackground(Color.decode("#717D7E"));
+        addItemPair(btnSubmit, btnBack,90, 23);
 
+
+        addDLC.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                if (addDLC.isSelected())
+                {
+                    gameList.setVisible(true);
+                    comboBox.setVisible(true);
+
+                }
+                else if (addGame.isSelected())
+                {
+                    comboBox.setVisible(false);
+                    gameList.setVisible(false);
+                }
+            }
+        });
+
+        addGame.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                if (addDLC.isSelected())
+                {
+                    gameList.setVisible(true);
+                    comboBox.setVisible(true);
+
+                }
+                else if (addGame.isSelected())
+                {
+                    comboBox.setVisible(false);
+                    gameList.setVisible(false);
+                }
+            }
+        });
+        for (Item item : con.getItem())
+        {
+            if (item.getType().equals("Game") && item.getPublisherID() == publisher.getId()) { comboBox.addItem(item.getName()); }
+        }
         btnSubmit.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -166,5 +223,15 @@ public class addItem {
             }
         });
         add_item.setVisible(true);
+        add_item.setSize(430, currY + 75);
+
+        btnBack.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new HomePublisher(publisher);
+                add_item.dispose();
+            }
+        });
+        
     }
 }

@@ -2,13 +2,18 @@ package view;
 
 import javax.swing.*;
 
+import controller.Controller;
+import model.Item;
 import model.Publisher;
+import model.User;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 public class HomePublisher {
+    Controller con = Controller.getInstance();
     JFrame home_publisher;
     JButton btnAddItem;
     JButton btnBack;
@@ -40,8 +45,6 @@ public class HomePublisher {
         btnAddItem.setForeground(Color.WHITE);
         btnAddItem.setBackground(Color.decode("#717D7E"));
         home_publisher.add(btnAddItem);
-
-        
 
         btnEditItem = new JButton("Edit Item");
         btnEditItem.setBounds(50, 120, 190, 23);
@@ -81,6 +84,34 @@ public class HomePublisher {
             public void actionPerformed(ActionEvent e) {
                 new addItem(publisher);
 
+                home_publisher.dispose();
+            }
+        });
+
+        // btnShowRemovedGame.addActionListener(new ActionListener() {
+        //     @Override
+        //     public void actionPerformed(ActionEvent e) {
+        //         ArrayList<Item> removeItems = con.getRemoveItem();
+        //         new showRemovedGame(publisher, removeItems);
+        //         home_publisher.dispose();
+        //     }
+        // });
+
+        btnRemovedGame.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ArrayList<Item> items = con.getItem();
+                new RemovedGame(publisher, items);
+                home_publisher.dispose();
+            }
+        });
+        home_publisher.setVisible(true);
+
+        btnEditItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ArrayList<Item> itemPublisher = con.getItem();
+                new EditItem(publisher,itemPublisher);
                 home_publisher.dispose();
             }
         });

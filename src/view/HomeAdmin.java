@@ -123,7 +123,7 @@ public class HomeAdmin {
         btnShowUserTransaction.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new ShowUserTransactionAdmin(admin);
+                new ShowUserTransactionAdmin(admin, con.getAllUserList());
                 homeAdmin.setVisible(false);
             }
         });

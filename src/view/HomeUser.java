@@ -16,10 +16,11 @@ public class HomeUser {
     JButton btnShowGameLibrary;
     JButton btnShopingCart;
     JButton btnShowUserTransaction;
-
+    JButton btnBack;
+    
     public HomeUser (User user) {
         home_user = new JFrame("Home ");
-        home_user.setSize(320, 300);
+        home_user.setSize(320, 350);
         home_user.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         home_user.setLocationRelativeTo(null);
         home_user.setLayout(null);
@@ -105,6 +106,20 @@ public class HomeUser {
             }
         });
 
+        btnBack = new JButton("Log out");
+        btnBack.setBounds(80, 230, 150, 23);
+        btnBack.setForeground(Color.WHITE);
+        btnBack.setBackground(Color.decode("#717D7E"));
+        home_user.add(btnBack);
+
+        btnBack.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new Login();
+                home_user.dispose();
+            }
+        });
+
         btnShowGameList.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -113,5 +128,6 @@ public class HomeUser {
             }
         });
         home_user.setVisible(true);
+        
     }
 }
