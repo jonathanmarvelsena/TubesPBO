@@ -714,22 +714,21 @@ public class Controller {
         }
     }
 
-    public boolean removeGame(Game game) {
-        conn.connect();
-        String query = "UPDATE item"
-                + " SET item_status='NOT_AVAILABLE'"
-                + "WHERE item_id = " + game.getItemID();
-        PreparedStatement stmt;
-        try {
-            stmt = conn.con.prepareStatement(query);
-            stmt.executeUpdate();
-            return true;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-
+    // public boolean removeGame(Game game) {
+    //     conn.connect();
+    //     String query = "UPDATE item"
+    //             + " SET item_status='NOT_AVAILABLE'"
+    //             + "WHERE item_id = " + game.getItemID();
+    //     PreparedStatement stmt;
+    //     try {
+    //         stmt = conn.con.prepareStatement(query);
+    //         stmt.executeUpdate();
+    //         return true;
+    //     } catch (SQLException e) {
+    //         e.printStackTrace();
+    //         return false;
+    //     }
+    // }
     
 
     public boolean removeDLC(DLC dlc) {
