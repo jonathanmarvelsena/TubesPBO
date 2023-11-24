@@ -34,7 +34,7 @@ public class ShowMonthlyTransaction {
 
     public ShowMonthlyTransaction(Admin admin,ArrayList<ShoppingCart> transaction) {
         container = new JFrame("Show Monthly Transaction");
-        container.setSize(480, 400);
+        container.setSize(500, 300);
         container.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         container.setLocationRelativeTo(null);
         container.setLayout(null);
@@ -47,7 +47,7 @@ public class ShowMonthlyTransaction {
 
         String[] columnNames = {"Transaction_Id", "Item_id","User_id","Item_Name","Description"};
 
-        Object[][] data = new Object[transaction.size()][3]; 
+        Object[][] data = new Object[transaction.size()][5]; 
 
         for (int i = 0; i < transaction.size(); i++) {
             ShoppingCart user = transaction.get(i);
@@ -73,7 +73,7 @@ public class ShowMonthlyTransaction {
 
         //Bagian Button Back
         btnBack = new JButton("Back");
-        btnBack.setBounds(270, 252, 150, 23);
+        btnBack.setBounds(310, 220, 150, 23);
         btnBack.setForeground(Color.WHITE);
         btnBack.setBackground(Color.decode("#717D7E"));
         container.add(btnBack);
@@ -85,6 +85,8 @@ public class ShowMonthlyTransaction {
                 container.setVisible(false);
             }
         });
+
+        container.setVisible(true);
 
     }
 }

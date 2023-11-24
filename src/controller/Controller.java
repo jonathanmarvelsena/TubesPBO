@@ -853,7 +853,7 @@ public class Controller {
 
     public ArrayList<ShoppingCart> getShoppingCartByMonth(int month, int year) {
         conn.connect();
-        String query = "SELECT * FROM shoppingcart sc JOIN transaction t ON t.transaction_id = sc.transaction_id WHERE MONTH(t.transaction_date) = "+month+" YEAR(t.transaction_id) = "+year;
+        String query = "SELECT * FROM shoppingcart sc JOIN transaction t ON t.transaction_id = sc.transaction_id WHERE MONTH(t.transaction_date) = "+month+" AND YEAR(t.transaction_date) = "+year;
         ArrayList<ShoppingCart> transactions = new ArrayList<>();
 
         try {
@@ -1123,9 +1123,9 @@ public class Controller {
                 item.setName(rs.getString("name"));
                 item.setDescription(rs.getString("description"));
                 item.setPrice(rs.getDouble("price"));
-                item.setType(rs.getString("item_type"));
+                item.setType(rs.getString("type"));
                 item.setPublisherID(rs.getInt("publisher_id"));
-                String statusString = rs.getString("status");
+                String statusString = rs.getString("item_status");
                 ItemStatus status = ItemStatus.valueOf(statusString);
                 item.setStatus(status);
                 // Fetch other attributes as needed
