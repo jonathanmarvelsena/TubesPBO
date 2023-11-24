@@ -28,9 +28,7 @@ public class ShowShoppingCart {
     JButton btnBack = new JButton("back");
     JLabel shoping_cart = new JLabel("Shopping cart");
 
-  
-
-    public ShowShoppingCart(User user, ArrayList<ShoppingCart> cart){
+    public ShowShoppingCart(User user, ArrayList<ShoppingCart> cart) {
         container = new JFrame("Shopping cart");
         container.setSize(480, 400);
         container.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -47,9 +45,9 @@ public class ShowShoppingCart {
         garisPemisah.setForeground(Color.LIGHT_GRAY);
         container.add(garisPemisah);
 
-        String[] columnNames = {"Name", "type", "price"};
+        String[] columnNames = { "Name", "type", "price" };
 
-        Object[][] data = new Object[cart.size()][4]; 
+        Object[][] data = new Object[cart.size()][4];
 
         for (int i = 0; i < cart.size(); i++) {
             ShoppingCart shoppingCart = cart.get(i);
@@ -82,6 +80,26 @@ public class ShowShoppingCart {
         btnBuy.setForeground(Color.WHITE);
         btnBuy.setBackground(Color.decode("#717D7E"));
         container.add(btnBuy);
+        double total = 0;
+        for (int i = 0; i < cart.size(); i++) {
+            total += con.getItemById(cart.get(i).getitemID()).getPrice();
+        }
+        final double finalTotal = total;
+        btnBuy.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (user.getWallet() < finalTotal) {
+                    JOptionPane.showMessageDialog(null, "Wallet funds not enough");
+                } else {
+                    for (ShoppingCart c : cart) {
+                        if (cart != null) {
+                            con.purchase(user, c);
+                        }
+                    }
+                    con.updateWallet(user, -finalTotal);
+                }
+            }
+        });
 
         btnGift.setBounds(235, 210, 205, 23);
         btnGift.setForeground(Color.WHITE);
@@ -91,16 +109,26 @@ public class ShowShoppingCart {
         btnGift.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new SelectGiftUser(user, cart);
-                container.dispose();
-            }  
+                if (user.getWallet() < finalTotal) {
+                    JOptionPane.showMessageDialog(null, "Wallet funds not enough");
+                } else {
+                    new SelectGiftUser(user, cart, finalTotal);
+                    container.dispose();
+                }
+            }
         });
-        
+
         btnBack.setBounds(20, 250, 420, 23);
         btnBack.setForeground(Color.WHITE);
         btnBack.setBackground(Color.decode("#717D7E"));
         container.add(btnBack);
-
+        btnBack.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new HomeUser(user);
+                container.dispose();
+            }
+        });
         container.setVisible(true);
     }
 }

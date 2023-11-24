@@ -6,15 +6,13 @@ public class ShoppingCart {
     private int transactionID;
     private int itemID;
     private String description;
-    private ArrayList<Item> items;
 
     
 
-    public ShoppingCart(int transactionID, int itemID, String description, ArrayList<Item> items) {
+    public ShoppingCart(int transactionID, int itemID, String description) {
         this.transactionID = transactionID;
         this.itemID = itemID;
         this.description = description;
-        this.items = items;
     }
 
     
@@ -22,32 +20,8 @@ public class ShoppingCart {
     }
 
 
-    public void addItem(Item item) {
-        items.add(item);
-    }
+    
 
-    public void removeItem(Item item) {
-        items.remove(item);
-    }
-
-    public ArrayList<Item> getItems() {
-        return items;
-    }
-
-    public void clear() {
-        items.clear();
-    }
-
-    public boolean isEmpty() {
-        return items.isEmpty();
-    }
-
-    @Override
-    public String toString() {
-        return "ShoppingCart{" +
-                "items=" + items +
-                '}';
-    }
 
 
     public int getTransactionID() {
@@ -77,10 +51,5 @@ public class ShoppingCart {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-
-    public void setItems(ArrayList<Item> items) {
-        this.items = items;
     }
 }

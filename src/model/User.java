@@ -6,8 +6,7 @@ public class User extends Account{
     private double wallet;
     private ArrayList<Game> ownedGames;
     private ArrayList<DLC> ownedDLCs;
-    private ArrayList<Transaction> history;
-    private ShoppingCart cart;
+    private ArrayList<ShoppingCart> cart = new ArrayList<>();
 
     public User() {
         
@@ -41,19 +40,13 @@ public class User extends Account{
         this.ownedDLCs = ownedDLCs;
     }
 
-    public ArrayList<Transaction> getHistory() {
-        return history;
-    }
 
-    public void setHistory(ArrayList<Transaction> history) {
-        this.history = history;
-    }
 
-    public ShoppingCart getCart() {
+    public ArrayList<ShoppingCart> getCart() {
         return cart;
     }
 
-    public void setCart(ShoppingCart cart) {
+    public void setCart(ArrayList<ShoppingCart> cart) {
         this.cart = cart;
     }
 }
