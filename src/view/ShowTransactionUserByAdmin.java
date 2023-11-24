@@ -83,7 +83,7 @@ public class ShowTransactionUserByAdmin {
         btnBack.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new HomeAdmin(admin);
+                new ShowUserTransactionAdmin(admin,con.getAllUserList());
                 container.setVisible(false);
             }
         });
