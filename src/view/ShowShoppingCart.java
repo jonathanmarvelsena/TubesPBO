@@ -14,7 +14,6 @@ import javax.swing.JSeparator;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
-
 import controller.Controller;
 import model.Item;
 import model.ShoppingCart;
