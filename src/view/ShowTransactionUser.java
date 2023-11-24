@@ -6,7 +6,12 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+
+import controller.Controller;
 import model.User;
 
 /**
@@ -14,7 +19,7 @@ import model.User;
  * @author abil
  */
 public class ShowTransactionUser {
-
+    Controller con = Controller.getInstance();
     JFrame container;
     JButton btnBack;
 
@@ -35,6 +40,24 @@ public class ShowTransactionUser {
         garisPemisah.setBounds(28, 150, 410, 5);
         garisPemisah.setForeground(Color.LIGHT_GRAY);
         container.add(garisPemisah);
+
+        String[] columnNames = {"user_Id", "Item", "Description"};
+        Object[][] data = new Object[getShoppingCart(user).size()][3];
+    
+        for (int i = 0; i < user.size(); i++) {
+            ShoppingCart transaction = useruser.get(i);
+            data[i][0] = transaction.getTransactionID();
+            data[i][1] = transaction.getitemID();
+            data[i][2] = transaction.getDescription();
+        }
+    
+        DefaultTableModel model = new DefaultTableModel(data, columnNames);
+    
+        JTable transactionTable = new JTable(model);
+    
+        JScrollPane scrollPane = new JScrollPane(transactionTable);
+        scrollPane.setBounds(15, 250, 450, 150);
+        container.add(scrollPane);
 
         //Bagian Button Back
         btnBack = new JButton("Back");
