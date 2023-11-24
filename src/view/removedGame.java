@@ -53,7 +53,7 @@ public class RemovedGame {
         scrollPane.setBounds(15, 50, 450, 150);
         container.add(scrollPane);
 
-        JLabel labelName = new JLabel("ID of item to be remove");
+        JLabel labelName = new JLabel("ID of item to be removed");
         id = new JTextField();
         labelName.setBounds(15, 250, 150, 23);
         id.setBounds(160, 250, 305, 23);
