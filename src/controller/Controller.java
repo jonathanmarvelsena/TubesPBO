@@ -741,12 +741,13 @@ public class Controller {
 
     public boolean insertIntoShoppingCart(User user, Item item) {
         ShoppingCart cart = user.getCart();
-
+        if(cart != null){
         for (Item cartItem : cart.getItems()) {
             if (cartItem.getItemID() == item.getItemID()) {
                 // Item is already in the cart
                 // You can update the quantity or take other actions
                 return false; // Indicates that the item was not added to the cart
+                }
             }
         }
 
