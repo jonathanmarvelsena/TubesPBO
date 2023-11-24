@@ -2,16 +2,11 @@ package controller;
 
 import java.sql.Statement;
 import java.time.Instant;
-import java.time.LocalDateTime;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.ArrayList;
 import java.sql.Timestamp;
-import java.sql.Connection;
-import java.sql.Date;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import model.Account;
 import model.AccountStatus;
 import model.Admin;
@@ -149,7 +144,7 @@ public class Controller {
             stmt.setDouble(4, game.getPrice());
             stmt.setString(5, game.getDescription());
             stmt.setInt(6, publisher.getId());
-    
+
             // Handling null status
             String statusString = (game.getStatus() != null) ? game.getStatus().toString() : "AVAILABLE";
             stmt.setString(7, statusString);
@@ -167,10 +162,9 @@ public class Controller {
             e.printStackTrace();
             return false;
         } finally {
-            conn.disconnect(); 
+            conn.disconnect();
         }
     }
-
 
     // INSERT (punya item = dlc)
     public boolean insertNewDLC(DLC game, Publisher publisher) {
@@ -223,7 +217,7 @@ public class Controller {
         }
     }
 
-    public ArrayList<User> getUserList(){
+    public ArrayList<User> getUserList() {
         conn.connect();
         String query = "SELECT * FROM users WHERE user_status = 'NOT_BANNED'";
         ArrayList<User> users = new ArrayList<>();
@@ -246,7 +240,7 @@ public class Controller {
         return users;
     }
 
-    public ArrayList<User> getAllUserList(){
+    public ArrayList<User> getAllUserList() {
         conn.connect();
         String query = "SELECT * FROM users";
         ArrayList<User> users = new ArrayList<>();
@@ -350,7 +344,7 @@ public class Controller {
 
     public ArrayList<Game> getPublishedGames(Publisher publisher) {
         conn.connect();
-        String query = "SELECT * FROM item WHERE type = 'Game' AND publisher_id = "+ publisher.getId();
+        String query = "SELECT * FROM item WHERE type = 'Game' AND publisher_id = " + publisher.getId();
         ArrayList<Game> games = new ArrayList<>();
 
         try {
@@ -391,7 +385,7 @@ public class Controller {
 
     public ArrayList<DLC> getPublishedDLC(Publisher publisher) {
         conn.connect();
-        String query = "SELECT * FROM item WHERE type = 'DLC' AND publisher_id = "+ publisher.getId();
+        String query = "SELECT * FROM item WHERE type = 'DLC' AND publisher_id = " + publisher.getId();
         ArrayList<DLC> games = new ArrayList<>();
 
         try {
@@ -414,7 +408,6 @@ public class Controller {
                 // Handling reviews
                 ArrayList<Review> reviews = getReviewsForDLC(game); // Implement getReviewsForGame method
                 game.setReviews(reviews);
-
 
                 games.add(game);
             }
@@ -557,64 +550,64 @@ public class Controller {
     }
 
     // public Game getGameById(int gameId) {
-    //     conn.connect();
-    //     String query = "SELECT * FROM item WHERE item_id = " + gameId;
+    // conn.connect();
+    // String query = "SELECT * FROM item WHERE item_id = " + gameId;
 
-    //     try {
-    //         Statement stmt = conn.con.createStatement();
-    //         ResultSet rs = stmt.executeQuery(query);
+    // try {
+    // Statement stmt = conn.con.createStatement();
+    // ResultSet rs = stmt.executeQuery(query);
 
-    //         if (rs.next()) {
-    //             // Retrieve other attributes based on your database schema
-    //             String name = rs.getString("name");
-    //             String description = rs.getString("description");
-    //             String type = "Game";
-    //             double price = rs.getDouble("price");
-    //             int publisherID = rs.getInt("publisher_id");
-    //             String statusString = rs.getString("item_status");
-    //             ItemStatus status = ItemStatus.valueOf(statusString);
-    //             // Fetch other attributes as needed
+    // if (rs.next()) {
+    // // Retrieve other attributes based on your database schema
+    // String name = rs.getString("name");
+    // String description = rs.getString("description");
+    // String type = "Game";
+    // double price = rs.getDouble("price");
+    // int publisherID = rs.getInt("publisher_id");
+    // String statusString = rs.getString("item_status");
+    // ItemStatus status = ItemStatus.valueOf(statusString);
+    // // Fetch other attributes as needed
 
-    //             return new Game(gameId, name, type, description, price, publisherID, null);
-    //         }
-    //     } catch (SQLException e) {
-    //         e.printStackTrace();
-    //     } finally {
-    //         conn.disconnect();
-    //     }
+    // return new Game(gameId, name, type, description, price, publisherID, null);
+    // }
+    // } catch (SQLException e) {
+    // e.printStackTrace();
+    // } finally {
+    // conn.disconnect();
+    // }
 
-    //     // Return null if the game is not found
-    //     return null;
+    // // Return null if the game is not found
+    // return null;
     // }
 
     // public DLC getDLCById(int dlcId) {
-    //     conn.connect();
-    //     String query = "SELECT * FROM item WHERE item_id = " + dlcId;
+    // conn.connect();
+    // String query = "SELECT * FROM item WHERE item_id = " + dlcId;
 
-    //     try {
-    //         Statement stmt = conn.con.createStatement();
-    //         ResultSet rs = stmt.executeQuery(query);
+    // try {
+    // Statement stmt = conn.con.createStatement();
+    // ResultSet rs = stmt.executeQuery(query);
 
-    //         if (rs.next()) {
-    //             // Retrieve other attributes based on your database schema
-    //             String name = rs.getString("name");
-    //             String description = rs.getString("description");
-    //             double price = rs.getDouble("price");
-    //             int discountId = rs.getInt("discountid");
-    //             String statusString = rs.getString("status");
-    //             ItemStatus status = ItemStatus.valueOf(statusString);
-    //             // Fetch other attributes as needed
+    // if (rs.next()) {
+    // // Retrieve other attributes based on your database schema
+    // String name = rs.getString("name");
+    // String description = rs.getString("description");
+    // double price = rs.getDouble("price");
+    // int discountId = rs.getInt("discountid");
+    // String statusString = rs.getString("status");
+    // ItemStatus status = ItemStatus.valueOf(statusString);
+    // // Fetch other attributes as needed
 
-    //             return new DLC(dlcId, name, description, price, discountId, null, status);
-    //         }
-    //     } catch (SQLException e) {
-    //         e.printStackTrace();
-    //     } finally {
-    //         conn.disconnect();
-    //     }
+    // return new DLC(dlcId, name, description, price, discountId, null, status);
+    // }
+    // } catch (SQLException e) {
+    // e.printStackTrace();
+    // } finally {
+    // conn.disconnect();
+    // }
 
-    //     // Return null if the DLC is not found
-    //     return null;
+    // // Return null if the DLC is not found
+    // return null;
     // }
 
     public void getGameDetails(Game game) {
@@ -715,21 +708,20 @@ public class Controller {
     }
 
     // public boolean removeGame(Game game) {
-    //     conn.connect();
-    //     String query = "UPDATE item"
-    //             + " SET item_status='NOT_AVAILABLE'"
-    //             + "WHERE item_id = " + game.getItemID();
-    //     PreparedStatement stmt;
-    //     try {
-    //         stmt = conn.con.prepareStatement(query);
-    //         stmt.executeUpdate();
-    //         return true;
-    //     } catch (SQLException e) {
-    //         e.printStackTrace();
-    //         return false;
-    //     }
+    // conn.connect();
+    // String query = "UPDATE item"
+    // + " SET item_status='NOT_AVAILABLE'"
+    // + "WHERE item_id = " + game.getItemID();
+    // PreparedStatement stmt;
+    // try {
+    // stmt = conn.con.prepareStatement(query);
+    // stmt.executeUpdate();
+    // return true;
+    // } catch (SQLException e) {
+    // e.printStackTrace();
+    // return false;
     // }
-    
+    // }
 
     public boolean removeDLC(DLC dlc) {
         conn.connect();
@@ -789,40 +781,41 @@ public class Controller {
 
     public boolean purchase(User user, ShoppingCart cart) {
         conn.connect();
-    
+
         try {
             // Insert into transaction table
             String transactionQuery = "INSERT INTO transaction (user_id, transaction_date) VALUES (?, ?)";
-            PreparedStatement transactionStmt = conn.con.prepareStatement(transactionQuery, PreparedStatement.RETURN_GENERATED_KEYS);
+            PreparedStatement transactionStmt = conn.con.prepareStatement(transactionQuery,
+                    PreparedStatement.RETURN_GENERATED_KEYS);
             transactionStmt.setInt(1, user.getId());
             transactionStmt.setTimestamp(2, Timestamp.from(Instant.now()));
-    
+
             int rowsAffected = transactionStmt.executeUpdate();
-    
+
             // Check if the insertion into transaction was successful
             if (rowsAffected > 0) {
                 // Retrieve the generated transaction ID
                 ResultSet generatedKeys = transactionStmt.getGeneratedKeys();
                 if (generatedKeys.next()) {
                     int transactionId = generatedKeys.getInt(1);
-    
+
                     // Insert into shoppingcart table
                     String shoppingCartQuery = "INSERT INTO shoppingcart (transaction_id, item_id, description) VALUES (?, ?, ?)";
                     PreparedStatement shoppingCartStmt = conn.con.prepareStatement(shoppingCartQuery);
-    
+
                     for (Item item : cart.getItems()) {
                         shoppingCartStmt.setInt(1, transactionId);
                         shoppingCartStmt.setInt(2, item.getItemID());
-                        shoppingCartStmt.setString(3, "Item purchase");  // Adjust this accordingly
-    
+                        shoppingCartStmt.setString(3, "Item purchase"); // Adjust this accordingly
+
                         // Execute the SQL statement for shoppingcart
                         shoppingCartStmt.executeUpdate();
                     }
-    
+
                     return true;
                 }
             }
-    
+
             return false;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -834,7 +827,8 @@ public class Controller {
 
     public ArrayList<ShoppingCart> getShoppingCart(int userID) {
         conn.connect();
-        String query = "SELECT * FROM shoppingcart sc JOIN transaction t ON t.transaction_id = sc.transaction_id WHERE t.user_id = "+userID;
+        String query = "SELECT * FROM shoppingcart sc JOIN transaction t ON t.transaction_id = sc.transaction_id WHERE t.user_id = "
+                + userID;
         ArrayList<ShoppingCart> transactions = new ArrayList<>();
 
         try {
@@ -858,7 +852,8 @@ public class Controller {
 
     public ArrayList<ShoppingCart> getShoppingCartByMonth(User user, int month, int year) {
         conn.connect();
-        String query = "SELECT * FROM shoppingcart sc JOIN transaction t ON t.transaction_id = sc.transaction_id WHERE MONTH(t.transaction_date) = "+month+" YEAR(t.transaction_id)";
+        String query = "SELECT * FROM shoppingcart sc JOIN transaction t ON t.transaction_id = sc.transaction_id WHERE MONTH(t.transaction_date) = "
+                + month + " YEAR(t.transaction_id)";
         ArrayList<ShoppingCart> transactions = new ArrayList<>();
 
         try {
@@ -876,13 +871,96 @@ public class Controller {
         } finally {
             conn.disconnect(); // Close the connection when done
         }
-
         return transactions;
     }
 
     public ArrayList<Item> getItem() {
         conn.connect();
         String query = "SELECT * FROM item";
+        ArrayList<Item> items = new ArrayList<>();
+
+        try {
+            Statement stmt = conn.con.createStatement();
+            ResultSet rs = stmt.executeQuery(query);
+            while (rs.next()) {
+                Item item = new Item();
+                item.setItemID(rs.getInt("item_id"));
+                item.setName(rs.getString("name"));
+                item.setType(rs.getString("type"));
+                item.setDescription(rs.getString("description"));
+                item.setPrice(rs.getInt("price"));
+                item.setPublisherID(rs.getInt("publisher_id"));
+
+                // Handling the ItemStatus enum
+                String statusString = rs.getString("item_status");
+                ItemStatus status = ItemStatus.valueOf(statusString); // Assuming statusString is a valid enum name
+                item.setStatus(status);
+
+                // Handling reviews
+                if (item instanceof Game) {
+                    Game game = (Game) item;
+                    ArrayList<Review> reviews = getReviewsForGame(game); // Implement getReviewsForGame method
+                    item.setReviews(reviews);
+                } else if (item instanceof DLC) {
+                    DLC dlc = (DLC) item;
+                    ArrayList<Review> reviews = getReviewsForDLC(dlc); // Implement getReviewsForGame method
+                    item.setReviews(reviews);
+                }
+                items.add(item);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            conn.disconnect(); // Close the connection when done
+        }
+        return items;
+    }
+
+    public ArrayList<Item> getItemListRemove() {
+        conn.connect();
+        String query = "SELECT * FROM item WHERE item_status= 'AVAILABLE'";
+        ArrayList<Item> items = new ArrayList<>();
+        try {
+            Statement stmt = conn.con.createStatement();
+            ResultSet rs = stmt.executeQuery(query);
+            while (rs.next()) {
+                Item item = new Item();
+                item.setItemID(rs.getInt("item_id"));
+                item.setName(rs.getString("name"));
+                item.setType(rs.getString("type"));
+                item.setDescription(rs.getString("description"));
+                item.setPrice(rs.getInt("price"));
+                item.setPublisherID(rs.getInt("publisher_id"));
+
+                // Handling the ItemStatus enum
+                String statusString = rs.getString("item_status");
+                ItemStatus status = ItemStatus.valueOf(statusString); // Assuming statusString is a valid enum name
+                item.setStatus(status);
+
+                // Handling reviews
+                if (item instanceof Game) {
+                    Game game = (Game) item;
+                    ArrayList<Review> reviews = getReviewsForGame(game); // Implement getReviewsForGame method
+                    item.setReviews(reviews);
+                } else if (item instanceof DLC) {
+                    DLC dlc = (DLC) item;
+                    ArrayList<Review> reviews = getReviewsForDLC(dlc); // Implement getReviewsForGame method
+                    item.setReviews(reviews);
+                }
+                items.add(item);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            conn.disconnect(); // Close the connection when done
+        }
+
+        return items;
+    }
+
+    public ArrayList<Item> getItemListRemove() {
+        conn.connect();
+        String query = "SELECT * FROM item WHERE item_status= 'AVAILABLE'";
         ArrayList<Item> items = new ArrayList<>();
 
         try {
@@ -940,9 +1018,9 @@ public class Controller {
     public ArrayList<Item> getRemoveItem() {
         conn.connect();
         String query = "SELECT * FROM item WHERE item_status = 'NOT_AVAILABLE'";
-    
+
         ArrayList<Item> items = new ArrayList<>();
-    
+
         try {
             Statement stmt = conn.con.createStatement();
             ResultSet rsGame = stmt.executeQuery(query);
@@ -956,17 +1034,100 @@ public class Controller {
                 game.setPublisherID(rsGame.getInt("publisher_id"));
                 game.setStatus(ItemStatus.valueOf(rsGame.getString("item_status")));
                 items.add(game);
-            }  
+            }
         } catch (SQLException e) {
             e.printStackTrace();
-        }   
+        }
         return items;
     }
 
+    public ArrayList<Item> getLibrary(User user) {
+        conn.connect();
+        String query = "SELECT * FROM item i JOIN library l ON l.item_id = i.item_id WHERE l.user_id = " + user.getId();
+        ArrayList<Item> items = new ArrayList<>();
+
+        try {
+            Statement stmt = conn.con.createStatement();
+            ResultSet rs = stmt.executeQuery(query);
+            while (rs.next()) {
+                Item item = new Item();
+                item.setItemID(rs.getInt("item_id"));
+                item.setName(rs.getString("name"));
+                item.setType(rs.getString("type"));
+                item.setDescription(rs.getString("description"));
+                item.setPrice(rs.getInt("price"));
+                item.setPublisherID(rs.getInt("publisher_id"));
+
+                // Handling the ItemStatus enum
+                String statusString = rs.getString("item_status");
+                ItemStatus status = ItemStatus.valueOf(statusString); // Assuming statusString is a valid enum name
+                item.setStatus(status);
+                // Handling reviews
+                if (item instanceof Game) {
+                    Game game = (Game) item;
+                    ArrayList<Review> reviews = getReviewsForGame(game); // Implement getReviewsForGame method
+                    item.setReviews(reviews);
+                } else if (item instanceof DLC) {
+                    DLC dlc = (DLC) item;
+                    ArrayList<Review> reviews = getReviewsForDLC(dlc); // Implement getReviewsForGame method
+                    item.setReviews(reviews);
+                }
+                items.add(item);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            conn.disconnect(); // Close the connection when done
+        }
+
+        return items;
+    }
 
     public ArrayList<Item> getUserItem(User user) {
         conn.connect();
-        String query = "SELECT * FROM library WHERE user_id = "+ user.getId();
+        String query = "SELECT * FROM library WHERE user_id = " + user.getId();
+        ArrayList<Item> items = new ArrayList<>();
+
+        try {
+            Statement stmt = conn.con.createStatement();
+            ResultSet rs = stmt.executeQuery(query);
+            while (rs.next()) {
+                Item item = new Item();
+                item.setItemID(rs.getInt("item_id"));
+                item.setName(rs.getString("name"));
+                item.setType(rs.getString("type"));
+                item.setDescription(rs.getString("description"));
+                item.setPrice(rs.getInt("price"));
+                item.setPublisherID(rs.getInt("publisher_id"));
+
+                // Handling the ItemStatus enum
+                String statusString = rs.getString("item_status");
+                ItemStatus status = ItemStatus.valueOf(statusString); // Assuming statusString is a valid enum name
+                item.setStatus(status);
+
+                // Handling reviews
+                if (item instanceof Game) {
+                    Game game = (Game) item;
+                    ArrayList<Review> reviews = getReviewsForGame(game); // Implement getReviewsForGame method
+                    item.setReviews(reviews);
+                } else if (item instanceof DLC) {
+                    DLC dlc = (DLC) item;
+                    ArrayList<Review> reviews = getReviewsForDLC(dlc); // Implement getReviewsForGame method
+                    item.setReviews(reviews);
+                }
+                items.add(item);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            conn.disconnect(); // Close the connection when done
+        }
+        return items;
+    }
+
+    public ArrayList<Item> getPublisherItem(Publisher publisher) {
+        conn.connect();
+        String query = "SELECT * FROM item WHERE item_status = 'AVAILABLE' AND publisher_id = "+ publisher.getId();
         ArrayList<Item> items = new ArrayList<>();
 
         try {
