@@ -88,20 +88,30 @@ public class HomePublisher {
             }
         });
 
-        btnShowRemovedGame.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                ArrayList<Item> removeItems = con.getRemoveItem();
-                new showRemovedGame(publisher, removeItems);
-                home_publisher.dispose();
-            }
-        });
+        // btnShowRemovedGame.addActionListener(new ActionListener() {
+        //     @Override
+        //     public void actionPerformed(ActionEvent e) {
+        //         ArrayList<Item> removeItems = con.getRemoveItem();
+        //         new showRemovedGame(publisher, removeItems);
+        //         home_publisher.dispose();
+        //     }
+        // });
 
         btnRemovedGame.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 ArrayList<Item> items = con.getItem();
                 new RemovedGame(publisher, items);
+                home_publisher.dispose();
+            }
+        });
+        home_publisher.setVisible(true);
+
+        btnEditItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ArrayList<Item> itemPublisher = con.getItem();
+                new EditItem(publisher,itemPublisher);
                 home_publisher.dispose();
             }
         });
