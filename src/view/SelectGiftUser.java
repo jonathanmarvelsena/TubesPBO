@@ -140,19 +140,29 @@ public class SelectGiftUser {
         btnSubmit.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                double total = 0;
+                for (int i = 0; i < cart.size(); i++) {
+                    total += con.getItemById(cart.get(i).getitemID()).getPrice();
+                }
+        
                 new ShowShoppingCart(user, cart);
                 update_item.dispose();
                 con.updateWallet(user, -total);
-                for (ShoppingCart c : cart)
-                {
-                    if (cart != null)
-                    {
+                
+                ArrayList<ShoppingCart> copyCart = new ArrayList<>(cart);
+                for (ShoppingCart c : copyCart) {
+                    if (cart != null) {
                         con.gift(user, Integer.parseInt(isiIdGameOrDLC.getText()), c);
+                        cart.remove(c); // Hapus item yang sudah digift
                     }
                 }
-                JOptionPane.showMessageDialog(null, "gift success");       
+        
+                JOptionPane.showMessageDialog(null, "gift success");
+                new HomeUser(user);
+                update_item.dispose();
             }
-        });
+        });        
+        
         update_item.setVisible(true);
 
         btnBack.addActionListener(new ActionListener() {
