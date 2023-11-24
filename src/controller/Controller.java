@@ -526,14 +526,14 @@ public class Controller {
 
     public User getUserById(int userId) {
         conn.connect();
-        String query = "SELECT * FROM user WHERE user_id = " + userId;
+        String query = "SELECT * FROM users WHERE user_id = " + userId;
 
         try {
             Statement stmt = conn.con.createStatement();
             ResultSet rs = stmt.executeQuery(query);
 
             if (rs.next()) {
-                String name = rs.getString("name");
+                String name = rs.getString("username");
                 String password = rs.getString("password");
                 int id = rs.getInt("user_id");
 
