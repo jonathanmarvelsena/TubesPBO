@@ -18,21 +18,24 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
+import controller.Controller;
 import model.Admin;
 import model.User;
 import model.ShoppingCart;
+import model.Transaction;
 
 /**
  *
  * @author abil
  */
 public class ShowMonthlyTransaction {
+    Controller con = Controller.getInstance();
     JTextField year;
     JTextField month;
     JFrame container;
     JButton btnBack;
 
-    public ShowMonthlyTransaction(Admin admin) {
+    public ShowMonthlyTransaction(Admin admin,ArrayList<ShoppingCart> transaction) {
         container = new JFrame("Show Monthly Transaction");
         container.setSize(480, 400);
         container.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

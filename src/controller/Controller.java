@@ -1147,4 +1147,37 @@ public class Controller {
 
         return null;
     }
+
+    public Item getItemById(int id) {
+        conn.connect();
+        String query = "SELECT * FROM item WHERE item_id = " + id;
+
+        try {
+            Statement stmt = conn.con.createStatement();
+            ResultSet rs = stmt.executeQuery(query);
+
+            if (rs.next()) {
+                Item item = new Item();
+                // Retrieve other attributes based on your database schema
+                item.setItemID(rs.getInt("item_id"));
+                item.setName(rs.getString("name"));
+                item.setDescription(rs.getString("description"));
+                item.setPrice(rs.getDouble("price"));
+                item.setType(rs.getString("item_type"));
+                item.setPublisherID(rs.getInt("publisher_id"));
+                String statusString = rs.getString("status");
+                ItemStatus status = ItemStatus.valueOf(statusString);
+                item.setStatus(status);
+                // Fetch other attributes as needed
+                return item;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            conn.disconnect();
+        }
+
+        // Return null if the DLC is not found
+        return null;
+    }
 }
