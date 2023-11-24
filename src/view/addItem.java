@@ -22,7 +22,7 @@ import model.Item;
 
 import javax.swing.JOptionPane;
 
-public class addItem {
+public class AddItem {
     Controller con = Controller.getInstance();
     JFrame add_item;
     JLabel addItemMenu = new JLabel("Add Item");
@@ -64,7 +64,7 @@ public class addItem {
         currY += height + 5;
     }
 
-    public addItem(Publisher publisher) {
+    public AddItem(Publisher publisher) {
         add_item = new JFrame("Add Item");
         add_item.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         add_item.setLocationRelativeTo(null);

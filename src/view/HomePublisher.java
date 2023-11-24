@@ -1,11 +1,9 @@
 package view;
 
 import javax.swing.*;
-
 import controller.Controller;
 import model.Item;
 import model.Publisher;
-import model.User;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -80,7 +78,7 @@ public class HomePublisher {
         btnAddItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new addItem(publisher);
+                new AddItem(publisher);
 
                 home_publisher.dispose();
             }
