@@ -12,6 +12,9 @@ import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 
 import controller.Controller;
@@ -75,6 +78,30 @@ public class ShowUserTransactionAdmin {
         input.setForeground(Color.WHITE);
         input.setBackground(Color.DARK_GRAY);
         container.add(input);
+
+        userTable.setBackground(Color.DARK_GRAY);
+        userTable.setForeground(Color.WHITE);
+        userTable.getTableHeader().setBackground(Color.DARK_GRAY);
+        userTable.getTableHeader().setForeground(Color.WHITE);
+        scrollPane.getViewport().setBackground(Color.DARK_GRAY);
+
+        userTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        userTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+            @Override
+            public void valueChanged(ListSelectionEvent e)
+            {
+                if (e.getValueIsAdjusting()) { return; }
+                String src = e.getSource().toString();
+                int start = src.indexOf("{") + 1;
+                int stop = src.length() - 1;
+                String s = src.substring(start, stop);
+                if (s.isEmpty()) { return; }
+                int index = Integer.parseInt(s);
+                input.setText(String.valueOf((Integer)data[index][0]));
+
+            }
+        });
+
 
         btnSelect = new JButton("Select");
         btnSelect.setBounds(90, 240, 180, 23);

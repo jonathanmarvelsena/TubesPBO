@@ -26,8 +26,6 @@ public class RemovedGame {
     JButton btnSubmit;
     JButton btnBack;
 
-    
-
     public RemovedGame(Publisher publisher, ArrayList<Item> nonBannedItems) {
         container = new JFrame("Removed Item");
         container.setSize(500, 380);

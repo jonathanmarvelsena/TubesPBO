@@ -18,14 +18,14 @@ public class ShowGameLibrary {
     JFrame container;
     JButton btnBack;
 
-    public ShowGameLibrary(User user, ArrayList<Item> library) {
+    public ShowGameLibrary(User user,ArrayList<Item> library) {
         container = new JFrame("Show User Library");
         container.setSize(500, 380);
         container.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         container.setLocationRelativeTo(null);
         container.setLayout(null);
         container.getContentPane().setBackground(Color.DARK_GRAY);
-
+        
         String[] columnNames = {"Name", "Description"};
 
         Object[][] data = new Object[library.size()][4]; 
@@ -43,6 +43,13 @@ public class ShowGameLibrary {
         JScrollPane scrollPane = new JScrollPane(libraryTable);
         scrollPane.setBounds(15, 50, 450, 150);
         container.add(scrollPane);
+
+        libraryTable.setBackground(Color.DARK_GRAY);
+        libraryTable.setForeground(Color.WHITE);
+        libraryTable.getTableHeader().setBackground(Color.DARK_GRAY);
+        libraryTable.getTableHeader().setForeground(Color.WHITE);
+        scrollPane.getViewport().setBackground(Color.DARK_GRAY);
+
         JSeparator garisPemisah = new JSeparator();
         garisPemisah.setBounds(15, 230, 450, 5);
         garisPemisah.setForeground(Color.LIGHT_GRAY);

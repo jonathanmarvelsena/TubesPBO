@@ -62,7 +62,7 @@ public class HomeUser {
             @Override
             public void actionPerformed(ActionEvent e) {
                 ArrayList<Item> library = con.getLibrary(user);
-                new ShowGameLibrary(user, library);
+                new ShowGameLibrary(user,library);
                 home_user.dispose();
             }
         });
