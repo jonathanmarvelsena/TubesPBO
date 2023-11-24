@@ -4,6 +4,7 @@ import javax.swing.*;
 
 import controller.Controller;
 import model.Item;
+import model.ShoppingCart;
 import model.User;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -76,7 +77,8 @@ public class HomeUser {
         btnShopingCart.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new ShoppingCart();
+                ArrayList<ShoppingCart> cart = con.getShoppingCart(user.getId());
+                new ShowShoppingCart(user,cart);
                 home_user.dispose();
             }
         });

@@ -780,7 +780,7 @@ public class Controller {
         return transactions;
     }
 
-    public boolean purchase(User user, ShoppingCart cart) {
+    public boolean purchase(int user, ShoppingCart cart) {
         conn.connect();
 
         try {
@@ -788,7 +788,7 @@ public class Controller {
             String transactionQuery = "INSERT INTO transaction (user_id, transaction_date) VALUES (?, ?)";
             PreparedStatement transactionStmt = conn.con.prepareStatement(transactionQuery,
                     PreparedStatement.RETURN_GENERATED_KEYS);
-            transactionStmt.setInt(1, user.getId());
+            transactionStmt.setInt(1, user);
             transactionStmt.setTimestamp(2, Timestamp.from(Instant.now()));
 
             int rowsAffected = transactionStmt.executeUpdate();
@@ -974,6 +974,21 @@ public class Controller {
         }
     }
 
+    
+    public boolean updateStatusItem(int id, String status) {
+        conn.connect();
+        String query = "UPDATE item SET item_status= '" + status + "'"
+                + "WHERE item_id='" + id + "'";
+        try {
+            Statement stmt = conn.con.createStatement();
+            stmt.executeUpdate(query);
+            return (true);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return (false);
+        }
+    }
+
     public ArrayList<Item> getRemoveItem() {
         conn.connect();
         String query = "SELECT * FROM item WHERE item_status = 'NOT_AVAILABLE'";
@@ -1123,9 +1138,9 @@ public class Controller {
                 item.setName(rs.getString("name"));
                 item.setDescription(rs.getString("description"));
                 item.setPrice(rs.getDouble("price"));
-                item.setType(rs.getString("item_type"));
+                item.setType(rs.getString("type"));
                 item.setPublisherID(rs.getInt("publisher_id"));
-                String statusString = rs.getString("status");
+                String statusString = rs.getString("item_status");
                 ItemStatus status = ItemStatus.valueOf(statusString);
                 item.setStatus(status);
                 // Fetch other attributes as needed
