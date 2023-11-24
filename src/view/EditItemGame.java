@@ -8,17 +8,13 @@ import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JRadioButton;
-import javax.swing.JScrollPane;
+import javax.swing.JOptionPane;
 import javax.swing.JSeparator;
-import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 import controller.Controller;
-import model.Game;
 import model.Item;
 import model.Publisher;
-import model.User;
 
 public class EditItemGame {
     Controller con = Controller.getInstance();
@@ -44,7 +40,7 @@ public class EditItemGame {
         updateItemMenu = new JLabel("Update " + nameType);
         namaItem = new JLabel(nameType + " Name : ");
         update_item = new JFrame("Edit " + nameType);
-        update_item.setSize(400, 380);
+        update_item.setSize(400, 300);
         update_item.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         update_item.setLocationRelativeTo(null);
         update_item.setLayout(null);
@@ -89,12 +85,12 @@ public class EditItemGame {
         isiHarga.setBackground(Color.DARK_GRAY);
         update_item.add(isiHarga);
 
-        btnSubmit.setBounds(40, 150, 160, 23);
+        btnSubmit.setBounds(40, 165, 100, 23);
         btnSubmit.setForeground(Color.WHITE);
         btnSubmit.setBackground(Color.decode("#717D7E"));
         update_item.add(btnSubmit);
 
-        btnBack.setBounds(210, 150, 160, 23);
+        btnBack.setBounds(200, 165, 100, 23);
         btnBack.setForeground(Color.WHITE);
         btnBack.setBackground(Color.decode("#717D7E"));
         update_item.add(btnBack);
@@ -104,11 +100,12 @@ public class EditItemGame {
                 if (con.updateGame(id, isiNamaItem.getText(), isiHarga.getText(), isiDeskripsi.getText()))
                 {
                     new EditItem(publisher, con.getItem());
-                    // success
+                    JOptionPane.showMessageDialog(null, "your update is succeed");
+                    update_item.dispose();
                 }
                 else 
                 {
-                    // error
+                    JOptionPane.showMessageDialog(null, "Your update is failed", "Error", JOptionPane.ERROR_MESSAGE);
                 }
             }
         });
@@ -118,6 +115,7 @@ public class EditItemGame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 new EditItem(publisher, con.getItem());
+                update_item.dispose();
             }
         });
 
