@@ -997,6 +997,21 @@ public class Controller {
         }
     }
 
+    
+    public boolean updateStatusItem(int id, String s) {
+        conn.connect();
+        String query = "UPDATE item SET item_status= '" + s + "'"
+                + "WHERE item_id='" + id + "'";
+        try {
+            Statement stmt = conn.con.createStatement();
+            stmt.executeUpdate(query);
+            return (true);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return (false);
+        }
+    }
+
     public ArrayList<Item> getRemoveItem() {
         conn.connect();
         String query = "SELECT * FROM item WHERE item_status = 'NOT_AVAILABLE'";
