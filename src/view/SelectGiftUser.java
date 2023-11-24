@@ -143,7 +143,10 @@ public class SelectGiftUser {
                 update_item.dispose();
                 for (ShoppingCart c : cart)
                 {
-                    con.purchase(Integer.parseInt(isiIdGameOrDLC.getText()), c);
+                    if (cart != null)
+                    {
+                        con.gift(user.getId(), Integer.parseInt(isiIdGameOrDLC.getText()), c);
+                    }
                 }       
             }
         });
