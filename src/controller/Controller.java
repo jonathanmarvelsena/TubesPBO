@@ -780,6 +780,55 @@ public class Controller {
         return transactions;
     }
 
+    public boolean gift(int user, int target, ShoppingCart cart) {
+        conn.connect();
+    
+        try {
+            // Insert into transaction table
+            String transactionQuery = "INSERT INTO transaction (user_id, transaction_date) VALUES (?, ?)";
+            PreparedStatement transactionStmt = conn.con.prepareStatement(transactionQuery, PreparedStatement.RETURN_GENERATED_KEYS);
+            transactionStmt.setInt(1, target);
+            transactionStmt.setTimestamp(2, Timestamp.from(Instant.now()));
+    
+            int rowsAffected = transactionStmt.executeUpdate();
+    
+            // Check if the insertion into transaction was successful
+            if (rowsAffected > 0) {
+                // Retrieve the generated transaction ID
+                ResultSet generatedKeys = transactionStmt.getGeneratedKeys();
+                if (generatedKeys.next()) {
+                    int transactionId = generatedKeys.getInt(1);
+    
+                    // Insert into shoppingcart table
+                    String shoppingCartQuery = "INSERT INTO shoppingcart (transaction_id, item_id, description) VALUES (?, ?, ?)";
+                    PreparedStatement shoppingCartStmt = conn.con.prepareStatement(shoppingCartQuery);
+    
+                    ArrayList<Item> items = cart.getItems();
+                    // Iterate through each item in the cart and add it to the shopping cart
+                    if (items != null)
+                    {
+                        for (Item item : cart.getItems()) {
+                            shoppingCartStmt.setInt(1, transactionId);
+                            shoppingCartStmt.setInt(2, item.getItemID());
+                            shoppingCartStmt.setString(3, "Gifted by user id" + user);
+        
+                            // Execute the SQL statement for shopping cart
+                            shoppingCartStmt.executeUpdate();
+                        }
+                    }
+    
+                    return true;
+                }
+            }
+    
+            return false;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        } finally {
+            conn.disconnect();
+        }
+    }
     public boolean purchase(int user, ShoppingCart cart) {
         conn.connect();
 
