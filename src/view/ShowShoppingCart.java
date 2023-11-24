@@ -79,7 +79,7 @@ public class ShowShoppingCart {
         btnBuy.setForeground(Color.WHITE);
         btnBuy.setBackground(Color.decode("#717D7E"));
         container.add(btnBuy);
-        //final double finalTotal = total;
+        // final double finalTotal = total;
         btnBuy.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -87,10 +87,13 @@ public class ShowShoppingCart {
                 for (int i = 0; i < cart.size(); i++) {
                     total += con.getItemById(cart.get(i).getitemID()).getPrice();
                 }
-        
-                System.out.println("Saldo sekarang: " + user.getWallet());
-                System.out.println("Total belanja: " + total);
-        
+
+                // Menggunakan dialog JOption untuk menampilkan saldo sekarang
+                JOptionPane.showMessageDialog(null, "Saldo sekarang: " + user.getWallet());
+
+                // Menggunakan dialog JOption untuk menampilkan total belanja
+                JOptionPane.showMessageDialog(null, "Total belanja: " + total);
+
                 if (user.getWallet() < total) {
                     double remainingAmount = total - user.getWallet();
                     System.out.println("Kekurangan dana: " + remainingAmount);
@@ -98,7 +101,7 @@ public class ShowShoppingCart {
                 } else {
                     // Buat salinan ArrayList untuk operasi pembelian
                     ArrayList<ShoppingCart> copyCart = new ArrayList<>(cart);
-        
+
                     for (ShoppingCart c : copyCart) {
                         con.purchase(user, c);
                         cart.remove(c); // Hapus item yang sudah dibeli dari keranjang
@@ -107,22 +110,22 @@ public class ShowShoppingCart {
                 }
             }
         });
-                
+
         btnGift.setBounds(235, 210, 205, 23);
         btnGift.setForeground(Color.WHITE);
         btnGift.setBackground(Color.decode("#717D7E"));
         container.add(btnGift);
 
         // btnGift.addActionListener(new ActionListener() {
-        //     @Override
-        //     public void actionPerformed(ActionEvent e) {
-        //         if (user.getWallet() < finalTotal) {
-        //             JOptionPane.showMessageDialog(null, "Wallet funds not enough");
-        //         } else {
-        //             new SelectGiftUser(user, cart, finalTotal);
-        //             container.dispose();
-        //         }
-        //     }
+        // @Override
+        // public void actionPerformed(ActionEvent e) {
+        // if (user.getWallet() < finalTotal) {
+        // JOptionPane.showMessageDialog(null, "Wallet funds not enough");
+        // } else {
+        // new SelectGiftUser(user, cart, finalTotal);
+        // container.dispose();
+        // }
+        // }
         // });
 
         btnBack.setBounds(20, 250, 420, 23);
