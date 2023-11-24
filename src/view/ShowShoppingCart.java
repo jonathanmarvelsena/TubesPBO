@@ -88,26 +88,25 @@ public class ShowShoppingCart {
                     total += con.getItemById(cart.get(i).getitemID()).getPrice();
                 }
 
-                // Menggunakan dialog JOption untuk menampilkan saldo sekarang
-                JOptionPane.showMessageDialog(null, "Saldo sekarang: " + user.getWallet());
-
-                // Menggunakan dialog JOption untuk menampilkan total belanja
-                JOptionPane.showMessageDialog(null, "Total belanja: " + total);
+                JOptionPane.showMessageDialog(null, "Your Wallet : " + user.getWallet());
+                JOptionPane.showMessageDialog(null, "Purchase Succesful");
+                JOptionPane.showMessageDialog(null, "Total Purchase : " + total);
 
                 if (user.getWallet() < total) {
                     double remainingAmount = total - user.getWallet();
                     System.out.println("Kekurangan dana: " + remainingAmount);
                     JOptionPane.showMessageDialog(null, "Wallet funds not enough. Need additional: " + remainingAmount);
                 } else {
-                    // Buat salinan ArrayList untuk operasi pembelian
                     ArrayList<ShoppingCart> copyCart = new ArrayList<>(cart);
 
                     for (ShoppingCart c : copyCart) {
                         con.purchase(user, c);
-                        cart.remove(c); // Hapus item yang sudah dibeli dari keranjang
+                        cart.remove(c); 
                     }
                     con.updateWallet(user, -total);
                 }
+                new HomeUser(user);
+                container.dispose();
             }
         });
 
