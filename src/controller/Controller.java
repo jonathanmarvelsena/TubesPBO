@@ -852,8 +852,7 @@ public class Controller {
 
     public ArrayList<ShoppingCart> getShoppingCartByMonth(int month, int year) {
         conn.connect();
-        String query = "SELECT * FROM shoppingcart sc JOIN transaction t ON t.transaction_id = sc.transaction_id WHERE MONTH(t.transaction_date) = "
-                + month + " YEAR(t.transaction_id)";
+        String query = "SELECT * FROM shoppingcart sc JOIN transaction t ON t.transaction_id = sc.transaction_id WHERE MONTH(t.transaction_date) = "+month+" YEAR(t.transaction_id) = "+year;
         ArrayList<ShoppingCart> transactions = new ArrayList<>();
 
         try {
@@ -871,6 +870,7 @@ public class Controller {
         } finally {
             conn.disconnect(); // Close the connection when done
         }
+
         return transactions;
     }
 

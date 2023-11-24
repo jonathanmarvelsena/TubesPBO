@@ -108,7 +108,7 @@ public class HomeAdmin {
         btnShowMonthlyTransaction.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new ShowMonthlyTransaction(admin);
+                new SelectMonthYear(admin);
                 homeAdmin.setVisible(false);
             }
         });

@@ -8,7 +8,6 @@ import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -17,12 +16,10 @@ import javax.swing.JSeparator;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
-
 import controller.Controller;
 import model.Admin;
-import model.User;
 import model.ShoppingCart;
-import model.Transaction;
+
 
 /**
  *
@@ -48,32 +45,31 @@ public class ShowMonthlyTransaction {
         title.setForeground(Color.WHITE);
         container.add(title);
 
+        String[] columnNames = {"Transaction_Id", "Item_id","User_id","Item_Name","Description"};
+
+        Object[][] data = new Object[transaction.size()][3]; 
+
+        for (int i = 0; i < transaction.size(); i++) {
+            ShoppingCart user = transaction.get(i);
+            data[i][0] = user.getTransactionID(); 
+            data[i][1] = user.getitemID(); 
+            data[i][2] = con.getTransactionByID(user.getTransactionID()).getUserID();
+            data[i][3] = con.getItemById(user.getitemID()).getName(); 
+            data[i][4] = user.getDescription() ;
+        }
+    
+        DefaultTableModel model = new DefaultTableModel(data, columnNames);
+
+        JTable userTable = new JTable(model);
+
+        JScrollPane scrollPane = new JScrollPane(userTable);
+        scrollPane.setBounds(15, 50, 450, 150);
+        container.add(scrollPane);
+
         JSeparator garisPemisah = new JSeparator();
         garisPemisah.setBounds(28, 150, 410, 5);
         garisPemisah.setForeground(Color.LIGHT_GRAY);
         container.add(garisPemisah);
-
-        // Input Year
-        JLabel labelName = new JLabel("Input Year");
-        year = new JTextField();
-        labelName.setBounds(15, 182, 150, 23);
-        year.setBounds(100, 182, 320, 23);
-        labelName.setForeground(Color.WHITE);
-        year.setForeground(Color.WHITE);
-        year.setBackground(Color.DARK_GRAY);
-        container.add(labelName);
-        container.add(year);
-
-        // Input Month
-        JLabel labelMonth = new JLabel("Input Month");
-        month = new JTextField();
-        labelMonth.setBounds(15, 212, 150, 23);
-        month.setBounds(100, 212, 320, 23);
-        labelMonth.setForeground(Color.WHITE);
-        month.setForeground(Color.WHITE);
-        month.setBackground(Color.DARK_GRAY);
-        container.add(labelMonth);
-        container.add(month);
 
         //Bagian Button Back
         btnBack = new JButton("Back");
@@ -85,17 +81,10 @@ public class ShowMonthlyTransaction {
         btnBack.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new HomeAdmin(admin);
+                new SelectMonthYear(admin);
                 container.setVisible(false);
             }
         });
 
-        //Bagian Button Banned
-        btnBack = new JButton("Search");
-        btnBack.setBounds(100, 252, 140, 23);
-        btnBack.setForeground(Color.WHITE);
-        btnBack.setBackground(Color.decode("#717D7E"));
-        container.add(btnBack);
-        container.setVisible(true);
     }
 }
