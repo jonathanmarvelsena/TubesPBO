@@ -43,6 +43,7 @@ public class EditItem {
         Object[][] data = null;
         JTable itemTable = null;
         String[] columnNames = {"ID", "Name", "Type", "Description","Price","Publisher ID"};
+        Publisher publisher;
 
     Object[][] getDataItem()
     {
@@ -51,7 +52,7 @@ public class EditItem {
         else if (updateGame.isSelected()) { game = "Game"; }
         int cnt = 0;
         for (int i = 0; i < data.length; i++) {
-            if (game.equals((String)data[i][2]))
+            if (game.equals((String)data[i][2]) && (Integer)data[i][5] == publisher.getId())
             {
                 cnt++;
             }
@@ -59,7 +60,7 @@ public class EditItem {
         Object[][] data2 = new Object[cnt][6]; 
         int cnt2 = 0;
         for (int i = 0; i < data.length; i++) {
-            if (game.equals(data[i][2]))
+            if (game.equals(data[i][2]) && (Integer)data[i][5] == publisher.getId())
             {
                 data2[cnt2] = data[i];
                 cnt2++;
@@ -76,6 +77,7 @@ public class EditItem {
     }
 
     public EditItem (Publisher publisher,ArrayList<Item> itemList){
+        this.publisher = publisher;
         update_item = new JFrame("Add Item");
         update_item.setSize(450, 400);
         update_item.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

@@ -13,7 +13,7 @@ import javax.swing.JRadioButton;
 import javax.swing.JSeparator;
 import javax.swing.JTextField;
 import controller.Controller;
-import javafx.scene.control.RadioButton;
+// import javafx.scene.control.RadioButton;
 import model.Publisher;
 import model.DLC;
 import model.Game;
@@ -155,7 +155,7 @@ public class addItem {
         });
         for (Item item : con.getItem())
         {
-            if (item.getType().equals("Game")) { comboBox.addItem(item.getName()); }
+            if (item.getType().equals("Game") && item.getPublisherID() == publisher.getId()) { comboBox.addItem(item.getName()); }
         }
         btnSubmit.addActionListener(new ActionListener() {
             @Override
