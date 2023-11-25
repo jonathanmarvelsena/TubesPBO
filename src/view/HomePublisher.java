@@ -106,7 +106,7 @@ public class HomePublisher {
         btnEditItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                ArrayList<Item> itemPublisher = con.getItem();
+                ArrayList<Item> itemPublisher = con.getAllItem();
                 new EditItem(publisher, itemPublisher);
                 home_publisher.dispose();
             }

@@ -71,17 +71,13 @@ public class TopUp {
             @Override
             public void actionPerformed(ActionEvent e) {
                 double topUpAmount = Double.parseDouble(isiNominalTopUP.getText()); 
-                con.updateWallet(user, topUpAmount);
-                top_up.setVisible(false);
                 boolean insert = con.updateWallet(user, topUpAmount);
                 if (insert) {
-                    if (insert) {
-                        JOptionPane.showMessageDialog(null, "Top Up successful");
-                        new HomeUser(user);
-                        top_up.dispose();
-                    } else {
-                        JOptionPane.showMessageDialog(null, "Top Up failed");
-                    }
+                    JOptionPane.showMessageDialog(null, "Top Up successful");
+                    new HomeUser(user);
+                    top_up.dispose();
+                } else {
+                    JOptionPane.showMessageDialog(null, "Top Up failed");
                 }
             }
         });
