@@ -217,6 +217,28 @@ public class Controller {
         }
     }
 
+    public double getWallet(int id) {
+        conn.connect();
+        String query = "SELECT wallet from users WHERE user_id = " + id;
+        double wallet = 0;
+        try {
+            Statement stmt = conn.con.createStatement();
+            ResultSet rs = stmt.executeQuery(query);
+
+            if (rs.next()) {
+                wallet = rs.getDouble("wallet");
+
+                return wallet;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            conn.disconnect();
+        }
+
+        return wallet;
+    }
+
     public ArrayList<User> getUserList() {
         conn.connect();
         String query = "SELECT * FROM users WHERE user_status = 'NOT_BANNED'";
