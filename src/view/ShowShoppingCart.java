@@ -89,24 +89,23 @@ public class ShowShoppingCart {
                 }
 
                 JOptionPane.showMessageDialog(null, "Your Wallet : " + user.getWallet());
-                JOptionPane.showMessageDialog(null, "Purchase Succesful");
-                JOptionPane.showMessageDialog(null, "Total Purchase : " + total);
-
+                
                 if (user.getWallet() < total) {
                     double remainingAmount = total - user.getWallet();
-                    System.out.println("Kekurangan dana: " + remainingAmount);
                     JOptionPane.showMessageDialog(null, "Wallet funds not enough. Need additional: " + remainingAmount);
                 } else {
                     ArrayList<ShoppingCart> copyCart = new ArrayList<>(cart);
-
+                    
                     for (ShoppingCart c : copyCart) {
                         con.purchase(user, c);
                         cart.remove(c); 
                     }
                     con.updateWallet(user, -total);
+                    JOptionPane.showMessageDialog(null, "Total Purchase : " + total);
+                    JOptionPane.showMessageDialog(null, "Purchase Succesful");
                 }
                 new HomeUser(user);
-                container.dispose();
+                container.setVisible(false);
             }
         });
 
@@ -128,7 +127,7 @@ public class ShowShoppingCart {
                 JOptionPane.showMessageDialog(null, "Wallet funds not enough");
             } else {
             new SelectGiftUser(user, cart, total);
-                container.dispose();
+                container.setVisible(false);
             }
         }
         });
@@ -141,7 +140,7 @@ public class ShowShoppingCart {
             @Override
             public void actionPerformed(ActionEvent e) {
                 new HomeUser(user);
-                container.dispose();
+                container.setVisible(false);
             }
         });
         container.setVisible(true);

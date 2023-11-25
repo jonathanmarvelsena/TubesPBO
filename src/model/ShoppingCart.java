@@ -19,11 +19,6 @@ public class ShoppingCart {
     public ShoppingCart() {
     }
 
-
-    
-
-
-
     public int getTransactionID() {
         return transactionID;
     }

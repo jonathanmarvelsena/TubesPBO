@@ -72,8 +72,6 @@ public class SelectGiftUser {
         gameOrDLC.setForeground(Color.WHITE);
         update_item.add(gameOrDLC);
 
-
-
         JSeparator garisPemisah2 = new JSeparator();
         garisPemisah2.setBounds(20, 90, 390, 5);
         garisPemisah2.setForeground(Color.LIGHT_GRAY);
@@ -146,7 +144,7 @@ public class SelectGiftUser {
                 }
         
                 new ShowShoppingCart(user, cart);
-                update_item.dispose();
+                update_item.setVisible(false);
                 con.updateWallet(user, -total);
                 
                 ArrayList<ShoppingCart> copyCart = new ArrayList<>(cart);
@@ -159,7 +157,7 @@ public class SelectGiftUser {
         
                 JOptionPane.showMessageDialog(null, "gift success");
                 new HomeUser(user);
-                update_item.dispose();
+                update_item.setVisible(false);
             }
         });        
         
@@ -169,7 +167,7 @@ public class SelectGiftUser {
             @Override
             public void actionPerformed(ActionEvent e) {
                 new ShowShoppingCart(user, cart);
-                update_item.dispose();
+                update_item.setVisible(false);
             }
         });        
 

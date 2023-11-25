@@ -121,7 +121,7 @@ public class HomeUser {
             @Override
             public void actionPerformed(ActionEvent e) {
                 new Login();
-                home_user.dispose();
+                home_user.setVisible(false);
             }
         });
 
