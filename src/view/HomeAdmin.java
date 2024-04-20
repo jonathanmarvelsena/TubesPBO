@@ -12,22 +12,17 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JSeparator;
-
 import controller.Controller;
 import model.Admin;
 import model.User;
 
-/**
- *
- * @author abil
- */
 public class HomeAdmin {
     Controller con = Controller.getInstance();
     JFrame homeAdmin;
     JButton btnViewAllUser;
-    JButton btnBanUser;
-    JButton btnBack;
-    JButton btnShowBanUser;
+    JButton btnBannedUser;
+    JButton btnLogout;
+    JButton btnShowBannedUser;
     JButton btnShowMonthlyTransaction;
     JButton btnShowUserTransaction;
 
@@ -44,13 +39,11 @@ public class HomeAdmin {
         title.setForeground(Color.WHITE);
         homeAdmin.add(title);
 
-        //Garis Pemisah
-        JSeparator garisPemisah = new JSeparator();
-        garisPemisah.setBounds(50, 55, 190, 5);
-        garisPemisah.setForeground(Color.LIGHT_GRAY);
-        homeAdmin.add(garisPemisah);
+        JSeparator sectionDivider = new JSeparator();
+        sectionDivider.setBounds(50, 55, 190, 5);
+        sectionDivider.setForeground(Color.LIGHT_GRAY);
+        homeAdmin.add(sectionDivider);
 
-        //Bagian Button View All Users
         btnViewAllUser = new JButton("View All Users");
         btnViewAllUser.setBounds(50, 90, 190, 23);
         btnViewAllUser.setForeground(Color.WHITE);
@@ -60,45 +53,42 @@ public class HomeAdmin {
         btnViewAllUser.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                ArrayList<User> nonBannedUsers = con.getUserList();
+                ArrayList<User> nonBannedUsers = con.getUnbannedUsers();
                 new ViewAllUsers(admin, nonBannedUsers);
                 homeAdmin.setVisible(false);
             }
         });
 
-        //Bagian Button Ban User
-        btnBanUser = new JButton("Ban User");
-        btnBanUser.setBounds(50, 120, 190, 23);
-        btnBanUser.setForeground(Color.WHITE);
-        btnBanUser.setBackground(Color.decode("#717D7E"));
-        homeAdmin.add(btnBanUser);
+        btnBannedUser = new JButton("Ban User");
+        btnBannedUser.setBounds(50, 120, 190, 23);
+        btnBannedUser.setForeground(Color.WHITE);
+        btnBannedUser.setBackground(Color.decode("#717D7E"));
+        homeAdmin.add(btnBannedUser);
 
-        btnBanUser.addActionListener(new ActionListener() {
+        btnBannedUser.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                ArrayList<User> nonBannedUsers = con.getUserList();
+                ArrayList<User> nonBannedUsers = con.getUnbannedUsers();
                 new BanUser(admin, nonBannedUsers);
                 homeAdmin.setVisible(false);
             }
         });
 
-        //Bagian Button Show Ban User
-        btnShowBanUser = new JButton("Show Banned Users");
-        btnShowBanUser.setBounds(50, 150, 190, 23);
-        btnShowBanUser.setForeground(Color.WHITE);
-        btnShowBanUser.setBackground(Color.decode("#717D7E"));
-        homeAdmin.add(btnShowBanUser);
+        btnShowBannedUser = new JButton("Show Banned Users");
+        btnShowBannedUser.setBounds(50, 150, 190, 23);
+        btnShowBannedUser.setForeground(Color.WHITE);
+        btnShowBannedUser.setBackground(Color.decode("#717D7E"));
+        homeAdmin.add(btnShowBannedUser);
 
-        btnShowBanUser.addActionListener(new ActionListener() {
+        btnShowBannedUser.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                ArrayList<User> bannedUsers = con.getUserBanned();
-                new ShowBanUser(admin, bannedUsers);
+                ArrayList<User> bannedUsers = con.getBannedUsers();
+                new ShowBannedUser(admin, bannedUsers);
                 homeAdmin.setVisible(false);
             }
         });
 
-        //Bagian Button Show Monthly Transaction
         btnShowMonthlyTransaction = new JButton("Show Monthly Transaction");
         btnShowMonthlyTransaction.setBounds(50, 180, 190, 23);
         btnShowMonthlyTransaction.setForeground(Color.WHITE);
@@ -113,7 +103,6 @@ public class HomeAdmin {
             }
         });
 
-        //Bagian Button Show UserTransaction
         btnShowUserTransaction = new JButton("Show User Transaction");
         btnShowUserTransaction.setBounds(50, 210, 190, 23);
         btnShowUserTransaction.setForeground(Color.WHITE);
@@ -127,22 +116,20 @@ public class HomeAdmin {
                 homeAdmin.setVisible(false);
             }
         });
-        
-        // Bagian Button Logout
-        btnBack = new JButton("Logout");
-        btnBack.setBounds(50, 270, 190, 23);
-        btnBack.setForeground(Color.WHITE);
-        btnBack.setBackground(Color.decode("#717D7E"));
-        homeAdmin.add(btnBack);
 
-        btnBack.addActionListener(new ActionListener() {
+        btnLogout = new JButton("Logout");
+        btnLogout.setBounds(50, 270, 190, 23);
+        btnLogout.setForeground(Color.WHITE);
+        btnLogout.setBackground(Color.decode("#717D7E"));
+        homeAdmin.add(btnLogout);
+
+        btnLogout.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 new Login();
                 homeAdmin.setVisible(false);
             }
         });
-
 
         homeAdmin.setVisible(true);
     }

@@ -5,18 +5,19 @@ import java.util.ArrayList;
 public class Item {
     private int itemID;
     private String name;
-    private String type;
+    private String type; // game or DLC
     private String description;
     private double price;
     private int publisherID;
     private ArrayList<Review> reviews;
-    private ItemStatus status;
+    private ItemStatus status; // available or not available
 
     public Item() {
 
     }
 
-    public Item(int itemID, String name, String type, String description, double price, int publisherID, ArrayList<Review> reviews) {
+    public Item(int itemID, String name, String type, String description, double price, int publisherID,
+            ArrayList<Review> reviews) {
         this.itemID = itemID;
         this.name = name;
         this.type = type;
@@ -83,11 +84,9 @@ public class Item {
         this.type = type;
     }
 
-
     public int getPublisherID() {
         return publisherID;
     }
-
 
     public void setPublisherID(int publisherID) {
         this.publisherID = publisherID;

@@ -29,6 +29,8 @@ public class Controller {
 
     }
 
+    // Singleton design pattern for the controller so only a single instance of
+    // controller exists while the program runs
     public static Controller getInstance() {
         if (instance == null) {
             instance = new Controller();
@@ -38,6 +40,7 @@ public class Controller {
 
     public Account getUser(String username, String password) {
         conn.connect();
+
         String queryUser = "SELECT * FROM users WHERE username = ? AND password = ?";
         String queryAdmin = "SELECT * FROM admin WHERE username = ? AND password = ?";
         String queryPublisher = "SELECT * FROM publisher WHERE username = ? AND password = ?";
@@ -61,7 +64,7 @@ public class Controller {
                 account = user;
             }
 
-            // Check for admin if not found
+            // If no user found, search for admin
             if (account == null) {
                 PreparedStatement stmtAdmin = conn.con.prepareStatement(queryAdmin);
                 stmtAdmin.setString(1, username);
@@ -78,7 +81,7 @@ public class Controller {
                 }
             }
 
-            // Check for publisher if not found
+            // If both user and admin are not found, search for publisher
             if (account == null) {
                 PreparedStatement stmtPublisher = conn.con.prepareStatement(queryPublisher);
                 stmtPublisher.setString(1, username);
@@ -102,7 +105,6 @@ public class Controller {
         return account;
     }
 
-    // INSERT (punya user)
     public boolean insertNewUser(User user) {
         conn.connect();
         String query = "INSERT INTO users VALUES(?,?,?,?,?)";
@@ -115,7 +117,6 @@ public class Controller {
             stmt.setString(4, statusString);
             stmt.setDouble(5, user.getWallet());
 
-            // Execute the SQL statement
             int rowsAffected = stmt.executeUpdate();
 
             // Check if the insertion was successful
@@ -132,7 +133,6 @@ public class Controller {
         }
     }
 
-    // INSERT (punya item = game)
     public boolean insertNewGame(Game game, Publisher publisher) {
         conn.connect();
         String query = "INSERT INTO item VALUES(?,?,?,?,?,?,?)";
@@ -166,20 +166,19 @@ public class Controller {
         }
     }
 
-    // INSERT (punya item = dlc)
-    public boolean insertNewDLC(DLC game, Publisher publisher) {
+    public boolean insertNewDLC(DLC dlc, Publisher publisher) {
         conn.connect();
         String query = "INSERT INTO item VALUES(?,?,?,?,?,?,?)";
         try {
             PreparedStatement stmt = conn.con.prepareStatement(query);
-            stmt.setInt(1, game.getItemID());
-            stmt.setString(2, game.getName());
+            stmt.setInt(1, dlc.getItemID());
+            stmt.setString(2, dlc.getName());
             stmt.setString(3, "DLC");
-            stmt.setDouble(4, game.getPrice());
-            stmt.setString(5, game.getDescription());
+            stmt.setDouble(4, dlc.getPrice());
+            stmt.setString(5, dlc.getDescription());
             stmt.setInt(6, publisher.getId());
             // Handling null status
-            String statusString = (game.getStatus() != null) ? game.getStatus().toString() : "AVAILABLE";
+            String statusString = (dlc.getStatus() != null) ? dlc.getStatus().toString() : "AVAILABLE";
             stmt.setString(7, statusString);
 
             // Execute the SQL statement
@@ -199,7 +198,6 @@ public class Controller {
         }
     }
 
-    // update wallet user
     public boolean updateWallet(User user, double topUpAmount) {
         conn.connect();
         double currentWalletAmount = user.getWallet();
@@ -215,29 +213,6 @@ public class Controller {
         } finally {
             conn.disconnect();
         }
-    }
-
-    public ArrayList<User> getUserList() {
-        conn.connect();
-        String query = "SELECT * FROM users WHERE user_status = 'NOT_BANNED'";
-        ArrayList<User> users = new ArrayList<>();
-        try {
-            Statement stmt = conn.con.createStatement();
-            ResultSet rs = stmt.executeQuery(query);
-            while (rs.next()) {
-                User user = new User();
-                user.setId(rs.getInt("user_id"));
-                user.setName(rs.getString("username"));
-                user.setPassword(rs.getString("password"));
-                user.setStatus(AccountStatus.valueOf(rs.getString("user_status")));
-                user.setWallet(rs.getDouble("wallet"));
-
-                users.add(user);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return users;
     }
 
     public ArrayList<User> getAllUserList() {
@@ -263,8 +238,7 @@ public class Controller {
         return users;
     }
 
-    // UPDATE status jadi banned
-    public boolean updateStatusUser(int id) {
+    public boolean banUser(int id) {
         conn.connect();
         String query = "UPDATE users SET user_status= 'BANNED'"
                 + "WHERE user_id='" + id + "'";
@@ -278,7 +252,30 @@ public class Controller {
         }
     }
 
-    public ArrayList<User> getUserBanned() {
+    public ArrayList<User> getUnbannedUsers() {
+        conn.connect();
+        String query = "SELECT * FROM users WHERE user_status = 'NOT_BANNED'";
+        ArrayList<User> users = new ArrayList<>();
+        try {
+            Statement stmt = conn.con.createStatement();
+            ResultSet rs = stmt.executeQuery(query);
+            while (rs.next()) {
+                User user = new User();
+                user.setId(rs.getInt("user_id"));
+                user.setName(rs.getString("username"));
+                user.setPassword(rs.getString("password"));
+                user.setStatus(AccountStatus.valueOf(rs.getString("user_status")));
+                user.setWallet(rs.getDouble("wallet"));
+
+                users.add(user);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return users;
+    }
+
+    public ArrayList<User> getBannedUsers() {
         conn.connect();
         String query = "SELECT * FROM users WHERE user_status= 'BANNED'";
         ArrayList<User> users = new ArrayList<>();
@@ -318,17 +315,19 @@ public class Controller {
                 game.setPrice(rs.getInt("price"));
                 game.setPublisherID(rs.getInt("publisher_id"));
 
-                // Handling the ItemStatus enum
+                // Convert item_status of type String to enum
                 String statusString = rs.getString("item_status");
-                ItemStatus status = ItemStatus.valueOf(statusString); // Assuming statusString is a valid enum name
+                ItemStatus status = ItemStatus.valueOf(statusString);
+
                 game.setStatus(status);
 
-                // Handling reviews
-                ArrayList<Review> reviews = getReviewsForGame(game); // Implement getReviewsForGame method
+                // Get game's review from DB and set it to model
+                ArrayList<Review> reviews = getReviewsForGame(game);
+
                 game.setReviews(reviews);
 
-                // Handling DLC
-                ArrayList<DLC> dlcList = getDLCs(game); // Implement getDLCForGame method
+                // Get game's DLC from DB ans set it to model
+                ArrayList<DLC> dlcList = getDLCs(game);
                 game.setDLC(dlcList);
 
                 games.add(game);
@@ -336,7 +335,7 @@ public class Controller {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            conn.disconnect(); 
+            conn.disconnect();
         }
 
         return games;
@@ -359,55 +358,19 @@ public class Controller {
                 game.setPrice(rs.getInt("price"));
                 game.setPublisherID(rs.getInt("publisher_id"));
 
-                // Handling the ItemStatus enum
+                // Convert item_status of type String to enum
                 String statusString = rs.getString("item_status");
-                ItemStatus status = ItemStatus.valueOf(statusString); // Assuming statusString is a valid enum name
+                ItemStatus status = ItemStatus.valueOf(statusString);
+
                 game.setStatus(status);
 
-                // Handling reviews
-                ArrayList<Review> reviews = getReviewsForGame(game); // Implement getReviewsForGame method
+                // Get game's review from DB and set it to model
+                ArrayList<Review> reviews = getReviewsForGame(game);
                 game.setReviews(reviews);
 
-                // Handling DLC
-                ArrayList<DLC> dlcList = getDLCs(game); // Implement getDLCForGame method
+                // Get game's DLC from DB ans set it to model
+                ArrayList<DLC> dlcList = getDLCs(game);
                 game.setDLC(dlcList);
-
-                games.add(game);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            conn.disconnect(); // Close the connection when done
-        }
-
-        return games;
-    }
-
-    public ArrayList<DLC> getPublishedDLC(Publisher publisher) {
-        conn.connect();
-        String query = "SELECT * FROM item WHERE type = 'DLC' AND publisher_id = " + publisher.getId();
-        ArrayList<DLC> games = new ArrayList<>();
-
-        try {
-            Statement stmt = conn.con.createStatement();
-            ResultSet rs = stmt.executeQuery(query);
-            while (rs.next()) {
-                DLC game = new DLC();
-                game.setItemID(rs.getInt("item_id"));
-                game.setName(rs.getString("name"));
-                game.setType(rs.getString("type"));
-                game.setDescription(rs.getString("description"));
-                game.setPrice(rs.getInt("price"));
-                game.setPublisherID(rs.getInt("publisher_id"));
-
-                // Handling the ItemStatus enum
-                String statusString = rs.getString("item_status");
-                ItemStatus status = ItemStatus.valueOf(statusString); // Assuming statusString is a valid enum name
-                game.setStatus(status);
-
-                // Handling reviews
-                ArrayList<Review> reviews = getReviewsForDLC(game); // Implement getReviewsForGame method
-                game.setReviews(reviews);
 
                 games.add(game);
             }
@@ -437,14 +400,51 @@ public class Controller {
                 dlc.setDescription(rs.getString("description"));
                 dlc.setPrice(rs.getInt("price"));
                 dlc.setPublisherID(rs.getInt("publisher_id"));
-                // dlc.setStatus(ItemStatus.valueOf(rs.getString("item_status")));
-                // Handling the ItemStatus enum
+
+                // Convert item_status of type String to enum
                 String statusString = rs.getString("item_status");
-                ItemStatus status = ItemStatus.valueOf(statusString); // Assuming statusString is a valid enum name
+                ItemStatus status = ItemStatus.valueOf(statusString);
                 dlc.setStatus(status);
 
-                // Handling reviews
-                ArrayList<Review> reviews = getReviewsForDLC(dlc); // Implement getReviewsForGame method
+                // Get DLC's review from DB and set it to model
+                ArrayList<Review> reviews = getReviewsForDLC(dlc);
+                dlc.setReviews(reviews);
+
+                dlcs.add(dlc);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            conn.disconnect(); // Close the connection when done
+        }
+
+        return dlcs;
+    }
+
+    public ArrayList<DLC> getPublishedDLC(Publisher publisher) {
+        conn.connect();
+        String query = "SELECT * FROM item WHERE type = 'DLC' AND publisher_id = " + publisher.getId();
+        ArrayList<DLC> dlcs = new ArrayList<>();
+
+        try {
+            Statement stmt = conn.con.createStatement();
+            ResultSet rs = stmt.executeQuery(query);
+            while (rs.next()) {
+                DLC dlc = new DLC();
+                dlc.setItemID(rs.getInt("item_id"));
+                dlc.setName(rs.getString("name"));
+                dlc.setType(rs.getString("type"));
+                dlc.setDescription(rs.getString("description"));
+                dlc.setPrice(rs.getInt("price"));
+                dlc.setPublisherID(rs.getInt("publisher_id"));
+
+                // Convert item_status of type String to enum
+                String statusString = rs.getString("item_status");
+                ItemStatus status = ItemStatus.valueOf(statusString);
+                dlc.setStatus(status);
+
+                // Get DLC's review from DB and set it to model
+                ArrayList<Review> reviews = getReviewsForDLC(dlc);
                 dlc.setReviews(reviews);
 
                 dlcs.add(dlc);
@@ -470,14 +470,11 @@ public class Controller {
                 Review review = new Review();
                 review.setReviewID(rs.getInt("review_id"));
 
-                // Set the associated game
                 review.setItem(game);
 
-                // Fetch the associated user (you need to implement getUserById method)
                 User user = getUserById(rs.getInt("user_id"));
                 review.setUser(user);
 
-                // Set the review text
                 review.setReviewText(rs.getString("comment"));
 
                 reviews.add(review);
@@ -545,130 +542,7 @@ public class Controller {
             conn.disconnect();
         }
 
-        // Return null if user not found
         return null;
-    }
-
-    // public Game getGameById(int gameId) {
-    // conn.connect();
-    // String query = "SELECT * FROM item WHERE item_id = " + gameId;
-
-    // try {
-    // Statement stmt = conn.con.createStatement();
-    // ResultSet rs = stmt.executeQuery(query);
-
-    // if (rs.next()) {
-    // // Retrieve other attributes based on your database schema
-    // String name = rs.getString("name");
-    // String description = rs.getString("description");
-    // String type = "Game";
-    // double price = rs.getDouble("price");
-    // int publisherID = rs.getInt("publisher_id");
-    // String statusString = rs.getString("item_status");
-    // ItemStatus status = ItemStatus.valueOf(statusString);
-    // // Fetch other attributes as needed
-
-    // return new Game(gameId, name, type, description, price, publisherID, null);
-    // }
-    // } catch (SQLException e) {
-    // e.printStackTrace();
-    // } finally {
-    // conn.disconnect();
-    // }
-
-    // // Return null if the game is not found
-    // return null;
-    // }
-
-    // public DLC getDLCById(int dlcId) {
-    // conn.connect();
-    // String query = "SELECT * FROM item WHERE item_id = " + dlcId;
-
-    // try {
-    // Statement stmt = conn.con.createStatement();
-    // ResultSet rs = stmt.executeQuery(query);
-
-    // if (rs.next()) {
-    // // Retrieve other attributes based on your database schema
-    // String name = rs.getString("name");
-    // String description = rs.getString("description");
-    // double price = rs.getDouble("price");
-    // int discountId = rs.getInt("discountid");
-    // String statusString = rs.getString("status");
-    // ItemStatus status = ItemStatus.valueOf(statusString);
-    // // Fetch other attributes as needed
-
-    // return new DLC(dlcId, name, description, price, discountId, null, status);
-    // }
-    // } catch (SQLException e) {
-    // e.printStackTrace();
-    // } finally {
-    // conn.disconnect();
-    // }
-
-    // // Return null if the DLC is not found
-    // return null;
-    // }
-
-    public void getGameDetails(Game game) {
-        conn.connect();
-        String query = "SELECT * FROM item WHERE item_id = " + game.getItemID();
-
-        try {
-            Statement stmt = conn.con.createStatement();
-            ResultSet rs = stmt.executeQuery(query);
-
-            if (rs.next()) {
-                game.setItemID(rs.getInt("item_id"));
-                game.setName(rs.getString("name"));
-                game.setType(rs.getString("type"));
-                game.setDescription(rs.getString("description"));
-                game.setPrice(rs.getInt("price"));
-                game.setPublisherID(rs.getInt("publisher_id"));
-
-                String statusString = rs.getString("item_status");
-                ItemStatus status = ItemStatus.valueOf(statusString);
-                game.setStatus(status);
-
-                ArrayList<Review> reviews = getReviewsForGame(game);
-                game.setReviews(reviews);
-
-                ArrayList<DLC> dlcList = getDLCs(game);
-                game.setDLC(dlcList);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            conn.disconnect();
-        }
-    }
-
-    public void getDLCDetails(DLC dlc) {
-        conn.connect();
-        String query = "SELECT * FROM item i WHERE item_id = " + dlc.getItemID();
-
-        try {
-            Statement stmt = conn.con.createStatement();
-            ResultSet rs = stmt.executeQuery(query);
-
-            if (rs.next()) {
-                dlc.setItemID(rs.getInt("item_id"));
-                dlc.setName(rs.getString("name"));
-                dlc.setType(rs.getString("type"));
-                dlc.setDescription(rs.getString("description"));
-                dlc.setPrice(rs.getInt("price"));
-                dlc.setPublisherID(rs.getInt("publisher_id"));
-                String statusString = rs.getString("item_status");
-                ItemStatus status = ItemStatus.valueOf(statusString);
-                dlc.setStatus(status);
-                ArrayList<Review> reviews = getReviewsForDLC(dlc);
-                dlc.setReviews(reviews);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            conn.disconnect();
-        }
     }
 
     public boolean updateGame(int gameID, String name, String price, String description) {
@@ -706,22 +580,6 @@ public class Controller {
             return false;
         }
     }
-
-    // public boolean removeGame(Game game) {
-    // conn.connect();
-    // String query = "UPDATE item"
-    // + " SET item_status='NOT_AVAILABLE'"
-    // + "WHERE item_id = " + game.getItemID();
-    // PreparedStatement stmt;
-    // try {
-    // stmt = conn.con.prepareStatement(query);
-    // stmt.executeUpdate();
-    // return true;
-    // } catch (SQLException e) {
-    // e.printStackTrace();
-    // return false;
-    // }
-    // }
 
     public boolean removeDLC(DLC dlc) {
         conn.connect();
@@ -766,6 +624,7 @@ public class Controller {
                 user.setCart(cart);
             }
 
+            // ini add user.cart
             cart.add(temp);
             return true;
         }
@@ -899,7 +758,7 @@ public class Controller {
         return transactions;
     }
 
-    public ArrayList<Item> getItem() { 
+    public ArrayList<Item> getAvailableItems() {
         conn.connect();
         String query = "SELECT * FROM item WHERE item_status = 'AVAILABLE'";
         ArrayList<Item> items = new ArrayList<>();
@@ -918,16 +777,16 @@ public class Controller {
 
                 // Handling the ItemStatus enum
                 String statusString = rs.getString("item_status");
-                ItemStatus status = ItemStatus.valueOf(statusString); 
+                ItemStatus status = ItemStatus.valueOf(statusString);
                 item.setStatus(status);
 
                 if (item instanceof Game) {
                     Game game = (Game) item;
-                    ArrayList<Review> reviews = getReviewsForGame(game); 
+                    ArrayList<Review> reviews = getReviewsForGame(game);
                     item.setReviews(reviews);
                 } else if (item instanceof DLC) {
                     DLC dlc = (DLC) item;
-                    ArrayList<Review> reviews = getReviewsForDLC(dlc); 
+                    ArrayList<Review> reviews = getReviewsForDLC(dlc);
                     item.setReviews(reviews);
                 }
                 items.add(item);
@@ -940,7 +799,7 @@ public class Controller {
         return items;
     }
 
-    public ArrayList<Item> getAllItem() {
+    public ArrayList<Item> getAllItems() {
         conn.connect();
         String query = "SELECT * FROM item";
         ArrayList<Item> items = new ArrayList<>();
@@ -982,9 +841,9 @@ public class Controller {
         return items;
     }
 
-    public ArrayList<Item> getItemListRemove() {
+    public ArrayList<Item> getUnavailableItems() {
         conn.connect();
-        String query = "SELECT * FROM item WHERE item_status= 'AVAILABLE'";
+        String query = "SELECT * FROM item WHERE item_status= 'NOT_AVAILABLE'";
         ArrayList<Item> items = new ArrayList<>();
         try {
             Statement stmt = conn.con.createStatement();
@@ -1024,7 +883,7 @@ public class Controller {
         return items;
     }
 
-    public boolean updateStatusItem(int id) {
+    public boolean removeItem(int id) {
         conn.connect();
         String query = "UPDATE item SET item_status= 'NOT_AVAILABLE'"
                 + "WHERE item_id='" + id + "'";
@@ -1038,10 +897,9 @@ public class Controller {
         }
     }
 
-    
-    public boolean updateStatusItem(int id, String s) {
+    public boolean updateStatusItem(int id, String status) {
         conn.connect();
-        String query = "UPDATE item SET item_status= '" + s + "'"
+        String query = "UPDATE item SET item_status= '" + status + "'"
                 + "WHERE item_id='" + id + "'";
         try {
             Statement stmt = conn.con.createStatement();
@@ -1053,7 +911,7 @@ public class Controller {
         }
     }
 
-    public ArrayList<Item> getRemoveItem() {
+    public ArrayList<Item> getRemovedItem() {
         conn.connect();
         String query = "SELECT * FROM item WHERE item_status = 'NOT_AVAILABLE'";
 
@@ -1315,7 +1173,6 @@ public class Controller {
         return items;
     }
 
-
     public double getWallet(int id) {
         conn.connect();
         String query = "SELECT wallet from users WHERE user_id = " + id;
@@ -1333,7 +1190,6 @@ public class Controller {
             e.printStackTrace();
         }
         return wallet;
-    } 
+    }
 
 }
-

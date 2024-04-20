@@ -2,11 +2,11 @@ package model;
 
 public abstract class Account {
     private String name, password;
-    private AccountStatus status;
+    private AccountStatus status; // banned or not banned
     private int id;
 
     public Account() {
-        
+
     }
 
     public Account(String name, String password, int id) {

@@ -1,4 +1,5 @@
 package view;
+
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
@@ -18,17 +19,17 @@ public class ShowGameLibrary {
     JFrame container;
     JButton btnBack;
 
-    public ShowGameLibrary(User user,ArrayList<Item> library) {
-        container = new JFrame("Show User Library");
+    public ShowGameLibrary(User user, ArrayList<Item> library) {
+        container = new JFrame("Show Library");
         container.setSize(500, 380);
         container.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         container.setLocationRelativeTo(null);
         container.setLayout(null);
         container.getContentPane().setBackground(Color.DARK_GRAY);
-        
-        String[] columnNames = {"Name", "Description"};
 
-        Object[][] data = new Object[library.size()][4]; 
+        String[] columnNames = { "Name", "Description" };
+
+        Object[][] data = new Object[library.size()][4];
 
         for (int i = 0; i < library.size(); i++) {
             Item items = library.get(i);
@@ -55,7 +56,7 @@ public class ShowGameLibrary {
         garisPemisah.setForeground(Color.LIGHT_GRAY);
         container.add(garisPemisah);
 
-        //Bagian Button Back
+        // Bagian Button Back
         btnBack = new JButton("Back");
         btnBack.setBounds(315, 250, 150, 23);
         btnBack.setForeground(Color.WHITE);

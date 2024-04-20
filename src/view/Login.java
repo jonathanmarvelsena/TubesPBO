@@ -32,10 +32,10 @@ public class Login {
     JTextField name;
     JPasswordField password;
     JButton btnLogin;
-    JButton btnRegistrasi;
+    JButton btnRegister;
 
     public Login() {
-        container = new JFrame("Steam Login");
+        container = new JFrame("Login");
         container.setSize(480, 300);
         container.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         container.setLocationRelativeTo(null);
@@ -43,7 +43,7 @@ public class Login {
         container.getContentPane().setBackground(Color.DARK_GRAY);
 
         // Account Name
-        JLabel labelName = new JLabel("Account name ");
+        JLabel labelName = new JLabel("Username ");
         name = new JTextField();
         labelName.setBounds(28, 30, 150, 23);
         name.setBounds(120, 30, 320, 23);
@@ -79,20 +79,20 @@ public class Login {
                 Account loggedInUser = con.getUser(userName, userPassword);
 
                 if (loggedInUser instanceof User) {
-                    if(loggedInUser.getStatus() == AccountStatus.BANNED){
+                    if (loggedInUser.getStatus() == AccountStatus.BANNED) {
                         JOptionPane.showMessageDialog(null, "This account is banned");
                         return;
                     }
                     container.dispose();
-                    JOptionPane.showMessageDialog(null, "login success");
+                    JOptionPane.showMessageDialog(null, "Login successful");
                     new HomeUser((User) loggedInUser);
                 } else if (loggedInUser instanceof Admin) {
                     container.dispose();
-                    JOptionPane.showMessageDialog(null, "login success");
+                    JOptionPane.showMessageDialog(null, "Login successful");
                     new HomeAdmin((Admin) loggedInUser);
                 } else if (loggedInUser instanceof Publisher) {
                     container.dispose();
-                    JOptionPane.showMessageDialog(null, "login success");
+                    JOptionPane.showMessageDialog(null, "Login successful");
                     new HomePublisher((Publisher) loggedInUser);
                 } else {
                     JOptionPane.showMessageDialog(container, "Email or password incorrect", "User not found",
@@ -100,25 +100,24 @@ public class Login {
                 }
             }
         });
-        JSeparator garisPemisah = new JSeparator();
-        garisPemisah.setBounds(28, 150, 410, 5);
-        garisPemisah.setForeground(Color.LIGHT_GRAY);
-        container.add(garisPemisah);
+        JSeparator separatorLine = new JSeparator();
+        separatorLine.setBounds(28, 150, 410, 5);
+        separatorLine.setForeground(Color.LIGHT_GRAY);
+        container.add(separatorLine);
 
-        // Bagian Registrasi
-        JLabel labelRegistrasi = new JLabel("Don't have a Steam Account? ");
-        labelRegistrasi.setBounds(50, 182, 180, 23);
-        labelRegistrasi.setForeground(Color.WHITE);
-        container.add(labelRegistrasi);
+        // Registration
+        JLabel registerField = new JLabel("Don't have a Steam Account? ");
+        registerField.setBounds(50, 182, 180, 23);
+        registerField.setForeground(Color.WHITE);
+        container.add(registerField);
 
-        // Bagian Button Registrasi
-        btnRegistrasi = new JButton("Create A New Account...");
-        btnRegistrasi.setBounds(230, 182, 210, 23);
-        btnRegistrasi.setForeground(Color.WHITE);
-        btnRegistrasi.setBackground(Color.decode("#717D7E"));
-        container.add(btnRegistrasi);
+        btnRegister = new JButton("Create A New Account...");
+        btnRegister.setBounds(230, 182, 210, 23);
+        btnRegister.setForeground(Color.WHITE);
+        btnRegister.setBackground(Color.decode("#717D7E"));
+        container.add(btnRegister);
 
-        btnRegistrasi.addActionListener(new ActionListener() {
+        btnRegister.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 new Register();

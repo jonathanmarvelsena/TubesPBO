@@ -3,14 +3,16 @@ package model;
 import java.util.ArrayList;
 import controller.Controller;
 
-public class User extends Account{
+public class User extends Account {
     private double wallet;
     private ArrayList<Game> ownedGames;
     private ArrayList<DLC> ownedDLCs;
     private ArrayList<ShoppingCart> cart = new ArrayList<>();
+    // shopping cart is stored locally, will be emptied if
+    // user logs out or exits the program
 
     public User() {
-        
+
     }
 
     public User(String name, String password, int id) {
@@ -41,8 +43,6 @@ public class User extends Account{
     public void setOwnedDLCs(ArrayList<DLC> ownedDLCs) {
         this.ownedDLCs = ownedDLCs;
     }
-
-
 
     public ArrayList<ShoppingCart> getCart() {
         return cart;

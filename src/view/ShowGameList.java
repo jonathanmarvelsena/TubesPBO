@@ -1,18 +1,15 @@
 package view;
 
 import model.Item;
-import model.Publisher;
 import model.User;
 
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JRadioButton;
@@ -28,73 +25,76 @@ import javax.swing.table.DefaultTableModel;
 import controller.Controller;
 
 public class ShowGameList {
-        Controller con = Controller.getInstance();
-        JFrame update_item;
-        JLabel UpdateItemMenu = new JLabel("Buy Item");
-        JLabel gameOrDLC = new JLabel("Buy Game or DLC : ");
-        JTextField isiIdGameOrDLC;
-        JLabel idItem = new JLabel("ID Game/DLC : ");
-        JTextField isiNamaItem;
-        JLabel namaItem = new JLabel("Game/DLC Name : ");
-        JTextField isideskripsi;
-        JLabel deskripsi = new JLabel("Deskripsi              : ");
-        JTextField isiHarga;
-        JLabel harga = new JLabel("Price                      : ");
-        JButton btnSubmit = new JButton("Add to Cart");
-        JButton btnBack = new JButton("Back");
-        JRadioButton updateGame = new JRadioButton("Game");
-        JRadioButton updateDLC = new JRadioButton("DLC");
-        Object[][] data = null;
-        JTable itemTable = null;
-        String[] columnNames = {"ID", "Name", "Type", "Description","Price","Publisher Name"};
+    Controller con = Controller.getInstance();
+    JFrame update_item;
+    JLabel UpdateItemMenu = new JLabel("Buy Item");
+    JLabel gameOrDLC = new JLabel("Buy Game or DLC : ");
+    JTextField itemField;
+    JLabel idItem = new JLabel("ID Game/DLC : ");
+    JTextField itemNameField;
+    JLabel itemName = new JLabel("Game/DLC Name : ");
+    JTextField descriptionField;
+    JLabel description = new JLabel("Description              : ");
+    JTextField priceField;
+    JLabel price = new JLabel("Price                      : ");
+    JButton btnSubmit = new JButton("Add to Cart");
+    JButton btnBack = new JButton("Back");
+    JRadioButton updateGame = new JRadioButton("Game");
+    JRadioButton updateDLC = new JRadioButton("DLC");
+    Object[][] data = null;
+    JTable itemTable = null;
+    String[] columnNames = { "ID", "Name", "Type", "Description", "Price", "Publisher Name" };
 
-        User user;
+    User user;
 
-    Object[][] getDataItem()
-    {
-        String game = "";
-        if (updateDLC.isSelected()) { game = "DLC"; }
-        else if (updateGame.isSelected()) { game = "Game"; }
-        int cnt = 0;
+    Object[][] getDataItem() {
+        String itemType = "";
+        if (updateDLC.isSelected()) {
+            itemType = "DLC";
+        } else if (updateGame.isSelected()) {
+            itemType = "Game";
+        }
+        int count = 0;
         ArrayList<Item> items = con.getLibrary(user);
         for (int i = 0; i < data.length; i++) {
-            if (game.equals((String)data[i][2]))
-            {
+            if (itemType.equals((String) data[i][2])) {
                 boolean found = false;
-                for (Item item : items)
-                {
-                    if (item.getItemID() == (Integer)data[i][0]) { found = true; break; }
+                for (Item item : items) {
+                    if (item.getItemID() == (Integer) data[i][0]) {
+                        found = true;
+                        break;
+                    }
                 }
-                cnt++;
+                count++;
             }
         }
-        Object[][] data2 = new Object[cnt][6]; 
-        int cnt2 = 0;
+        Object[][] data2 = new Object[count][6];
+        int count2 = 0;
         for (int i = 0; i < data.length; i++) {
-            if (game.equals(data[i][2]) )
-            {
+            if (itemType.equals(data[i][2])) {
                 boolean found = false;
-                for (Item item : items)
-                {
-                    if (item.getItemID() == (Integer)data[i][0]) { found = true; break; }
+                for (Item item : items) {
+                    if (item.getItemID() == (Integer) data[i][0]) {
+                        found = true;
+                        break;
+                    }
                 }
-            
-                    data2[cnt2] = data[i];
-                    cnt2++; 
-                
+
+                data2[count2] = data[i];
+                count2++;
+
             }
         }
         return data2;
     }
 
-    public void loadTable()
-    {
+    public void loadTable() {
         itemTable.clearSelection();
         DefaultTableModel model = new DefaultTableModel(getDataItem(), columnNames);
         itemTable.setModel(model);
     }
 
-    public ShowGameList (User user){
+    public ShowGameList(User user) {
         this.user = user;
         update_item = new JFrame("Show Game List");
         update_item.setSize(450, 400);
@@ -107,10 +107,10 @@ public class ShowGameList {
         UpdateItemMenu.setForeground(Color.WHITE);
         update_item.add(UpdateItemMenu);
 
-        JSeparator garisPemisah = new JSeparator();
-        garisPemisah.setBounds(20, 45, 75, 5);
-        garisPemisah.setForeground(Color.LIGHT_GRAY);
-        update_item.add(garisPemisah);
+        JSeparator separatorLine = new JSeparator();
+        separatorLine.setBounds(20, 45, 75, 5);
+        separatorLine.setForeground(Color.LIGHT_GRAY);
+        update_item.add(separatorLine);
 
         gameOrDLC.setBounds(20, 60, 200, 23);
         gameOrDLC.setForeground(Color.WHITE);
@@ -140,25 +140,24 @@ public class ShowGameList {
         bgUpdateItem.add(updateGame);
         bgUpdateItem.add(updateDLC);
 
-        JSeparator garisPemisah2 = new JSeparator();
-        garisPemisah2.setBounds(20, 90, 390, 5);
-        garisPemisah2.setForeground(Color.LIGHT_GRAY);
-        update_item.add(garisPemisah2);
+        JSeparator separatorLine2 = new JSeparator();
+        separatorLine2.setBounds(20, 90, 390, 5);
+        separatorLine2.setForeground(Color.LIGHT_GRAY);
+        update_item.add(separatorLine2);
 
-
-        ArrayList<Item> itemList = con.getItem();
-        data = new Object[itemList.size()][6]; 
+        ArrayList<Item> itemList = con.getAvailableItems();
+        data = new Object[itemList.size()][6];
 
         for (int i = 0; i < itemList.size(); i++) {
             Item item = itemList.get(i);
-            data[i][0] = item.getItemID(); 
-            data[i][1] = item.getName(); 
+            data[i][0] = item.getItemID();
+            data[i][1] = item.getName();
             data[i][2] = item.getType();
-            data[i][3] = item.getDescription(); 
+            data[i][3] = item.getDescription();
             data[i][4] = item.getPrice();
-            data[i][5] = item.getPublisherID(); 
+            data[i][5] = item.getPublisherID();
         }
-    
+
         DefaultTableModel model = new DefaultTableModel(new Object[0][0], columnNames);
 
         itemTable = new JTable(model);
@@ -168,29 +167,32 @@ public class ShowGameList {
         itemTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         itemTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             @Override
-            public void valueChanged(ListSelectionEvent e)
-            {
-                if (e.getValueIsAdjusting()) { return; }
+            public void valueChanged(ListSelectionEvent e) {
+                if (e.getValueIsAdjusting()) {
+                    return;
+                }
                 String src = e.getSource().toString();
                 int start = src.indexOf("{") + 1;
                 int stop = src.length() - 1;
                 String s = src.substring(start, stop);
-                if (s.isEmpty()) { return; }
+                if (s.isEmpty()) {
+                    return;
+                }
                 int index = Integer.parseInt(s);
-                isiIdGameOrDLC.setText(String.valueOf((Integer)getDataItem()[index][0]));
+                itemField.setText(String.valueOf((Integer) getDataItem()[index][0]));
 
             }
         });
-  
+
         idItem.setBounds(20, 210, 200, 23);
         idItem.setForeground(Color.WHITE);
         update_item.add(idItem);
 
-        isiIdGameOrDLC = new JTextField();
-        isiIdGameOrDLC.setBounds(130, 210, 260, 23);
-        isiIdGameOrDLC.setForeground(Color.WHITE);
-        isiIdGameOrDLC.setBackground(Color.DARK_GRAY);
-        update_item.add(isiIdGameOrDLC);
+        itemField = new JTextField();
+        itemField.setBounds(130, 210, 260, 23);
+        itemField.setForeground(Color.WHITE);
+        itemField.setBackground(Color.DARK_GRAY);
+        update_item.add(itemField);
 
         btnSubmit.setBounds(40, 255, 160, 23);
         btnSubmit.setForeground(Color.WHITE);
@@ -208,26 +210,23 @@ public class ShowGameList {
         itemTable.getTableHeader().setForeground(Color.WHITE);
         scrollPane.getViewport().setBackground(Color.DARK_GRAY);
 
-
         btnSubmit.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 Item item = null;
-                for (Object[] v : data)
-                {
-                    if (String.valueOf(v[0]).equals(isiIdGameOrDLC.getText()))
-                    {
-                        for (Item item2 : con.getItem())
-                        {
-                            if (item2.getItemID() == (int)v[0])
-                            {
+                for (Object[] v : data) {
+                    if (String.valueOf(v[0]).equals(itemField.getText())) {
+                        for (Item item2 : con.getAvailableItems()) {
+                            if (item2.getItemID() == (int) v[0]) {
                                 item = item2;
                             }
                         }
                         break;
                     }
                 }
-                if (item != null) { con.insertIntoShoppingCart(user, item); }
+                if (item != null) {
+                    con.insertIntoShoppingCart(user, item);
+                }
                 update_item.dispose();
 
             }
@@ -240,7 +239,7 @@ public class ShowGameList {
                 new HomeUser(user);
                 update_item.dispose();
             }
-        });        
+        });
 
     }
 }

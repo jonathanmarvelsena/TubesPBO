@@ -11,24 +11,24 @@ import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
 import javax.swing.JTable;
-//import javax.swing.JTextField;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
-//import java.util.Iterator;
 import controller.Controller;
-//import model.Item;
 import model.ShoppingCart;
 import model.User;
 
 public class ShowShoppingCart {
     Controller con = Controller.getInstance();
     JFrame container;
-    JButton btnBuy = new JButton("buy");
+    JButton btnBuy = new JButton("Buy");
     JButton btnGift = new JButton("Gift");
-    JButton btnBack = new JButton("back");
-    JLabel shoping_cart = new JLabel("Shopping cart");
+    JButton btnRemove = new JButton("Remove");
+    JButton btnBack = new JButton("Back");
+    JLabel shoping_cart = new JLabel("Shopping Cart");
 
     public ShowShoppingCart(User user, ArrayList<ShoppingCart> cart) {
-        container = new JFrame("Shopping cart");
+        container = new JFrame("Shopping Cart");
         container.setSize(480, 400);
         container.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         container.setLocationRelativeTo(null);
@@ -39,12 +39,12 @@ public class ShowShoppingCart {
         shoping_cart.setForeground(Color.WHITE);
         container.add(shoping_cart);
 
-        JSeparator garisPemisah = new JSeparator();
-        garisPemisah.setBounds(20, 45, 80, 5);
-        garisPemisah.setForeground(Color.LIGHT_GRAY);
-        container.add(garisPemisah);
+        JSeparator separatorLine = new JSeparator();
+        separatorLine.setBounds(20, 45, 80, 5);
+        separatorLine.setForeground(Color.LIGHT_GRAY);
+        container.add(separatorLine);
 
-        String[] columnNames = { "Name", "type", "price" };
+        String[] columnNames = { "Name", "Type", "Price", "Status" };
 
         Object[][] data = new Object[cart.size()][4];
 
@@ -53,12 +53,37 @@ public class ShowShoppingCart {
             data[i][0] = con.getItemById(shoppingCart.getitemID()).getName();
             data[i][1] = con.getItemById(shoppingCart.getitemID()).getType();
             data[i][2] = con.getItemById(shoppingCart.getitemID()).getPrice();
-
+            data[i][3] = shoppingCart.getStatus();
         }
 
-        DefaultTableModel model = new DefaultTableModel(data, columnNames);
+        // DefaultTableModel model = new DefaultTableModel(data, columnNames);
+        DefaultTableModel model = new DefaultTableModel(data, columnNames) {
+            // Override getColumnClass to specify the column class for rendering checkboxes
+            @Override
+            public Class<?> getColumnClass(int columnIndex) {
+                if (columnIndex == 3) {
+                    return Boolean.class; // Return Boolean class for the checkbox column
+                }
+                return super.getColumnClass(columnIndex);
+            }
+        };
 
         JTable libraryTable = new JTable(model);
+
+        model.addTableModelListener(new TableModelListener() {
+
+            @Override
+            public void tableChanged(TableModelEvent e) {
+                if (e.getType() == TableModelEvent.UPDATE) {
+                    int column = e.getColumn();
+                    if (column == 3) { // Ganti indeks kolom sesuai dengan kebutuhan Anda
+                        int row = e.getFirstRow();
+                        Boolean checked = (Boolean) model.getValueAt(row, column);
+                        cart.get(row).setStatus(checked);
+                    }
+                }
+            }
+        });
 
         JScrollPane scrollPane = new JScrollPane(libraryTable);
         scrollPane.setBounds(20, 70, 420, 100);
@@ -70,10 +95,10 @@ public class ShowShoppingCart {
         libraryTable.getTableHeader().setForeground(Color.WHITE);
         scrollPane.getViewport().setBackground(Color.DARK_GRAY);
 
-        JSeparator garisPemisah2 = new JSeparator();
-        garisPemisah2.setBounds(20, 190, 420, 5);
-        garisPemisah2.setForeground(Color.LIGHT_GRAY);
-        container.add(garisPemisah2);
+        JSeparator separatorLine2 = new JSeparator();
+        separatorLine2.setBounds(20, 190, 420, 5);
+        separatorLine2.setForeground(Color.LIGHT_GRAY);
+        container.add(separatorLine2);
 
         btnBuy.setBounds(20, 210, 205, 23);
         btnBuy.setForeground(Color.WHITE);
@@ -85,20 +110,26 @@ public class ShowShoppingCart {
             public void actionPerformed(ActionEvent e) {
                 double total = 0;
                 for (int i = 0; i < cart.size(); i++) {
-                    total += con.getItemById(cart.get(i).getitemID()).getPrice();
+                    if (cart.get(i).getStatus()) {
+                        total += con.getItemById(cart.get(i).getitemID()).getPrice();
+                    }
                 }
 
                 JOptionPane.showMessageDialog(null, "Your Wallet : " + user.getWallet());
-                
+
                 if (user.getWallet() < total) {
                     double remainingAmount = total - user.getWallet();
                     JOptionPane.showMessageDialog(null, "Wallet funds not enough. Need additional: " + remainingAmount);
                 } else {
                     ArrayList<ShoppingCart> copyCart = new ArrayList<>(cart);
-                    
+                    cart.clear();
+
                     for (ShoppingCart c : copyCart) {
-                        con.purchase(user, c);
-                        cart.remove(c); 
+                        if (c.getStatus()) {
+                            con.purchase(user, c);
+                        } else {
+                            cart.add(c);
+                        }
                     }
                     con.updateWallet(user, -total);
                     JOptionPane.showMessageDialog(null, "Total Purchase : " + total);
@@ -115,24 +146,67 @@ public class ShowShoppingCart {
         container.add(btnGift);
 
         btnGift.addActionListener(new ActionListener() {
-        @Override
-        public void actionPerformed(ActionEvent e) {
+            @Override
+            public void actionPerformed(ActionEvent e) {
 
-            double total = 0;
-            for (int i = 0; i < cart.size(); i++) {
-                total += con.getItemById(cart.get(i).getitemID()).getPrice();
-            }
+                double total = 0;
+                for (int i = 0; i < cart.size(); i++) {
+                    total += con.getItemById(cart.get(i).getitemID()).getPrice();
+                }
 
-            if (user.getWallet() < total) {
-                JOptionPane.showMessageDialog(null, "Wallet funds not enough");
-            } else {
-            new SelectGiftUser(user, cart, total);
-                container.setVisible(false);
+                if (user.getWallet() < total) {
+                    JOptionPane.showMessageDialog(null, "Wallet funds not enough");
+                } else {
+                    new SelectGiftUser(user, cart, total);
+                    container.setVisible(false);
+                }
             }
-        }
         });
 
-        btnBack.setBounds(20, 250, 420, 23);
+        btnRemove.setBounds(20, 250, 420, 23);
+        btnRemove.setForeground(Color.WHITE);
+        btnRemove.setBackground(Color.decode("#717D7E"));
+        container.add(btnRemove);
+
+        btnRemove.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ArrayList<ShoppingCart> copyCart = new ArrayList<>(cart);
+                cart.clear();
+                for (ShoppingCart c : copyCart) {
+                    if (!c.getStatus()) {
+                        cart.add(c);
+                    }
+                }
+                String[] columnNames = { "Name", "Type", "Price", "Status" };
+
+                Object[][] data = new Object[cart.size()][4];
+
+                for (int i = 0; i < cart.size(); i++) {
+                    ShoppingCart shoppingCart = cart.get(i);
+                    data[i][0] = con.getItemById(shoppingCart.getitemID()).getName();
+                    data[i][1] = con.getItemById(shoppingCart.getitemID()).getType();
+                    data[i][2] = con.getItemById(shoppingCart.getitemID()).getPrice();
+                    data[i][3] = shoppingCart.getStatus();
+                }
+
+                // DefaultTableModel model = new DefaultTableModel(data, columnNames);
+                DefaultTableModel model = new DefaultTableModel(data, columnNames) {
+                    // Override getColumnClass to specify the column class for rendering checkboxes
+                    @Override
+                    public Class<?> getColumnClass(int columnIndex) {
+                        if (columnIndex == 3) {
+                            return Boolean.class; // Return Boolean class for the checkbox column
+                        }
+                        return super.getColumnClass(columnIndex);
+                    }
+                };
+
+                libraryTable.setModel(model);
+            }
+        });
+
+        btnBack.setBounds(20, 280, 420, 23);
         btnBack.setForeground(Color.WHITE);
         btnBack.setBackground(Color.decode("#717D7E"));
         container.add(btnBack);

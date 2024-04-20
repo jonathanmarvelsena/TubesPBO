@@ -34,9 +34,9 @@ public class BanUser {
     JButton btnBack;
     JTextField id;
     JButton btnViewAllUser;
-    JButton btnRegistrasi;
+    JButton btnRegister;
 
-    public BanUser(Admin admin,ArrayList<User> nonBannedUsers) {
+    public BanUser(Admin admin, ArrayList<User> nonBannedUsers) {
         container = new JFrame("Ban User");
         container.setSize(500, 380);
         container.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -49,18 +49,18 @@ public class BanUser {
         title.setForeground(Color.WHITE);
         container.add(title);
 
-        String[] columnNames = {"ID", "Name", "Status", "Wallet"};
+        String[] columnNames = { "ID", "Name", "Status", "Wallet" };
 
-        Object[][] data = new Object[nonBannedUsers.size()][4]; 
+        Object[][] data = new Object[nonBannedUsers.size()][4];
 
         for (int i = 0; i < nonBannedUsers.size(); i++) {
             User user = nonBannedUsers.get(i);
-            data[i][0] = user.getId(); 
-            data[i][1] = user.getName(); 
+            data[i][0] = user.getId();
+            data[i][1] = user.getName();
             data[i][2] = user.getStatus().toString();
-            data[i][3] = user.getWallet(); 
+            data[i][3] = user.getWallet();
         }
-    
+
         DefaultTableModel model = new DefaultTableModel(data, columnNames);
 
         JTable userTable = new JTable(model);
@@ -68,7 +68,7 @@ public class BanUser {
         JScrollPane scrollPane = new JScrollPane(userTable);
         scrollPane.setBounds(15, 50, 450, 150);
         container.add(scrollPane);
-        
+
         userTable.setBackground(Color.DARK_GRAY);
         userTable.setForeground(Color.WHITE);
         userTable.getTableHeader().setBackground(Color.DARK_GRAY);
@@ -81,7 +81,7 @@ public class BanUser {
         container.add(garisPemisah);
 
         // Account Id
-        JLabel labelName = new JLabel("ID of user to be banned");
+        JLabel labelName = new JLabel("ID of user to ban");
         id = new JTextField();
         labelName.setBounds(15, 250, 150, 23);
         id.setBounds(160, 250, 305, 23);
@@ -94,21 +94,24 @@ public class BanUser {
         userTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         userTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             @Override
-            public void valueChanged(ListSelectionEvent e)
-            {
-                if (e.getValueIsAdjusting()) { return; }
+            public void valueChanged(ListSelectionEvent e) {
+                if (e.getValueIsAdjusting()) {
+                    return;
+                }
                 String src = e.getSource().toString();
                 int start = src.indexOf("{") + 1;
                 int stop = src.length() - 1;
                 String s = src.substring(start, stop);
-                if (s.isEmpty()) { return; }
+                if (s.isEmpty()) {
+                    return;
+                }
                 int index = Integer.parseInt(s);
-                id.setText(String.valueOf((Integer)data[index][0]));
+                id.setText(String.valueOf((Integer) data[index][0]));
 
             }
         });
 
-        //Bagian Button Back
+        // Bagian Button Back
         btnBack = new JButton("Back");
         btnBack.setBounds(326, 290, 140, 23);
         btnBack.setForeground(Color.WHITE);
@@ -123,7 +126,7 @@ public class BanUser {
             }
         });
 
-        //Bagian Button Banned
+        // Bagian Button Banned
         btnBack = new JButton("Ban User");
         btnBack.setBounds(160, 290, 140, 23);
         btnBack.setForeground(Color.WHITE);
@@ -133,12 +136,13 @@ public class BanUser {
         btnBack.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                
-                boolean ban = con.updateStatusUser(Integer.parseInt(id.getText()));
-                if (ban){
-                    JOptionPane.showMessageDialog(container, "User Succesfully banned","Success",JOptionPane.WARNING_MESSAGE);
+
+                boolean ban = con.banUser(Integer.parseInt(id.getText()));
+                if (ban) {
+                    JOptionPane.showMessageDialog(container, "User succesfully banned", "Success",
+                            JOptionPane.WARNING_MESSAGE);
                 } else {
-                    JOptionPane.showMessageDialog(container, "User Not Found","Error",
+                    JOptionPane.showMessageDialog(container, "User not found", "Error",
                             JOptionPane.WARNING_MESSAGE);
                 }
                 new BanUser(admin, nonBannedUsers);

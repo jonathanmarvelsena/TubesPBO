@@ -17,11 +17,11 @@ public class HomeUser {
     JButton btnShowGameList;
     JButton btnTopup;
     JButton btnShowGameLibrary;
-    JButton btnShopingCart;
+    JButton btnShoppingCart;
     JButton btnShowUserTransaction;
     JButton btnBack;
-    
-    public HomeUser (User user) {
+
+    public HomeUser(User user) {
         home_user = new JFrame("Home ");
         home_user.setSize(320, 350);
         home_user.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -29,15 +29,15 @@ public class HomeUser {
         home_user.setLayout(null);
         home_user.getContentPane().setBackground(Color.DARK_GRAY);
 
-        JLabel welcomeUser = new JLabel(" welcome to steam ");
+        JLabel welcomeUser = new JLabel(" Welcome to Steam ");
         welcomeUser.setBounds(100, 25, 170, 23);
         welcomeUser.setForeground(Color.WHITE);
         home_user.add(welcomeUser);
 
-        JSeparator garisPemisah = new JSeparator();
-        garisPemisah.setBounds(80, 45, 150, 5);
-        garisPemisah.setForeground(Color.LIGHT_GRAY);
-        home_user.add(garisPemisah);
+        JSeparator separatorLine = new JSeparator();
+        separatorLine.setBounds(80, 45, 150, 5);
+        separatorLine.setForeground(Color.LIGHT_GRAY);
+        home_user.add(separatorLine);
 
         btnShowGameList = new JButton("Game list");
         btnShowGameList.setBounds(80, 60, 150, 23);
@@ -63,22 +63,22 @@ public class HomeUser {
             @Override
             public void actionPerformed(ActionEvent e) {
                 ArrayList<Item> library = con.getLibrary(user);
-                new ShowGameLibrary(user,library);
+                new ShowGameLibrary(user, library);
                 home_user.dispose();
             }
         });
 
-        btnShopingCart = new JButton("Shopping Cart");
-        btnShopingCart.setBounds(80, 120, 150, 23);
-        btnShopingCart.setForeground(Color.WHITE);
-        btnShopingCart.setBackground(Color.decode("#717D7E"));
-        home_user.add(btnShopingCart);
+        btnShoppingCart = new JButton("Shopping Cart");
+        btnShoppingCart.setBounds(80, 120, 150, 23);
+        btnShoppingCart.setForeground(Color.WHITE);
+        btnShoppingCart.setBackground(Color.decode("#717D7E"));
+        home_user.add(btnShoppingCart);
 
-        btnShopingCart.addActionListener(new ActionListener() {
+        btnShoppingCart.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 ArrayList<ShoppingCart> cart = user.getCart();
-                new ShowShoppingCart(user,cart);
+                new ShowShoppingCart(user, cart);
                 home_user.dispose();
             }
         });
@@ -97,7 +97,7 @@ public class HomeUser {
             }
         });
 
-        btnShowUserTransaction = new JButton("history transaction");
+        btnShowUserTransaction = new JButton("Transaction History");
         btnShowUserTransaction.setBounds(80, 180, 150, 23);
         btnShowUserTransaction.setForeground(Color.WHITE);
         btnShowUserTransaction.setBackground(Color.decode("#717D7E"));

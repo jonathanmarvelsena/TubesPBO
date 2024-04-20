@@ -19,27 +19,29 @@ public class EditItemGame {
     Controller con = Controller.getInstance();
     JFrame update_item;
     JLabel updateItemMenu = null;
-    JTextField isiNamaItem;
-    JLabel namaItem = null;
-    JTextField isiDeskripsi;
-    JLabel deskripsi = new JLabel("Deskripsi              : ");
-    JTextField isiHarga;
+    JTextField itemNameField;
+    JLabel itemName = null;
+    JTextField descriptionField;
+    JLabel description = new JLabel("Description              : ");
+    JTextField priceField;
     JLabel harga = new JLabel("Price                      : ");
     JCheckBox statusCheckBox = new JCheckBox("Available");
-    JLabel status =  new JLabel("status                    : ");
+    JLabel status = new JLabel("status                    : ");
     JButton btnSubmit = new JButton("Submit");
     JButton btnBack = new JButton("Back");
     String nameType = "";
 
-    public EditItemGame(Publisher publisher, String nameType, int id){
+    public EditItemGame(Publisher publisher, String nameType, int id) {
         Item item = null;
-        for (Item v : con.getItem())
-        {
-            if (v.getItemID() == id) { item = v; break; }
+        for (Item v : con.getAvailableItems()) {
+            if (v.getItemID() == id) {
+                item = v;
+                break;
+            }
         }
         this.nameType = nameType;
         updateItemMenu = new JLabel("Update " + nameType);
-        namaItem = new JLabel(nameType + " Name               : ");
+        itemName = new JLabel(nameType + " Name               : ");
         update_item = new JFrame("Edit " + nameType);
         update_item.setSize(400, 300);
         update_item.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -56,35 +58,35 @@ public class EditItemGame {
         garisPemisah.setForeground(Color.LIGHT_GRAY);
         update_item.add(garisPemisah);
 
-        namaItem.setBounds(20, 60, 170, 23);
-        namaItem.setForeground(Color.WHITE);
-        update_item.add(namaItem);
+        itemName.setBounds(20, 60, 170, 23);
+        itemName.setForeground(Color.WHITE);
+        update_item.add(itemName);
 
-        isiNamaItem = new JTextField();
-        isiNamaItem.setBounds(130, 60, 230, 23);
-        isiNamaItem.setForeground(Color.WHITE);
-        isiNamaItem.setBackground(Color.DARK_GRAY);
-        update_item.add(isiNamaItem);
+        itemNameField = new JTextField();
+        itemNameField.setBounds(130, 60, 230, 23);
+        itemNameField.setForeground(Color.WHITE);
+        itemNameField.setBackground(Color.DARK_GRAY);
+        update_item.add(itemNameField);
 
-        deskripsi.setBounds(20, 90, 200, 23);
-        deskripsi.setForeground(Color.WHITE);
-        update_item.add(deskripsi);
+        description.setBounds(20, 90, 200, 23);
+        description.setForeground(Color.WHITE);
+        update_item.add(description);
 
-        isiDeskripsi = new JTextField();
-        isiDeskripsi.setBounds(130, 90, 230, 23);
-        isiDeskripsi.setForeground(Color.WHITE);
-        isiDeskripsi.setBackground(Color.DARK_GRAY);
-        update_item.add(isiDeskripsi);
+        descriptionField = new JTextField();
+        descriptionField.setBounds(130, 90, 230, 23);
+        descriptionField.setForeground(Color.WHITE);
+        descriptionField.setBackground(Color.DARK_GRAY);
+        update_item.add(descriptionField);
 
         harga.setBounds(20, 120, 200, 23);
         harga.setForeground(Color.WHITE);
         update_item.add(harga);
 
-        isiHarga = new JTextField();
-        isiHarga.setBounds(130, 120, 230, 23);
-        isiHarga.setForeground(Color.WHITE);
-        isiHarga.setBackground(Color.DARK_GRAY);
-        update_item.add(isiHarga);
+        priceField = new JTextField();
+        priceField.setBounds(130, 120, 230, 23);
+        priceField.setForeground(Color.WHITE);
+        priceField.setBackground(Color.DARK_GRAY);
+        update_item.add(priceField);
 
         status.setBounds(20, 150, 200, 23);
         status.setForeground(Color.WHITE);
@@ -94,7 +96,6 @@ public class EditItemGame {
         statusCheckBox.setForeground(Color.WHITE);
         statusCheckBox.setBackground(Color.DARK_GRAY);
         update_item.add(statusCheckBox);
-        
 
         btnSubmit.setBounds(40, 195, 100, 23);
         btnSubmit.setForeground(Color.WHITE);
@@ -108,16 +109,13 @@ public class EditItemGame {
         btnSubmit.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (con.updateGame(id, isiNamaItem.getText(), isiHarga.getText(), isiDeskripsi.getText()))
-                {
+                if (con.updateGame(id, itemNameField.getText(), priceField.getText(), descriptionField.getText())) {
                     con.updateStatusItem(id, statusCheckBox.isSelected() ? "AVAILABLE" : "NOT_AVAILABLE");
-                    new EditItem(publisher, con.getItem());
-                    JOptionPane.showMessageDialog(null, "your update is succeed");
+                    new EditItem(publisher, con.getAvailableItems());
+                    JOptionPane.showMessageDialog(null, "Update success");
                     update_item.dispose();
-                }
-                else 
-                {
-                    JOptionPane.showMessageDialog(null, "Your update is failed", "Error", JOptionPane.ERROR_MESSAGE);
+                } else {
+                    JOptionPane.showMessageDialog(null, "Update failed", "Error", JOptionPane.ERROR_MESSAGE);
                 }
             }
         });
@@ -126,16 +124,15 @@ public class EditItemGame {
         btnBack.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new EditItem(publisher, con.getItem());
+                new EditItem(publisher, con.getAvailableItems());
                 update_item.dispose();
             }
         });
 
-        if (item != null)
-        {
-            isiNamaItem.setText(item.getName());
-            isiHarga.setText(String.valueOf(item.getPrice()));
-            isiDeskripsi.setText(item.getDescription());
+        if (item != null) {
+            itemNameField.setText(item.getName());
+            priceField.setText(String.valueOf(item.getPrice()));
+            descriptionField.setText(item.getDescription());
             statusCheckBox.setSelected(item.getStatus() == ItemStatus.AVAILABLE);
         }
         update_item.setVisible(true);

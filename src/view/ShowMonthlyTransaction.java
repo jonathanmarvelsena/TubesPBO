@@ -20,7 +20,6 @@ import controller.Controller;
 import model.Admin;
 import model.ShoppingCart;
 
-
 /**
  *
  * @author abil
@@ -32,7 +31,7 @@ public class ShowMonthlyTransaction {
     JFrame container;
     JButton btnBack;
 
-    public ShowMonthlyTransaction(Admin admin,ArrayList<ShoppingCart> transaction) {
+    public ShowMonthlyTransaction(Admin admin, ArrayList<ShoppingCart> transaction) {
         container = new JFrame("Show Monthly Transaction");
         container.setSize(500, 300);
         container.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -45,19 +44,19 @@ public class ShowMonthlyTransaction {
         title.setForeground(Color.WHITE);
         container.add(title);
 
-        String[] columnNames = {"Transaction_Id", "Item_id","User_id","Item_Name","Description"};
+        String[] columnNames = { "Transaction_Id", "Item_id", "User_id", "Item_Name", "Description" };
 
-        Object[][] data = new Object[transaction.size()][5]; 
+        Object[][] data = new Object[transaction.size()][5];
 
         for (int i = 0; i < transaction.size(); i++) {
             ShoppingCart user = transaction.get(i);
-            data[i][0] = user.getTransactionID(); 
-            data[i][1] = user.getitemID(); 
+            data[i][0] = user.getTransactionID();
+            data[i][1] = user.getitemID();
             data[i][2] = con.getTransactionByID(user.getTransactionID()).getUserID();
-            data[i][3] = con.getItemById(user.getitemID()).getName(); 
-            data[i][4] = user.getDescription() ;
+            data[i][3] = con.getItemById(user.getitemID()).getName();
+            data[i][4] = user.getDescription();
         }
-    
+
         DefaultTableModel model = new DefaultTableModel(data, columnNames);
 
         JTable userTable = new JTable(model);
@@ -72,12 +71,11 @@ public class ShowMonthlyTransaction {
         userTable.getTableHeader().setForeground(Color.WHITE);
         scrollPane.getViewport().setBackground(Color.DARK_GRAY);
 
-        JSeparator garisPemisah = new JSeparator();
-        garisPemisah.setBounds(28, 150, 410, 5);
-        garisPemisah.setForeground(Color.LIGHT_GRAY);
-        container.add(garisPemisah);
+        JSeparator separatorLine = new JSeparator();
+        separatorLine.setBounds(28, 150, 410, 5);
+        separatorLine.setForeground(Color.LIGHT_GRAY);
+        container.add(separatorLine);
 
-        //Bagian Button Back
         btnBack = new JButton("Back");
         btnBack.setBounds(310, 220, 150, 23);
         btnBack.setForeground(Color.WHITE);

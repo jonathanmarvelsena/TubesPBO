@@ -18,7 +18,7 @@ public class HomePublisher {
     JButton btnRemovedGame;
     JButton btnShowRemovedGame;
 
-    public HomePublisher (Publisher publisher){
+    public HomePublisher(Publisher publisher) {
         home_publisher = new JFrame("Home");
         home_publisher.setSize(300, 400);
         home_publisher.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -31,10 +31,10 @@ public class HomePublisher {
         welcomePublisher.setForeground(Color.WHITE);
         home_publisher.add(welcomePublisher);
 
-        JSeparator garisPemisah = new JSeparator();
-        garisPemisah.setBounds(50, 45, 190, 5);
-        garisPemisah.setForeground(Color.LIGHT_GRAY);
-        home_publisher.add(garisPemisah);
+        JSeparator separatorLine = new JSeparator();
+        separatorLine.setBounds(50, 45, 190, 5);
+        separatorLine.setForeground(Color.LIGHT_GRAY);
+        home_publisher.add(separatorLine);
 
         btnAddItem = new JButton("Add Item");
         btnAddItem.setBounds(50, 90, 190, 23);
@@ -60,7 +60,6 @@ public class HomePublisher {
         btnRemovedGame.setBackground(Color.decode("#717D7E"));
         home_publisher.add(btnRemovedGame);
 
-        // Bagian Button Logout
         btnBack = new JButton("Logout");
         btnBack.setBounds(50, 270, 190, 23);
         btnBack.setForeground(Color.WHITE);
@@ -87,7 +86,7 @@ public class HomePublisher {
         btnShowRemovedGame.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                ArrayList<Item> removeItems = con.getRemoveItem();
+                ArrayList<Item> removeItems = con.getRemovedItem();
                 new ShowRemovedGame(publisher, removeItems);
                 home_publisher.dispose();
             }
@@ -96,8 +95,8 @@ public class HomePublisher {
         btnRemovedGame.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                ArrayList<Item> items = con.getItemListRemove();
-                new RemovedGame(publisher, items);
+                ArrayList<Item> items = con.getUnavailableItems();
+                new RemoveGame(publisher, items);
                 home_publisher.dispose();
             }
         });
@@ -106,7 +105,7 @@ public class HomePublisher {
         btnEditItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                ArrayList<Item> itemPublisher = con.getAllItem();
+                ArrayList<Item> itemPublisher = con.getAllItems();
                 new EditItem(publisher, itemPublisher);
                 home_publisher.dispose();
             }

@@ -57,7 +57,6 @@ public class ShowRemovedGame {
         itemTable.getTableHeader().setForeground(Color.WHITE);
         scrollPane.getViewport().setBackground(Color.DARK_GRAY);
 
-        // Bagian Button Back
         btnBack = new JButton("Back");
         btnBack.setBounds(326, 290, 140, 23);
         btnBack.setForeground(Color.WHITE);

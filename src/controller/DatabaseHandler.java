@@ -4,23 +4,20 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.util.TimeZone;
 import javax.swing.JOptionPane;
-import java.sql.Statement;
-import java.sql.PreparedStatement;
 
 public class DatabaseHandler {
 
     public Connection con;
     private String driver = "com.mysql.cj.jdbc.Driver";
-//    private String url = "jdbc:mysql://localhost/db_test";
-    private String url = "jdbc:mysql://localhost/tubespbo?serverTimezone=" + TimeZone.getDefault().getID();
+    private String url = "jdbc:mysql://localhost/tubes_rpl?serverTimezone=" + TimeZone.getDefault().getID();
     private String username = "root";
     private String password = "";
 
     private Connection logOn() {
         try {
-            //Load JDBC Driver
+            // Load JDBC Driver
             Class.forName(driver).newInstance();
-            //Buat Object Connection
+            // for Object Connection
             con = DriverManager.getConnection(url, username, password);
         } catch (Exception ex) {
             // handle any errors
@@ -33,7 +30,6 @@ public class DatabaseHandler {
 
     private void logOff() {
         try {
-            //tutup koneksi
             con.close();
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, "Error Ocurred when login" + ex);

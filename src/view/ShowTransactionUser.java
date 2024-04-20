@@ -24,7 +24,6 @@ public class ShowTransactionUser {
     JFrame container;
     JButton btnBack;
 
-
     public ShowTransactionUser(User user) {
         container = new JFrame("Show User Transaction");
         container.setSize(480, 300);
@@ -38,26 +37,26 @@ public class ShowTransactionUser {
         title.setForeground(Color.WHITE);
         container.add(title);
 
-        JSeparator garisPemisah = new JSeparator();
-        garisPemisah.setBounds(15, 180, 420, 5);
-        garisPemisah.setForeground(Color.LIGHT_GRAY);
-        container.add(garisPemisah);
+        JSeparator separatorLine = new JSeparator();
+        separatorLine.setBounds(15, 180, 420, 5);
+        separatorLine.setForeground(Color.LIGHT_GRAY);
+        container.add(separatorLine);
 
         ArrayList<ShoppingCart> transaction = con.getShoppingCart(user.getId());
 
-        String[] columnNames = {"Transaction_Id", "Item_id","User_id","Item_Name","Description"};
+        String[] columnNames = { "Transaction_Id", "Item_id", "User_id", "Item_Name", "Description" };
 
-        Object[][] data = new Object[transaction.size()][5]; 
+        Object[][] data = new Object[transaction.size()][5];
 
         for (int i = 0; i < transaction.size(); i++) {
             ShoppingCart cart = transaction.get(i);
-            data[i][0] = cart.getTransactionID(); 
-            data[i][1] = cart.getitemID(); 
+            data[i][0] = cart.getTransactionID();
+            data[i][1] = cart.getitemID();
             data[i][2] = con.getTransactionByID(cart.getTransactionID()).getUserID();
-            data[i][3] = con.getItemById(cart.getitemID()).getName(); 
-            data[i][4] = cart.getDescription() ;
+            data[i][3] = con.getItemById(cart.getitemID()).getName();
+            data[i][4] = cart.getDescription();
         }
-    
+
         DefaultTableModel model = new DefaultTableModel(data, columnNames);
 
         JTable userTable = new JTable(model);
@@ -72,7 +71,7 @@ public class ShowTransactionUser {
         userTable.getTableHeader().setForeground(Color.WHITE);
         scrollPane.getViewport().setBackground(Color.DARK_GRAY);
 
-        //Bagian Button Back
+        // Bagian Button Back
         btnBack = new JButton("Back");
         btnBack.setBounds(270, 205, 150, 23);
         btnBack.setForeground(Color.WHITE);

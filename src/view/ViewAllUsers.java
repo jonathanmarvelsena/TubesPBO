@@ -15,12 +15,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
-
-import model.AccountStatus;
 import model.Admin;
 import model.User;
-import controller.Controller;
-
 
 /**
  *
@@ -45,18 +41,18 @@ public class ViewAllUsers {
         title.setForeground(Color.WHITE);
         container.add(title);
 
-        String[] columnNames = {"ID", "Name", "Status", "Wallet"};
+        String[] columnNames = { "ID", "Name", "Status", "Wallet" };
 
-        Object[][] data = new Object[nonBannedUsers.size()][4]; 
+        Object[][] data = new Object[nonBannedUsers.size()][4];
 
         for (int i = 0; i < nonBannedUsers.size(); i++) {
             User user = nonBannedUsers.get(i);
-            data[i][0] = user.getId(); 
-            data[i][1] = user.getName(); 
+            data[i][0] = user.getId();
+            data[i][1] = user.getName();
             data[i][2] = user.getStatus().toString();
-            data[i][3] = user.getWallet(); 
+            data[i][3] = user.getWallet();
         }
-    
+
         DefaultTableModel model = new DefaultTableModel(data, columnNames);
 
         JTable userTable = new JTable(model);
@@ -71,12 +67,12 @@ public class ViewAllUsers {
         userTable.getTableHeader().setForeground(Color.WHITE);
         scrollPane.getViewport().setBackground(Color.DARK_GRAY);
 
-        JSeparator garisPemisah = new JSeparator();
-        garisPemisah.setBounds(15, 230, 450, 5);
-        garisPemisah.setForeground(Color.LIGHT_GRAY);
-        container.add(garisPemisah);
+        JSeparator separatorLine = new JSeparator();
+        separatorLine.setBounds(15, 230, 450, 5);
+        separatorLine.setForeground(Color.LIGHT_GRAY);
+        container.add(separatorLine);
 
-        //Bagian Button Back
+        // Bagian Button Back
         btnBack = new JButton("Back");
         btnBack.setBounds(315, 250, 150, 23);
         btnBack.setForeground(Color.WHITE);
