@@ -16,10 +16,8 @@ import javax.swing.JSeparator;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
-import model.AccountStatus;
 import model.Admin;
 import model.User;
-import controller.Controller;
 
 
 /**
