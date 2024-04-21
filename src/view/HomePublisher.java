@@ -11,7 +11,7 @@ import java.util.ArrayList;
 
 public class HomePublisher {
     Controller con = Controller.getInstance();
-    JFrame home_publisher;
+    JFrame homePublisherFrame;
     JButton btnAddItem;
     JButton btnBack;
     JButton btnEditItem;
@@ -19,58 +19,58 @@ public class HomePublisher {
     JButton btnShowRemovedGame;
 
     public HomePublisher(Publisher publisher) {
-        home_publisher = new JFrame("Home");
-        home_publisher.setSize(300, 400);
-        home_publisher.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        home_publisher.setLocationRelativeTo(null);
-        home_publisher.setLayout(null);
-        home_publisher.getContentPane().setBackground(Color.DARK_GRAY);
+        homePublisherFrame = new JFrame("Home");
+        homePublisherFrame.setSize(300, 400);
+        homePublisherFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        homePublisherFrame.setLocationRelativeTo(null);
+        homePublisherFrame.setLayout(null);
+        homePublisherFrame.getContentPane().setBackground(Color.DARK_GRAY);
 
         JLabel welcomePublisher = new JLabel(" Welcome to Publisher Menu ");
         welcomePublisher.setBounds(70, 25, 170, 23);
         welcomePublisher.setForeground(Color.WHITE);
-        home_publisher.add(welcomePublisher);
+        homePublisherFrame.add(welcomePublisher);
 
         JSeparator separatorLine = new JSeparator();
         separatorLine.setBounds(50, 45, 190, 5);
         separatorLine.setForeground(Color.LIGHT_GRAY);
-        home_publisher.add(separatorLine);
+        homePublisherFrame.add(separatorLine);
 
         btnAddItem = new JButton("Add Item");
         btnAddItem.setBounds(50, 90, 190, 23);
         btnAddItem.setForeground(Color.WHITE);
         btnAddItem.setBackground(Color.decode("#717D7E"));
-        home_publisher.add(btnAddItem);
+        homePublisherFrame.add(btnAddItem);
 
         btnEditItem = new JButton("Edit Item");
         btnEditItem.setBounds(50, 120, 190, 23);
         btnEditItem.setForeground(Color.WHITE);
         btnEditItem.setBackground(Color.decode("#717D7E"));
-        home_publisher.add(btnEditItem);
+        homePublisherFrame.add(btnEditItem);
 
         btnShowRemovedGame = new JButton("Show Removed Items");
         btnShowRemovedGame.setBounds(50, 150, 190, 23);
         btnShowRemovedGame.setForeground(Color.WHITE);
         btnShowRemovedGame.setBackground(Color.decode("#717D7E"));
-        home_publisher.add(btnShowRemovedGame);
+        homePublisherFrame.add(btnShowRemovedGame);
 
         btnRemovedGame = new JButton("Remove Item");
         btnRemovedGame.setBounds(50, 180, 190, 23);
         btnRemovedGame.setForeground(Color.WHITE);
         btnRemovedGame.setBackground(Color.decode("#717D7E"));
-        home_publisher.add(btnRemovedGame);
+        homePublisherFrame.add(btnRemovedGame);
 
         btnBack = new JButton("Logout");
         btnBack.setBounds(50, 270, 190, 23);
         btnBack.setForeground(Color.WHITE);
         btnBack.setBackground(Color.decode("#717D7E"));
-        home_publisher.add(btnBack);
+        homePublisherFrame.add(btnBack);
 
         btnBack.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 new Login();
-                home_publisher.setVisible(false);
+                homePublisherFrame.setVisible(false);
             }
         });
 
@@ -79,7 +79,7 @@ public class HomePublisher {
             public void actionPerformed(ActionEvent e) {
                 new AddItem(publisher);
 
-                home_publisher.dispose();
+                homePublisherFrame.dispose();
             }
         });
 
@@ -88,7 +88,7 @@ public class HomePublisher {
             public void actionPerformed(ActionEvent e) {
                 ArrayList<Item> removeItems = con.getRemovedItem();
                 new ShowRemovedGame(publisher, removeItems);
-                home_publisher.dispose();
+                homePublisherFrame.dispose();
             }
         });
 
@@ -97,20 +97,20 @@ public class HomePublisher {
             public void actionPerformed(ActionEvent e) {
                 ArrayList<Item> items = con.getUnavailableItems();
                 new RemoveGame(publisher, items);
-                home_publisher.dispose();
+                homePublisherFrame.dispose();
             }
         });
-        home_publisher.setVisible(true);
+        homePublisherFrame.setVisible(true);
 
         btnEditItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 ArrayList<Item> itemPublisher = con.getAllItems();
                 new EditItem(publisher, itemPublisher);
-                home_publisher.dispose();
+                homePublisherFrame.dispose();
             }
         });
-        home_publisher.setVisible(true);
+        homePublisherFrame.setVisible(true);
     }
 
 }

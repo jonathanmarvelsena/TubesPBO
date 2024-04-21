@@ -17,8 +17,13 @@ public class User extends Account {
 
     }
 
-    public User(String name, String password, int id, NotificationService notificationService) {
-        super(name, password, id);
+    public User(String name, String password, int id, String email, String phoneNumber,
+            NotificationService notificationService) {
+        super(name, password, id, email, phoneNumber);
+        this.notificationService = notificationService;
+    }
+
+    public void setNotificationService(NotificationService notificationService) {
         this.notificationService = notificationService;
     }
 

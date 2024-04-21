@@ -11,9 +11,15 @@ import javax.swing.JOptionPane;
 import javax.swing.JSeparator;
 import javax.swing.JTextField;
 import controller.Controller;
+import model.EmailNotificationService;
 import model.Item;
 import model.ItemStatus;
+import model.NotificationService;
 import model.Publisher;
+import model.SMSNotificationService;
+import model.User;
+
+import java.util.ArrayList;
 
 public class EditItemGame {
     Controller con = Controller.getInstance();
@@ -111,6 +117,16 @@ public class EditItemGame {
             public void actionPerformed(ActionEvent e) {
                 if (con.updateGame(id, itemNameField.getText(), priceField.getText(), descriptionField.getText())) {
                     con.updateStatusItem(id, statusCheckBox.isSelected() ? "AVAILABLE" : "NOT_AVAILABLE");
+
+                    if (statusCheckBox.isSelected()) {
+                        // ambil user List
+                        ArrayList<User> userList = con.getUnbannedUsers();
+
+                        for (User user : userList) {
+                            user.notifyUser(itemNameField.getText() + " received an update!");
+                        }
+                    }
+
                     new EditItem(publisher, con.getAvailableItems());
                     JOptionPane.showMessageDialog(null, "Update success");
                     updateItem.dispose();

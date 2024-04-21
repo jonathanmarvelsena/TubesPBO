@@ -11,14 +11,18 @@ import model.Account;
 import model.AccountStatus;
 import model.Admin;
 import model.DLC;
+import model.EmailNotificationService;
 import model.Game;
 import model.Item;
 import model.ItemStatus;
 import model.Publisher;
 import model.Review;
+import model.SMSNotificationService;
 import model.ShoppingCart;
 import model.Transaction;
 import model.User;
+import model.SMSNotificationService;
+import model.NotificationService;
 
 public class Controller {
     private static Controller instance;
@@ -266,6 +270,18 @@ public class Controller {
                 user.setPassword(rs.getString("password"));
                 user.setStatus(AccountStatus.valueOf(rs.getString("user_status")));
                 user.setWallet(rs.getDouble("wallet"));
+
+                user.setEmail(rs.getString("email"));
+                user.setPhoneNumber(rs.getString("phoneNumber"));
+
+                NotificationService emailService = new EmailNotificationService();
+                NotificationService SMSService = new SMSNotificationService();
+
+                if (user.getEmail() == null) {
+                    user.setNotificationService(SMSService);
+                } else {
+                    user.setNotificationService(emailService);
+                }
 
                 users.add(user);
             }
@@ -533,8 +549,14 @@ public class Controller {
                 String name = rs.getString("username");
                 String password = rs.getString("password");
                 int id = rs.getInt("user_id");
+                String email = rs.getString("email");
+                String phoneNumber = rs.getString("phoneNumber");
 
-                return new User(name, password, id);
+                if (email == null) {
+                    return new User(name, password, id, email, phoneNumber, new EmailNotificationService());
+                } else {
+                    return new User(name, password, id, email, phoneNumber, new SMSNotificationService());
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();

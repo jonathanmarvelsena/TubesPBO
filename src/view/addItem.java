@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -15,6 +17,7 @@ import javax.swing.JTextField;
 import controller.Controller;
 
 import model.Publisher;
+import model.User;
 import model.DLC;
 import model.Game;
 import model.Item;
@@ -162,6 +165,7 @@ public class AddItem {
                 String gameDescription = descriptionField.getText();
                 String priceString = priceField.getText();
 
+                ArrayList<User> userList = con.getUnbannedUsers();
                 // Check for empty fields
                 if (gameName.isEmpty() || gameDescription.isEmpty() || priceString.isEmpty()) {
                     JOptionPane.showMessageDialog(null, "Please fill in all fields");
@@ -190,6 +194,10 @@ public class AddItem {
                             JOptionPane.showMessageDialog(null, "Insert successful");
                             new HomePublisher(publisher);
                             addItem.dispose();
+
+                            for (User user : userList) {
+                                user.notifyUser(gameName + " is now available!");
+                            }
                         } else {
                             JOptionPane.showMessageDialog(null, "Insert failed");
                         }
@@ -209,6 +217,10 @@ public class AddItem {
                             JOptionPane.showMessageDialog(null, "Insert successful");
                             new HomePublisher(publisher);
                             addItem.dispose();
+
+                            for (User user : userList) {
+                                user.notifyUser(gameName + " is now available!");
+                            }
                         } else {
                             JOptionPane.showMessageDialog(null, "Insert failed");
                         }

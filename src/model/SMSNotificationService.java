@@ -1,6 +1,6 @@
 package model;
 
-public class SMSNotiificationService implements NotificationService {
+public class SMSNotificationService implements NotificationService {
     @Override
     public void sendNotification(String message) {
         System.out.println("Sending SMS: " + message);

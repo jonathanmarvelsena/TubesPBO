@@ -17,6 +17,7 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 import controller.Controller;
+import model.Account;
 import model.User;
 
 /**
@@ -80,8 +81,12 @@ public class Register {
             public void actionPerformed(ActionEvent e) {
                 String name = username.getText();
                 String pass = new String(password.getPassword());
-                ArrayList<User> listUser = con.getAllUserList();
-                User newUser = new User(name, pass, listUser.size() + 1);
+                // ArrayList<User> listUser = con.getAllUserList();
+
+                Account newAccount = con.getUser(name, pass);
+                // User newUser = new User(name, pass, listUser.size() + 1);
+                User newUser = (User) newAccount;
+
                 boolean cek = con.insertNewUser(newUser);
                 if (cek) {
                     JOptionPane.showMessageDialog(container, "Register successful", "Error",

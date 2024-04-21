@@ -34,9 +34,9 @@ public class EditItem {
     JTextField itemNameField;
     JLabel itemName = new JLabel("Game/DLC Name : ");
     JTextField descriptionField;
-    JLabel description = new JLabel("Description            : ");
+    JLabel description = new JLabel("Description    : ");
     JTextField priceField;
-    JLabel price = new JLabel("Price                      : ");
+    JLabel price = new JLabel("Price    : ");
     JButton btnSubmit = new JButton("Submit");
     JButton btnBack = new JButton("Back");
     JRadioButton updateGame = new JRadioButton("Game");
