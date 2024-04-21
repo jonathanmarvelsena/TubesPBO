@@ -23,7 +23,7 @@ import javax.swing.JOptionPane;
 
 public class AddItem {
     Controller con = Controller.getInstance();
-    JFrame add_item;
+    JFrame addItem;
     JLabel addItemMenu = new JLabel("Add Item");
     JLabel gameOrDLC = new JLabel("Add Game or DLC : ");
     JTextField gameNameField;
@@ -44,11 +44,11 @@ public class AddItem {
     public void addItemPair(Component left, Component right, int width, int height) {
         if (left != null) {
             left.setBounds(20, currY, width, height);
-            add_item.add(left);
+            addItem.add(left);
         }
         if (right != null) {
             right.setBounds(130, currY, width, height);
-            add_item.add(right);
+            addItem.add(right);
         }
         currY += height + 5;
     }
@@ -56,7 +56,7 @@ public class AddItem {
     public void addItemPair(Component left, JRadioButton[] right, int width, int height, int interval) {
         if (left != null) {
             left.setBounds(20, currY, width, height);
-            add_item.add(left);
+            addItem.add(left);
         }
         int temp = 130;
         ButtonGroup bgAddItem = new ButtonGroup();
@@ -64,17 +64,17 @@ public class AddItem {
             c.setBounds(temp, currY, interval, height);
             temp += interval;
             bgAddItem.add(c);
-            add_item.add(c);
+            addItem.add(c);
         }
         currY += height + 5;
     }
 
     public AddItem(Publisher publisher) {
-        add_item = new JFrame("Add Item");
-        add_item.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        add_item.setLocationRelativeTo(null);
-        add_item.setLayout(null);
-        add_item.getContentPane().setBackground(Color.DARK_GRAY);
+        addItem = new JFrame("Add Item");
+        addItem.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        addItem.setLocationRelativeTo(null);
+        addItem.setLayout(null);
+        addItem.getContentPane().setBackground(Color.DARK_GRAY);
 
         addItemMenu.setForeground(Color.WHITE);
         addItemPair(addItemMenu, null, 170, 23);
@@ -189,7 +189,7 @@ public class AddItem {
                         if (insert) {
                             JOptionPane.showMessageDialog(null, "Insert successful");
                             new HomePublisher(publisher);
-                            add_item.dispose();
+                            addItem.dispose();
                         } else {
                             JOptionPane.showMessageDialog(null, "Insert failed");
                         }
@@ -208,7 +208,7 @@ public class AddItem {
                         if (insert) {
                             JOptionPane.showMessageDialog(null, "Insert successful");
                             new HomePublisher(publisher);
-                            add_item.dispose();
+                            addItem.dispose();
                         } else {
                             JOptionPane.showMessageDialog(null, "Insert failed");
                         }
@@ -220,14 +220,14 @@ public class AddItem {
                 }
             }
         });
-        add_item.setVisible(true);
-        add_item.setSize(430, currY + 75);
+        addItem.setVisible(true);
+        addItem.setSize(430, currY + 75);
 
         btnBack.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 new HomePublisher(publisher);
-                add_item.dispose();
+                addItem.dispose();
             }
         });
 

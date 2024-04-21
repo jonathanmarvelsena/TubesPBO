@@ -26,7 +26,7 @@ import controller.Controller;
 
 public class EditItem {
     Controller con = Controller.getInstance();
-    JFrame update_item;
+    JFrame updateItem;
     JLabel UpdateItemMenu = new JLabel("Edit Item");
     JLabel gameOrDLC = new JLabel("Edit Game or DLC : ");
     JTextField idField;
@@ -78,25 +78,25 @@ public class EditItem {
 
     public EditItem(Publisher publisher, ArrayList<Item> itemList) {
         this.publisher = publisher;
-        update_item = new JFrame("Edit Item");
-        update_item.setSize(450, 400);
-        update_item.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        update_item.setLocationRelativeTo(null);
-        update_item.setLayout(null);
-        update_item.getContentPane().setBackground(Color.DARK_GRAY);
+        updateItem = new JFrame("Edit Item");
+        updateItem.setSize(450, 400);
+        updateItem.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        updateItem.setLocationRelativeTo(null);
+        updateItem.setLayout(null);
+        updateItem.getContentPane().setBackground(Color.DARK_GRAY);
 
         UpdateItemMenu.setBounds(20, 25, 170, 23);
         UpdateItemMenu.setForeground(Color.WHITE);
-        update_item.add(UpdateItemMenu);
+        updateItem.add(UpdateItemMenu);
 
         JSeparator separatorLine = new JSeparator();
         separatorLine.setBounds(20, 45, 75, 5);
         separatorLine.setForeground(Color.LIGHT_GRAY);
-        update_item.add(separatorLine);
+        updateItem.add(separatorLine);
 
         gameOrDLC.setBounds(20, 60, 200, 23);
         gameOrDLC.setForeground(Color.WHITE);
-        update_item.add(gameOrDLC);
+        updateItem.add(gameOrDLC);
 
         updateGame.setBounds(150, 60, 70, 23);
         updateDLC.setBounds(220, 60, 80, 23);
@@ -104,8 +104,8 @@ public class EditItem {
         updateGame.setForeground(Color.WHITE);
         updateDLC.setBackground(Color.DARK_GRAY);
         updateDLC.setForeground(Color.WHITE);
-        update_item.add(updateGame);
-        update_item.add(updateDLC);
+        updateItem.add(updateGame);
+        updateItem.add(updateDLC);
         ButtonGroup bgUpdateItem = new ButtonGroup();
         updateDLC.addActionListener(new ActionListener() {
             @Override
@@ -125,7 +125,7 @@ public class EditItem {
         JSeparator separatorLine2 = new JSeparator();
         separatorLine2.setBounds(20, 90, 390, 5);
         separatorLine2.setForeground(Color.LIGHT_GRAY);
-        update_item.add(separatorLine2);
+        updateItem.add(separatorLine2);
 
         data = new Object[itemList.size()][6];
 
@@ -144,7 +144,7 @@ public class EditItem {
         itemTable = new JTable(model);
         JScrollPane scrollPane = new JScrollPane(itemTable);
         scrollPane.setBounds(20, 110, 390, 80);
-        update_item.add(scrollPane);
+        updateItem.add(scrollPane);
         itemTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         itemTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             @Override
@@ -167,23 +167,23 @@ public class EditItem {
 
         idItem.setBounds(20, 210, 200, 23);
         idItem.setForeground(Color.WHITE);
-        update_item.add(idItem);
+        updateItem.add(idItem);
 
         idField = new JTextField();
         idField.setBounds(130, 210, 260, 23);
         idField.setForeground(Color.WHITE);
         idField.setBackground(Color.DARK_GRAY);
-        update_item.add(idField);
+        updateItem.add(idField);
 
         btnSubmit.setBounds(40, 255, 160, 23);
         btnSubmit.setForeground(Color.WHITE);
         btnSubmit.setBackground(Color.decode("#717D7E"));
-        update_item.add(btnSubmit);
+        updateItem.add(btnSubmit);
 
         btnBack.setBounds(210, 255, 160, 23);
         btnBack.setForeground(Color.WHITE);
         btnBack.setBackground(Color.decode("#717D7E"));
-        update_item.add(btnBack);
+        updateItem.add(btnBack);
 
         itemTable.setBackground(Color.DARK_GRAY);
         itemTable.setForeground(Color.WHITE);
@@ -204,17 +204,17 @@ public class EditItem {
                 if (x != null) {
                     new EditItemGame(publisher, (String) x[2], (Integer) x[0]);
                 }
-                update_item.dispose();
+                updateItem.dispose();
 
             }
         });
-        update_item.setVisible(true);
+        updateItem.setVisible(true);
 
         btnBack.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 new HomePublisher(publisher);
-                update_item.dispose();
+                updateItem.dispose();
             }
         });
 

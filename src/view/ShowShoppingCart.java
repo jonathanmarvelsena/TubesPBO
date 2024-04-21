@@ -25,7 +25,7 @@ public class ShowShoppingCart {
     JButton btnGift = new JButton("Gift");
     JButton btnRemove = new JButton("Remove");
     JButton btnBack = new JButton("Back");
-    JLabel shoping_cart = new JLabel("Shopping Cart");
+    JLabel shopingCartLabel = new JLabel("Shopping Cart");
 
     public ShowShoppingCart(User user, ArrayList<ShoppingCart> cart) {
         container = new JFrame("Shopping Cart");
@@ -35,9 +35,9 @@ public class ShowShoppingCart {
         container.setLayout(null);
         container.getContentPane().setBackground(Color.DARK_GRAY);
 
-        shoping_cart.setBounds(20, 25, 200, 23);
-        shoping_cart.setForeground(Color.WHITE);
-        container.add(shoping_cart);
+        shopingCartLabel.setBounds(20, 25, 200, 23);
+        shopingCartLabel.setForeground(Color.WHITE);
+        container.add(shopingCartLabel);
 
         JSeparator separatorLine = new JSeparator();
         separatorLine.setBounds(20, 45, 80, 5);

@@ -24,9 +24,9 @@ import javax.swing.table.DefaultTableModel;
 
 import controller.Controller;
 
-public class ShowGameList {
+public class ShowItemList {
     Controller con = Controller.getInstance();
-    JFrame update_item;
+    JFrame showItemListFrame;
     JLabel UpdateItemMenu = new JLabel("Buy Item");
     JLabel gameOrDLC = new JLabel("Buy Game or DLC : ");
     JTextField itemField;
@@ -54,8 +54,9 @@ public class ShowGameList {
         } else if (updateGame.isSelected()) {
             itemType = "Game";
         }
+
         int count = 0;
-        ArrayList<Item> items = con.getLibrary(user);
+        ArrayList<Item> items = con.getAllItems();
         for (int i = 0; i < data.length; i++) {
             if (itemType.equals((String) data[i][2])) {
                 boolean found = false;
@@ -94,27 +95,27 @@ public class ShowGameList {
         itemTable.setModel(model);
     }
 
-    public ShowGameList(User user) {
+    public ShowItemList(User user) {
         this.user = user;
-        update_item = new JFrame("Show Game List");
-        update_item.setSize(450, 400);
-        update_item.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        update_item.setLocationRelativeTo(null);
-        update_item.setLayout(null);
-        update_item.getContentPane().setBackground(Color.DARK_GRAY);
+        showItemListFrame = new JFrame("Show Game List");
+        showItemListFrame.setSize(450, 400);
+        showItemListFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        showItemListFrame.setLocationRelativeTo(null);
+        showItemListFrame.setLayout(null);
+        showItemListFrame.getContentPane().setBackground(Color.DARK_GRAY);
 
         UpdateItemMenu.setBounds(20, 25, 170, 23);
         UpdateItemMenu.setForeground(Color.WHITE);
-        update_item.add(UpdateItemMenu);
+        showItemListFrame.add(UpdateItemMenu);
 
         JSeparator separatorLine = new JSeparator();
         separatorLine.setBounds(20, 45, 75, 5);
         separatorLine.setForeground(Color.LIGHT_GRAY);
-        update_item.add(separatorLine);
+        showItemListFrame.add(separatorLine);
 
         gameOrDLC.setBounds(20, 60, 200, 23);
         gameOrDLC.setForeground(Color.WHITE);
-        update_item.add(gameOrDLC);
+        showItemListFrame.add(gameOrDLC);
 
         updateGame.setBounds(150, 60, 70, 23);
         updateDLC.setBounds(220, 60, 80, 23);
@@ -122,8 +123,8 @@ public class ShowGameList {
         updateGame.setForeground(Color.WHITE);
         updateDLC.setBackground(Color.DARK_GRAY);
         updateDLC.setForeground(Color.WHITE);
-        update_item.add(updateGame);
-        update_item.add(updateDLC);
+        showItemListFrame.add(updateGame);
+        showItemListFrame.add(updateDLC);
         ButtonGroup bgUpdateItem = new ButtonGroup();
         updateDLC.addActionListener(new ActionListener() {
             @Override
@@ -143,7 +144,7 @@ public class ShowGameList {
         JSeparator separatorLine2 = new JSeparator();
         separatorLine2.setBounds(20, 90, 390, 5);
         separatorLine2.setForeground(Color.LIGHT_GRAY);
-        update_item.add(separatorLine2);
+        showItemListFrame.add(separatorLine2);
 
         ArrayList<Item> itemList = con.getAvailableItems();
         data = new Object[itemList.size()][6];
@@ -163,7 +164,7 @@ public class ShowGameList {
         itemTable = new JTable(model);
         JScrollPane scrollPane = new JScrollPane(itemTable);
         scrollPane.setBounds(20, 110, 390, 80);
-        update_item.add(scrollPane);
+        showItemListFrame.add(scrollPane);
         itemTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         itemTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             @Override
@@ -186,23 +187,23 @@ public class ShowGameList {
 
         idItem.setBounds(20, 210, 200, 23);
         idItem.setForeground(Color.WHITE);
-        update_item.add(idItem);
+        showItemListFrame.add(idItem);
 
         itemField = new JTextField();
         itemField.setBounds(130, 210, 260, 23);
         itemField.setForeground(Color.WHITE);
         itemField.setBackground(Color.DARK_GRAY);
-        update_item.add(itemField);
+        showItemListFrame.add(itemField);
 
         btnSubmit.setBounds(40, 255, 160, 23);
         btnSubmit.setForeground(Color.WHITE);
         btnSubmit.setBackground(Color.decode("#717D7E"));
-        update_item.add(btnSubmit);
+        showItemListFrame.add(btnSubmit);
 
         btnBack.setBounds(210, 255, 160, 23);
         btnBack.setForeground(Color.WHITE);
         btnBack.setBackground(Color.decode("#717D7E"));
-        update_item.add(btnBack);
+        showItemListFrame.add(btnBack);
 
         itemTable.setBackground(Color.DARK_GRAY);
         itemTable.setForeground(Color.WHITE);
@@ -227,17 +228,17 @@ public class ShowGameList {
                 if (item != null) {
                     con.insertIntoShoppingCart(user, item);
                 }
-                update_item.dispose();
+                showItemListFrame.dispose();
 
             }
         });
-        update_item.setVisible(true);
+        showItemListFrame.setVisible(true);
 
         btnBack.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 new HomeUser(user);
-                update_item.dispose();
+                showItemListFrame.dispose();
             }
         });
 

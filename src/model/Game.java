@@ -2,14 +2,12 @@ package model;
 
 import java.util.ArrayList;
 
-public class Game extends Item{
+public class Game extends Item {
     private ArrayList<DLC> DLC;
 
-    public Game(){
-        
-    }
+    public Game() {
 
-    
+    }
 
     public ArrayList<model.DLC> getDLC() {
         return DLC;

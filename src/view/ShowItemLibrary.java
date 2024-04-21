@@ -14,12 +14,12 @@ import model.User;
 import java.awt.Color;
 import java.util.ArrayList;
 
-public class ShowGameLibrary {
+public class ShowItemLibrary {
     Controller con = Controller.getInstance();
     JFrame container;
     JButton btnBack;
 
-    public ShowGameLibrary(User user, ArrayList<Item> library) {
+    public ShowItemLibrary(User user, ArrayList<Item> library) {
         container = new JFrame("Show Library");
         container.setSize(500, 380);
         container.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

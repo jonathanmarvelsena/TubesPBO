@@ -11,12 +11,19 @@ public class User extends Account {
     // shopping cart is stored locally, will be emptied if
     // user logs out or exits the program
 
+    private NotificationService notificationService;
+
     public User() {
 
     }
 
-    public User(String name, String password, int id) {
+    public User(String name, String password, int id, NotificationService notificationService) {
         super(name, password, id);
+        this.notificationService = notificationService;
+    }
+
+    public void notifyUser(String message) {
+        notificationService.sendNotification(message);
     }
 
     public double getWallet() {

@@ -13,58 +13,58 @@ import java.util.ArrayList;
 
 public class HomeUser {
     Controller con = Controller.getInstance();
-    JFrame home_user;
-    JButton btnShowGameList;
+    JFrame homeUser;
+    JButton btnShow;
     JButton btnTopup;
-    JButton btnShowGameLibrary;
+    JButton btnShowItemLibrary;
     JButton btnShoppingCart;
     JButton btnShowUserTransaction;
     JButton btnBack;
 
     public HomeUser(User user) {
-        home_user = new JFrame("Home ");
-        home_user.setSize(320, 350);
-        home_user.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        home_user.setLocationRelativeTo(null);
-        home_user.setLayout(null);
-        home_user.getContentPane().setBackground(Color.DARK_GRAY);
+        homeUser = new JFrame("Home ");
+        homeUser.setSize(320, 350);
+        homeUser.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        homeUser.setLocationRelativeTo(null);
+        homeUser.setLayout(null);
+        homeUser.getContentPane().setBackground(Color.DARK_GRAY);
 
         JLabel welcomeUser = new JLabel(" Welcome to Steam ");
         welcomeUser.setBounds(100, 25, 170, 23);
         welcomeUser.setForeground(Color.WHITE);
-        home_user.add(welcomeUser);
+        homeUser.add(welcomeUser);
 
         JSeparator separatorLine = new JSeparator();
         separatorLine.setBounds(80, 45, 150, 5);
         separatorLine.setForeground(Color.LIGHT_GRAY);
-        home_user.add(separatorLine);
+        homeUser.add(separatorLine);
 
-        btnShowGameList = new JButton("Game list");
-        btnShowGameList.setBounds(80, 60, 150, 23);
-        btnShowGameList.setForeground(Color.WHITE);
-        btnShowGameList.setBackground(Color.decode("#717D7E"));
-        home_user.add(btnShowGameList);
+        btnShow = new JButton("Game list");
+        btnShow.setBounds(80, 60, 150, 23);
+        btnShow.setForeground(Color.WHITE);
+        btnShow.setBackground(Color.decode("#717D7E"));
+        homeUser.add(btnShow);
 
-        btnShowGameList.addActionListener(new ActionListener() {
+        btnShow.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new ShowGameList(user);
-                home_user.dispose();
+                new ShowItemList(user);
+                homeUser.dispose();
             }
         });
 
-        btnShowGameLibrary = new JButton("Game Library");
-        btnShowGameLibrary.setBounds(80, 90, 150, 23);
-        btnShowGameLibrary.setForeground(Color.WHITE);
-        btnShowGameLibrary.setBackground(Color.decode("#717D7E"));
-        home_user.add(btnShowGameLibrary);
+        btnShowItemLibrary = new JButton("Game Library");
+        btnShowItemLibrary.setBounds(80, 90, 150, 23);
+        btnShowItemLibrary.setForeground(Color.WHITE);
+        btnShowItemLibrary.setBackground(Color.decode("#717D7E"));
+        homeUser.add(btnShowItemLibrary);
 
-        btnShowGameLibrary.addActionListener(new ActionListener() {
+        btnShowItemLibrary.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 ArrayList<Item> library = con.getLibrary(user);
-                new ShowGameLibrary(user, library);
-                home_user.dispose();
+                new ShowItemLibrary(user, library);
+                homeUser.dispose();
             }
         });
 
@@ -72,14 +72,14 @@ public class HomeUser {
         btnShoppingCart.setBounds(80, 120, 150, 23);
         btnShoppingCart.setForeground(Color.WHITE);
         btnShoppingCart.setBackground(Color.decode("#717D7E"));
-        home_user.add(btnShoppingCart);
+        homeUser.add(btnShoppingCart);
 
         btnShoppingCart.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 ArrayList<ShoppingCart> cart = user.getCart();
                 new ShowShoppingCart(user, cart);
-                home_user.dispose();
+                homeUser.dispose();
             }
         });
 
@@ -87,13 +87,13 @@ public class HomeUser {
         btnTopup.setBounds(80, 150, 150, 23);
         btnTopup.setForeground(Color.WHITE);
         btnTopup.setBackground(Color.decode("#717D7E"));
-        home_user.add(btnTopup);
+        homeUser.add(btnTopup);
 
         btnTopup.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 new TopUp(user);
-                home_user.dispose();
+                homeUser.dispose();
             }
         });
 
@@ -101,13 +101,13 @@ public class HomeUser {
         btnShowUserTransaction.setBounds(80, 180, 150, 23);
         btnShowUserTransaction.setForeground(Color.WHITE);
         btnShowUserTransaction.setBackground(Color.decode("#717D7E"));
-        home_user.add(btnShowUserTransaction);
+        homeUser.add(btnShowUserTransaction);
 
         btnShowUserTransaction.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 new ShowTransactionUser(user);
-                home_user.dispose();
+                homeUser.dispose();
             }
         });
 
@@ -115,23 +115,23 @@ public class HomeUser {
         btnBack.setBounds(80, 230, 150, 23);
         btnBack.setForeground(Color.WHITE);
         btnBack.setBackground(Color.decode("#717D7E"));
-        home_user.add(btnBack);
+        homeUser.add(btnBack);
 
         btnBack.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 new Login();
-                home_user.setVisible(false);
+                homeUser.setVisible(false);
             }
         });
 
-        btnShowGameList.addActionListener(new ActionListener() {
+        btnShow.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 new HomeUser(user);
-                home_user.setVisible(false);
+                homeUser.setVisible(false);
             }
         });
-        home_user.setVisible(true);
+        homeUser.setVisible(true);
     }
 }
