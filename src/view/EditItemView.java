@@ -24,7 +24,7 @@ import javax.swing.table.DefaultTableModel;
 
 import controller.Controller;
 
-public class EditItem {
+public class EditItemView {
     Controller con = Controller.getInstance();
     JFrame updateItem;
     JLabel UpdateItemMenu = new JLabel("Edit Item");
@@ -76,7 +76,7 @@ public class EditItem {
         itemTable.setModel(model);
     }
 
-    public EditItem(Publisher publisher, ArrayList<Item> itemList) {
+    public EditItemView(Publisher publisher, ArrayList<Item> itemList) {
         this.publisher = publisher;
         updateItem = new JFrame("Edit Item");
         updateItem.setSize(450, 400);
@@ -202,7 +202,7 @@ public class EditItem {
                     }
                 }
                 if (x != null) {
-                    new EditItemGame(publisher, (String) x[2], (Integer) x[0]);
+                    new EditGameView(publisher, (String) x[2], (Integer) x[0]);
                 }
                 updateItem.dispose();
 
@@ -213,7 +213,7 @@ public class EditItem {
         btnBack.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new HomePublisher(publisher);
+                new HomePublisherView(publisher);
                 updateItem.dispose();
             }
         });

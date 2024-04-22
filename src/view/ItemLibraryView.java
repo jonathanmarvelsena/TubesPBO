@@ -14,12 +14,12 @@ import model.User;
 import java.awt.Color;
 import java.util.ArrayList;
 
-public class ShowItemLibrary {
+public class ItemLibraryView {
     Controller con = Controller.getInstance();
     JFrame container;
     JButton btnBack;
 
-    public ShowItemLibrary(User user, ArrayList<Item> library) {
+    public ItemLibraryView(User user, ArrayList<Item> library) {
         container = new JFrame("Show Library");
         container.setSize(500, 380);
         container.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -66,7 +66,7 @@ public class ShowItemLibrary {
         btnBack.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new HomeUser(user);
+                new HomeUserView(user);
                 container.setVisible(false);
             }
         });

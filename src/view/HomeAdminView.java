@@ -16,7 +16,7 @@ import controller.Controller;
 import model.Admin;
 import model.User;
 
-public class HomeAdmin {
+public class HomeAdminView {
     Controller con = Controller.getInstance();
     JFrame homeAdmin;
     JButton btnViewAllUser;
@@ -26,7 +26,7 @@ public class HomeAdmin {
     JButton btnShowMonthlyTransaction;
     JButton btnShowUserTransaction;
 
-    public HomeAdmin(Admin admin) {
+    public HomeAdminView(Admin admin) {
         homeAdmin = new JFrame("Admin Main Menu");
         homeAdmin.setSize(300, 400);
         homeAdmin.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -69,7 +69,7 @@ public class HomeAdmin {
             @Override
             public void actionPerformed(ActionEvent e) {
                 ArrayList<User> nonBannedUsers = con.getUnbannedUsers();
-                new BanUser(admin, nonBannedUsers);
+                new BanUserView(admin, nonBannedUsers);
                 homeAdmin.setVisible(false);
             }
         });
@@ -84,7 +84,7 @@ public class HomeAdmin {
             @Override
             public void actionPerformed(ActionEvent e) {
                 ArrayList<User> bannedUsers = con.getBannedUsers();
-                new ShowBannedUser(admin, bannedUsers);
+                new BannedUserView(admin, bannedUsers);
                 homeAdmin.setVisible(false);
             }
         });
@@ -98,7 +98,7 @@ public class HomeAdmin {
         btnShowMonthlyTransaction.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new SelectMonthYear(admin);
+                new SelectMonthYearView(admin);
                 homeAdmin.setVisible(false);
             }
         });
@@ -112,7 +112,7 @@ public class HomeAdmin {
         btnShowUserTransaction.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new ShowUserTransactionAdmin(admin, con.getAllUserList());
+                new AllUserTransactionViewByAdmin(admin, con.getAllUserList());
                 homeAdmin.setVisible(false);
             }
         });
@@ -126,7 +126,7 @@ public class HomeAdmin {
         btnLogout.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new Login();
+                new LoginView();
                 homeAdmin.setVisible(false);
             }
         });

@@ -82,7 +82,7 @@ public class ViewAllUsers {
         btnBack.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new HomeAdmin(admin);
+                new HomeAdminView(admin);
                 container.setVisible(false);
             }
         });

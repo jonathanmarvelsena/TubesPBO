@@ -9,7 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
-public class HomePublisher {
+public class HomePublisherView {
     Controller con = Controller.getInstance();
     JFrame homePublisherFrame;
     JButton btnAddItem;
@@ -18,7 +18,7 @@ public class HomePublisher {
     JButton btnRemovedGame;
     JButton btnShowRemovedGame;
 
-    public HomePublisher(Publisher publisher) {
+    public HomePublisherView(Publisher publisher) {
         homePublisherFrame = new JFrame("Home");
         homePublisherFrame.setSize(300, 400);
         homePublisherFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -69,7 +69,7 @@ public class HomePublisher {
         btnBack.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new Login();
+                new LoginView();
                 homePublisherFrame.setVisible(false);
             }
         });
@@ -77,7 +77,7 @@ public class HomePublisher {
         btnAddItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new AddItem(publisher);
+                new AddItemView(publisher);
 
                 homePublisherFrame.dispose();
             }
@@ -87,7 +87,7 @@ public class HomePublisher {
             @Override
             public void actionPerformed(ActionEvent e) {
                 ArrayList<Item> removeItems = con.getRemovedItem();
-                new ShowRemovedGame(publisher, removeItems);
+                new RemovedGameView(publisher, removeItems);
                 homePublisherFrame.dispose();
             }
         });
@@ -96,7 +96,7 @@ public class HomePublisher {
             @Override
             public void actionPerformed(ActionEvent e) {
                 ArrayList<Item> items = con.getUnavailableItems();
-                new RemoveGame(publisher, items);
+                new RemoveGameView(publisher, items);
                 homePublisherFrame.dispose();
             }
         });
@@ -106,7 +106,7 @@ public class HomePublisher {
             @Override
             public void actionPerformed(ActionEvent e) {
                 ArrayList<Item> itemPublisher = con.getAllItems();
-                new EditItem(publisher, itemPublisher);
+                new EditItemView(publisher, itemPublisher);
                 homePublisherFrame.dispose();
             }
         });

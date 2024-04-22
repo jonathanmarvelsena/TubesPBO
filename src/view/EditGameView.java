@@ -11,17 +11,14 @@ import javax.swing.JOptionPane;
 import javax.swing.JSeparator;
 import javax.swing.JTextField;
 import controller.Controller;
-import model.EmailNotificationService;
 import model.Item;
 import model.ItemStatus;
-import model.NotificationService;
 import model.Publisher;
-import model.SMSNotificationService;
 import model.User;
 
 import java.util.ArrayList;
 
-public class EditItemGame {
+public class EditGameView {
     Controller con = Controller.getInstance();
     JFrame updateItem;
     JLabel updateItemMenu = null;
@@ -35,9 +32,9 @@ public class EditItemGame {
     JLabel status = new JLabel("status                    : ");
     JButton btnSubmit = new JButton("Submit");
     JButton btnBack = new JButton("Back");
-    String nameType = "";
+    String type = "";
 
-    public EditItemGame(Publisher publisher, String nameType, int id) {
+    public EditGameView(Publisher publisher, String type, int id) {
         Item item = null;
         for (Item v : con.getAvailableItems()) {
             if (v.getItemID() == id) {
@@ -45,10 +42,10 @@ public class EditItemGame {
                 break;
             }
         }
-        this.nameType = nameType;
-        updateItemMenu = new JLabel("Update " + nameType);
-        itemName = new JLabel(nameType + " Name               : ");
-        updateItem = new JFrame("Edit " + nameType);
+        this.type = type;
+        updateItemMenu = new JLabel("Update " + type);
+        itemName = new JLabel(type + " Name               : ");
+        updateItem = new JFrame("Edit " + type);
         updateItem.setSize(400, 300);
         updateItem.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         updateItem.setLocationRelativeTo(null);
@@ -127,7 +124,7 @@ public class EditItemGame {
                         }
                     }
 
-                    new EditItem(publisher, con.getAvailableItems());
+                    new EditItemView(publisher, con.getAvailableItems());
                     JOptionPane.showMessageDialog(null, "Update success");
                     updateItem.dispose();
                 } else {
@@ -140,7 +137,7 @@ public class EditItemGame {
         btnBack.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new EditItem(publisher, con.getAvailableItems());
+                new EditItemView(publisher, con.getAvailableItems());
                 updateItem.dispose();
             }
         });

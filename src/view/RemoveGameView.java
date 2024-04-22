@@ -19,14 +19,14 @@ import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-public class RemoveGame {
+public class RemoveGameView {
     Controller con = Controller.getInstance();
     JTextField id;
     JFrame container;
     JButton btnSubmit;
     JButton btnBack;
 
-    public RemoveGame(Publisher publisher, ArrayList<Item> nonBannedItems) {
+    public RemoveGameView(Publisher publisher, ArrayList<Item> nonBannedItems) {
         container = new JFrame("Removed Item");
         container.setSize(500, 380);
         container.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -103,7 +103,7 @@ public class RemoveGame {
         btnBack.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new HomePublisher(publisher);
+                new HomePublisherView(publisher);
                 container.setVisible(false);
             }
         });
@@ -122,7 +122,7 @@ public class RemoveGame {
                 if (ban) {
                     JOptionPane.showMessageDialog(container, "Game successfully removed", "Success",
                             JOptionPane.WARNING_MESSAGE);
-                    new HomePublisher(publisher);
+                    new HomePublisherView(publisher);
                     container.dispose();
                 } else {
                     JOptionPane.showMessageDialog(container, "Game Not Found", "Error",

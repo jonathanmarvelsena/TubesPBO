@@ -9,7 +9,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class TopUp {
+public class TopUpView {
     Controller con = Controller.getInstance();
     JFrame topUp;
     JLabel walletLabel = new JLabel("Top Up Wallet");
@@ -21,7 +21,7 @@ public class TopUp {
     JButton btnPay = new JButton("Pay");
     JButton btnBack = new JButton("Back");
 
-    public TopUp(User user) {
+    public TopUpView(User user) {
         topUp = new JFrame("Top Up");
         topUp.setSize(400, 240);
         topUp.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -70,10 +70,10 @@ public class TopUp {
             @Override
             public void actionPerformed(ActionEvent e) {
                 double topUpAmount = Double.parseDouble(topUpAmountField.getText());
-                boolean insert = con.updateWallet(user, topUpAmount);
+                boolean insert = con.topUpWallet(user, topUpAmount);
                 if (insert) {
                     JOptionPane.showMessageDialog(null, "Top Up successful");
-                    new HomeUser(user);
+                    new HomeUserView(user);
                     topUp.dispose();
                 } else {
                     JOptionPane.showMessageDialog(null, "Top Up failed");
@@ -85,7 +85,7 @@ public class TopUp {
         btnBack.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new HomeUser(user);
+                new HomeUserView(user);
                 topUp.setVisible(false);
             }
         });

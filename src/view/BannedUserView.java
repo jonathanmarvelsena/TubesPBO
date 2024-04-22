@@ -23,12 +23,12 @@ import model.User;
  *
  * @author abil
  */
-public class ShowBannedUser {
+public class BannedUserView {
     Controller con = Controller.getInstance();
     JFrame container;
     JButton btnBack;
 
-    public ShowBannedUser(Admin admin, ArrayList<User> bannedUsers) {
+    public BannedUserView(Admin admin, ArrayList<User> bannedUsers) {
         container = new JFrame("Show Banned Users");
         container.setSize(500, 380);
         container.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -82,7 +82,7 @@ public class ShowBannedUser {
         btnBack.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new HomeAdmin(admin);
+                new HomeAdminView(admin);
                 container.setVisible(false);
             }
         });

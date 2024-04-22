@@ -1,13 +1,17 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
 package view;
 
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
 import javax.swing.JTable;
@@ -16,7 +20,6 @@ import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
-
 import controller.Controller;
 import model.Admin;
 import model.User;
@@ -25,30 +28,33 @@ import model.User;
  *
  * @author abil
  */
-public class ShowUserTransactionAdmin {
+public class BanUserView {
     Controller con = Controller.getInstance();
     JFrame container;
-    JButton btnBack, btnSelect;
+    JButton btnBack;
+    JTextField id;
+    JButton btnViewAllUser;
+    JButton btnRegister;
 
-    public ShowUserTransactionAdmin(Admin admin, ArrayList<User> users) {
-        container = new JFrame("Show User Transaction");
+    public BanUserView(Admin admin, ArrayList<User> nonBannedUsers) {
+        container = new JFrame("Ban User");
         container.setSize(500, 380);
         container.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         container.setLocationRelativeTo(null);
         container.setLayout(null);
         container.getContentPane().setBackground(Color.DARK_GRAY);
 
-        JLabel title = new JLabel("Show User Transaction");
+        JLabel title = new JLabel("Ban User");
         title.setBounds(15, 15, 150, 23);
         title.setForeground(Color.WHITE);
         container.add(title);
 
         String[] columnNames = { "ID", "Name", "Status", "Wallet" };
 
-        Object[][] data = new Object[users.size()][4];
+        Object[][] data = new Object[nonBannedUsers.size()][4];
 
-        for (int i = 0; i < users.size(); i++) {
-            User user = users.get(i);
+        for (int i = 0; i < nonBannedUsers.size(); i++) {
+            User user = nonBannedUsers.get(i);
             data[i][0] = user.getId();
             data[i][1] = user.getName();
             data[i][2] = user.getStatus().toString();
@@ -60,30 +66,30 @@ public class ShowUserTransactionAdmin {
         JTable userTable = new JTable(model);
 
         JScrollPane scrollPane = new JScrollPane(userTable);
-        scrollPane.setBounds(15, 50, 450, 100);
+        scrollPane.setBounds(15, 50, 450, 150);
         container.add(scrollPane);
-
-        JSeparator separatorLine = new JSeparator();
-        separatorLine.setBounds(15, 180, 450, 5);
-        separatorLine.setForeground(Color.LIGHT_GRAY);
-        container.add(separatorLine);
-
-        JLabel inputid = new JLabel("User ID");
-        inputid.setBounds(15, 200, 100, 23);
-        inputid.setForeground(Color.WHITE);
-        inputid.setBackground(Color.decode("#717D7E"));
-        container.add(inputid);
-        JTextField input = new JTextField();
-        input.setBounds(90, 200, 375, 23);
-        input.setForeground(Color.WHITE);
-        input.setBackground(Color.DARK_GRAY);
-        container.add(input);
 
         userTable.setBackground(Color.DARK_GRAY);
         userTable.setForeground(Color.WHITE);
         userTable.getTableHeader().setBackground(Color.DARK_GRAY);
         userTable.getTableHeader().setForeground(Color.WHITE);
         scrollPane.getViewport().setBackground(Color.DARK_GRAY);
+
+        JSeparator garisPemisah = new JSeparator();
+        garisPemisah.setBounds(15, 230, 450, 5);
+        garisPemisah.setForeground(Color.LIGHT_GRAY);
+        container.add(garisPemisah);
+
+        // Account Id
+        JLabel labelName = new JLabel("ID of user to ban");
+        id = new JTextField();
+        labelName.setBounds(15, 250, 150, 23);
+        id.setBounds(160, 250, 305, 23);
+        labelName.setForeground(Color.WHITE);
+        id.setForeground(Color.WHITE);
+        id.setBackground(Color.DARK_GRAY);
+        container.add(labelName);
+        container.add(id);
 
         userTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         userTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
@@ -100,28 +106,14 @@ public class ShowUserTransactionAdmin {
                     return;
                 }
                 int index = Integer.parseInt(s);
-                input.setText(String.valueOf((Integer) data[index][0]));
+                id.setText(String.valueOf((Integer) data[index][0]));
 
             }
         });
 
-        btnSelect = new JButton("Select");
-        btnSelect.setBounds(90, 240, 180, 23);
-        btnSelect.setForeground(Color.WHITE);
-        btnSelect.setBackground(Color.decode("#717D7E"));
-        container.add(btnSelect);
-
-        btnSelect.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                User user = con.getUserById(Integer.parseInt(input.getText()));
-                new ShowTransactionUserByAdmin(user, admin);
-                container.setVisible(false);
-            }
-        });
-
+        // Bagian Button Back
         btnBack = new JButton("Back");
-        btnBack.setBounds(290, 240, 180, 23);
+        btnBack.setBounds(326, 290, 140, 23);
         btnBack.setForeground(Color.WHITE);
         btnBack.setBackground(Color.decode("#717D7E"));
         container.add(btnBack);
@@ -129,7 +121,31 @@ public class ShowUserTransactionAdmin {
         btnBack.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new HomeAdmin(admin);
+                new HomeAdminView(admin);
+                container.setVisible(false);
+            }
+        });
+
+        // Bagian Button Banned
+        btnBack = new JButton("Ban User");
+        btnBack.setBounds(160, 290, 140, 23);
+        btnBack.setForeground(Color.WHITE);
+        btnBack.setBackground(Color.decode("#717D7E"));
+        container.add(btnBack);
+
+        btnBack.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                boolean ban = con.banUser(Integer.parseInt(id.getText()));
+                if (ban) {
+                    JOptionPane.showMessageDialog(container, "User succesfully banned", "Success",
+                            JOptionPane.WARNING_MESSAGE);
+                } else {
+                    JOptionPane.showMessageDialog(container, "User not found", "Error",
+                            JOptionPane.WARNING_MESSAGE);
+                }
+                new BanUserView(admin, nonBannedUsers);
                 container.setVisible(false);
             }
         });

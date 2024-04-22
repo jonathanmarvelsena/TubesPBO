@@ -24,7 +24,7 @@ import javax.swing.table.DefaultTableModel;
 
 import controller.Controller;
 
-public class ShowItemList {
+public class ItemListView {
     Controller con = Controller.getInstance();
     JFrame showItemListFrame;
     JLabel UpdateItemMenu = new JLabel("Buy Item");
@@ -95,7 +95,7 @@ public class ShowItemList {
         itemTable.setModel(model);
     }
 
-    public ShowItemList(User user) {
+    public ItemListView(User user) {
         this.user = user;
         showItemListFrame = new JFrame("Show Game List");
         showItemListFrame.setSize(450, 400);
@@ -237,7 +237,7 @@ public class ShowItemList {
         btnBack.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new HomeUser(user);
+                new HomeUserView(user);
                 showItemListFrame.dispose();
             }
         });

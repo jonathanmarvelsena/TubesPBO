@@ -25,7 +25,7 @@ import javax.swing.JSeparator;
  *
  * @author abil
  */
-public class Login {
+public class LoginView {
     Controller con = Controller.getInstance();
 
     JFrame container;
@@ -34,7 +34,7 @@ public class Login {
     JButton btnLogin;
     JButton btnRegister;
 
-    public Login() {
+    public LoginView() {
         container = new JFrame("Login");
         container.setSize(480, 300);
         container.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -85,15 +85,15 @@ public class Login {
                     }
                     container.dispose();
                     JOptionPane.showMessageDialog(null, "Login successful");
-                    new HomeUser((User) loggedInUser);
+                    new HomeUserView((User) loggedInUser);
                 } else if (loggedInUser instanceof Admin) {
                     container.dispose();
                     JOptionPane.showMessageDialog(null, "Login successful");
-                    new HomeAdmin((Admin) loggedInUser);
+                    new HomeAdminView((Admin) loggedInUser);
                 } else if (loggedInUser instanceof Publisher) {
                     container.dispose();
                     JOptionPane.showMessageDialog(null, "Login successful");
-                    new HomePublisher((Publisher) loggedInUser);
+                    new HomePublisherView((Publisher) loggedInUser);
                 } else {
                     JOptionPane.showMessageDialog(container, "Email or password incorrect", "User not found",
                             JOptionPane.WARNING_MESSAGE);
@@ -120,7 +120,7 @@ public class Login {
         btnRegister.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new Register();
+                new RegisterView();
                 container.setVisible(false);
             }
         });

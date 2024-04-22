@@ -23,7 +23,7 @@ import javax.swing.table.DefaultTableModel;
 
 import controller.Controller;
 
-public class SelectGiftUser {
+public class SelectGiftUserView {
     Controller con = Controller.getInstance();
     JFrame update_item;
     JLabel UpdateItemMenu = new JLabel("Select User");
@@ -45,7 +45,7 @@ public class SelectGiftUser {
         itemTable.setModel(model);
     }
 
-    public SelectGiftUser(User user, ArrayList<ShoppingCart> cart, double total) {
+    public SelectGiftUserView(User user, ArrayList<ShoppingCart> cart, double total) {
         this.user = user;
         this.cart = cart;
         update_item = new JFrame("Add Item");
@@ -139,9 +139,9 @@ public class SelectGiftUser {
                     total += con.getItemById(cart.get(i).getitemID()).getPrice();
                 }
 
-                new ShowShoppingCart(user, cart);
+                new ShoppingCartView(user, cart);
                 update_item.setVisible(false);
-                con.updateWallet(user, -total);
+                con.topUpWallet(user, -total);
 
                 ArrayList<ShoppingCart> copyCart = new ArrayList<>(cart);
                 for (ShoppingCart c : copyCart) {
@@ -152,7 +152,7 @@ public class SelectGiftUser {
                 }
 
                 JOptionPane.showMessageDialog(null, "Gift successful");
-                new HomeUser(user);
+                new HomeUserView(user);
                 update_item.setVisible(false);
             }
         });
@@ -162,7 +162,7 @@ public class SelectGiftUser {
         btnBack.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new ShowShoppingCart(user, cart);
+                new ShoppingCartView(user, cart);
                 update_item.setVisible(false);
             }
         });

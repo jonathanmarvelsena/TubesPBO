@@ -202,7 +202,7 @@ public class Controller {
         }
     }
 
-    public boolean updateWallet(User user, double topUpAmount) {
+    public boolean topUpWallet(User user, double topUpAmount) {
         conn.connect();
         double currentWalletAmount = user.getWallet();
         double updatedWalletAmount = currentWalletAmount + topUpAmount;

@@ -18,7 +18,7 @@ import controller.Controller;
 import model.ShoppingCart;
 import model.User;
 
-public class ShowShoppingCart {
+public class ShoppingCartView {
     Controller con = Controller.getInstance();
     JFrame container;
     JButton btnBuy = new JButton("Buy");
@@ -27,7 +27,7 @@ public class ShowShoppingCart {
     JButton btnBack = new JButton("Back");
     JLabel shopingCartLabel = new JLabel("Shopping Cart");
 
-    public ShowShoppingCart(User user, ArrayList<ShoppingCart> cart) {
+    public ShoppingCartView(User user, ArrayList<ShoppingCart> cart) {
         container = new JFrame("Shopping Cart");
         container.setSize(480, 400);
         container.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -131,11 +131,11 @@ public class ShowShoppingCart {
                             cart.add(c);
                         }
                     }
-                    con.updateWallet(user, -total);
+                    con.topUpWallet(user, -total);
                     JOptionPane.showMessageDialog(null, "Total Purchase : " + total);
                     JOptionPane.showMessageDialog(null, "Purchase Succesful");
                 }
-                new HomeUser(user);
+                new HomeUserView(user);
                 container.setVisible(false);
             }
         });
@@ -157,7 +157,7 @@ public class ShowShoppingCart {
                 if (user.getWallet() < total) {
                     JOptionPane.showMessageDialog(null, "Wallet funds not enough");
                 } else {
-                    new SelectGiftUser(user, cart, total);
+                    new SelectGiftUserView(user, cart, total);
                     container.setVisible(false);
                 }
             }
@@ -213,7 +213,7 @@ public class ShowShoppingCart {
         btnBack.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new HomeUser(user);
+                new HomeUserView(user);
                 container.setVisible(false);
             }
         });

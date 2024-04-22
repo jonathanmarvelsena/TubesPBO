@@ -14,13 +14,13 @@ import model.Publisher;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class ShowRemovedGame {
+public class RemovedGameView {
     Controller con = Controller.getInstance();
     JTextField id;
     JFrame container;
     JButton btnBack;
 
-    public ShowRemovedGame(Publisher publisher, ArrayList<Item> bannedItems) {
+    public RemovedGameView(Publisher publisher, ArrayList<Item> bannedItems) {
         container = new JFrame("Ban User");
         container.setSize(500, 380);
         container.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -66,7 +66,7 @@ public class ShowRemovedGame {
         btnBack.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new HomePublisher(publisher);
+                new HomePublisherView(publisher);
                 container.setVisible(false);
             }
         });

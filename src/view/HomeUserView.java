@@ -11,7 +11,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
-public class HomeUser {
+public class HomeUserView {
     Controller con = Controller.getInstance();
     JFrame homeUser;
     JButton btnShow;
@@ -21,7 +21,7 @@ public class HomeUser {
     JButton btnShowUserTransaction;
     JButton btnBack;
 
-    public HomeUser(User user) {
+    public HomeUserView(User user) {
         homeUser = new JFrame("Home ");
         homeUser.setSize(320, 350);
         homeUser.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -48,7 +48,7 @@ public class HomeUser {
         btnShow.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new ShowItemList(user);
+                new ItemListView(user);
                 homeUser.dispose();
             }
         });
@@ -63,7 +63,7 @@ public class HomeUser {
             @Override
             public void actionPerformed(ActionEvent e) {
                 ArrayList<Item> library = con.getLibrary(user);
-                new ShowItemLibrary(user, library);
+                new ItemLibraryView(user, library);
                 homeUser.dispose();
             }
         });
@@ -78,7 +78,7 @@ public class HomeUser {
             @Override
             public void actionPerformed(ActionEvent e) {
                 ArrayList<ShoppingCart> cart = user.getCart();
-                new ShowShoppingCart(user, cart);
+                new ShoppingCartView(user, cart);
                 homeUser.dispose();
             }
         });
@@ -92,7 +92,7 @@ public class HomeUser {
         btnTopup.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new TopUp(user);
+                new TopUpView(user);
                 homeUser.dispose();
             }
         });
@@ -106,7 +106,7 @@ public class HomeUser {
         btnShowUserTransaction.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new ShowTransactionUser(user);
+                new UserTransactionView(user);
                 homeUser.dispose();
             }
         });
@@ -120,7 +120,7 @@ public class HomeUser {
         btnBack.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new Login();
+                new LoginView();
                 homeUser.setVisible(false);
             }
         });
@@ -128,7 +128,7 @@ public class HomeUser {
         btnShow.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new HomeUser(user);
+                new HomeUserView(user);
                 homeUser.setVisible(false);
             }
         });

@@ -7,7 +7,6 @@ package view;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -24,7 +23,7 @@ import model.User;
  *
  * @author abil
  */
-public class Register {
+public class RegisterView {
     Controller con = Controller.getInstance();
 
     JFrame container;
@@ -33,7 +32,7 @@ public class Register {
     JButton btnBack;
     JButton btnRegister;
 
-    public Register() {
+    public RegisterView() {
 
         container = new JFrame("Register");
         container.setSize(480, 300);
@@ -81,17 +80,16 @@ public class Register {
             public void actionPerformed(ActionEvent e) {
                 String name = username.getText();
                 String pass = new String(password.getPassword());
-                // ArrayList<User> listUser = con.getAllUserList();
 
                 Account newAccount = con.getUser(name, pass);
-                // User newUser = new User(name, pass, listUser.size() + 1);
+
                 User newUser = (User) newAccount;
 
                 boolean cek = con.insertNewUser(newUser);
                 if (cek) {
                     JOptionPane.showMessageDialog(container, "Register successful", "Error",
                             JOptionPane.WARNING_MESSAGE);
-                    new HomeUser(newUser);
+                    new HomeUserView(newUser);
                     container.dispose();
                 } else {
                     JOptionPane.showMessageDialog(container, "Register failed", "Error",
@@ -111,7 +109,7 @@ public class Register {
         btnBack.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new Login();
+                new LoginView();
                 container.setVisible(false);
             }
         });

@@ -24,7 +24,7 @@ import model.Item;
 
 import javax.swing.JOptionPane;
 
-public class AddItem {
+public class AddItemView {
     Controller con = Controller.getInstance();
     JFrame addItem;
     JLabel addItemMenu = new JLabel("Add Item");
@@ -72,7 +72,7 @@ public class AddItem {
         currY += height + 5;
     }
 
-    public AddItem(Publisher publisher) {
+    public AddItemView(Publisher publisher) {
         addItem = new JFrame("Add Item");
         addItem.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         addItem.setLocationRelativeTo(null);
@@ -192,7 +192,7 @@ public class AddItem {
                         boolean insert = con.insertNewGame(game, publisher);
                         if (insert) {
                             JOptionPane.showMessageDialog(null, "Insert successful");
-                            new HomePublisher(publisher);
+                            new HomePublisherView(publisher);
                             addItem.dispose();
 
                             for (User user : userList) {
@@ -215,7 +215,7 @@ public class AddItem {
                         boolean insert = con.insertNewDLC(dlc, publisher);
                         if (insert) {
                             JOptionPane.showMessageDialog(null, "Insert successful");
-                            new HomePublisher(publisher);
+                            new HomePublisherView(publisher);
                             addItem.dispose();
 
                             for (User user : userList) {
@@ -238,7 +238,7 @@ public class AddItem {
         btnBack.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new HomePublisher(publisher);
+                new HomePublisherView(publisher);
                 addItem.dispose();
             }
         });

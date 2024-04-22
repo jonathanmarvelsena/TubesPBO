@@ -20,12 +20,13 @@ import model.ShoppingCart;
  *
  * @author abil
  */
-public class ShowTransactionUserByAdmin {
+public class SpecificUserTransactionViewByAdmin {
     Controller con = Controller.getInstance();
     JFrame container;
     JButton btnBack;
 
-    public ShowTransactionUserByAdmin(User user, Admin admin) {
+    public SpecificUserTransactionViewByAdmin(User user, Admin admin) {
+        System.out.println("UTV by Admin");
         container = new JFrame("Show User Transaction");
         container.setSize(480, 300);
         container.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -82,7 +83,7 @@ public class ShowTransactionUserByAdmin {
         btnBack.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new ShowUserTransactionAdmin(admin, con.getAllUserList());
+                new AllUserTransactionViewByAdmin(admin, con.getAllUserList());
                 container.setVisible(false);
             }
         });
