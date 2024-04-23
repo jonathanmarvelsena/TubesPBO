@@ -1,4 +1,5 @@
 package view;
+
 import model.Item;
 import model.Publisher;
 
@@ -23,45 +24,45 @@ import javax.swing.table.DefaultTableModel;
 
 import controller.Controller;
 
-public class EditItem {
-        Controller con = Controller.getInstance();
-        JFrame update_item;
-        JLabel UpdateItemMenu = new JLabel("Update Item");
-        JLabel gameOrDLC = new JLabel("Update Game or DLC : ");
-        JTextField isiIdGameOrDLC;
-        JLabel idItem = new JLabel("ID Game/DLC : ");
-        JTextField isiNamaItem;
-        JLabel namaItem = new JLabel("Game/DLC Name : ");
-        JTextField isideskripsi;
-        JLabel deskripsi = new JLabel("Deskripsi              : ");
-        JTextField isiHarga;
-        JLabel harga = new JLabel("Price                      : ");
-        JButton btnSubmit = new JButton("Submit");
-        JButton btnBack = new JButton("Back");
-        JRadioButton updateGame = new JRadioButton("Game");
-        JRadioButton updateDLC = new JRadioButton("DLC");
-        Object[][] data = null;
-        JTable itemTable = null;
-        String[] columnNames = {"ID", "Name", "Type", "Description","Price","Publisher Name"};
-        Publisher publisher;
+public class EditItemView {
+    Controller con = Controller.getInstance();
+    JFrame updateItem;
+    JLabel UpdateItemMenu = new JLabel("Edit Item");
+    JLabel gameOrDLC = new JLabel("Edit Game or DLC : ");
+    JTextField idField;
+    JLabel idItem = new JLabel("ID Game/DLC : ");
+    JTextField itemNameField;
+    JLabel itemName = new JLabel("Game/DLC Name : ");
+    JTextField descriptionField;
+    JLabel description = new JLabel("Description    : ");
+    JTextField priceField;
+    JLabel price = new JLabel("Price    : ");
+    JButton btnSubmit = new JButton("Submit");
+    JButton btnBack = new JButton("Back");
+    JRadioButton updateGame = new JRadioButton("Game");
+    JRadioButton updateDLC = new JRadioButton("DLC");
+    Object[][] data = null;
+    JTable itemTable = null;
+    String[] columnNames = { "ID", "Name", "Type", "Description", "Price", "Publisher Name" };
+    Publisher publisher;
 
-    Object[][] getDataItem()
-    {
+    Object[][] getDataItem() {
         String game = "";
-        if (updateDLC.isSelected()) { game = "DLC"; }
-        else if (updateGame.isSelected()) { game = "Game"; }
+        if (updateDLC.isSelected()) {
+            game = "DLC";
+        } else if (updateGame.isSelected()) {
+            game = "Game";
+        }
         int cnt = 0;
         for (int i = 0; i < data.length; i++) {
-            if (game.equals((String)data[i][2]) && (Integer)data[i][5] == publisher.getId())
-            {
+            if (game.equals((String) data[i][2]) && (Integer) data[i][5] == publisher.getId()) {
                 cnt++;
             }
         }
-        Object[][] data2 = new Object[cnt][6]; 
+        Object[][] data2 = new Object[cnt][6];
         int cnt2 = 0;
         for (int i = 0; i < data.length; i++) {
-            if (game.equals(data[i][2]) && (Integer)data[i][5] == publisher.getId())
-            {
+            if (game.equals(data[i][2]) && (Integer) data[i][5] == publisher.getId()) {
                 data2[cnt2] = data[i];
                 cnt2++;
             }
@@ -69,34 +70,33 @@ public class EditItem {
         return data2;
     }
 
-    public void loadTable()
-    {
+    public void loadTable() {
         itemTable.clearSelection();
         DefaultTableModel model = new DefaultTableModel(getDataItem(), columnNames);
         itemTable.setModel(model);
     }
 
-    public EditItem (Publisher publisher,ArrayList<Item> itemList){
+    public EditItemView(Publisher publisher, ArrayList<Item> itemList) {
         this.publisher = publisher;
-        update_item = new JFrame("Add Item");
-        update_item.setSize(450, 400);
-        update_item.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        update_item.setLocationRelativeTo(null);
-        update_item.setLayout(null);
-        update_item.getContentPane().setBackground(Color.DARK_GRAY);
+        updateItem = new JFrame("Edit Item");
+        updateItem.setSize(450, 400);
+        updateItem.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        updateItem.setLocationRelativeTo(null);
+        updateItem.setLayout(null);
+        updateItem.getContentPane().setBackground(Color.DARK_GRAY);
 
         UpdateItemMenu.setBounds(20, 25, 170, 23);
         UpdateItemMenu.setForeground(Color.WHITE);
-        update_item.add(UpdateItemMenu);
+        updateItem.add(UpdateItemMenu);
 
-        JSeparator garisPemisah = new JSeparator();
-        garisPemisah.setBounds(20, 45, 75, 5);
-        garisPemisah.setForeground(Color.LIGHT_GRAY);
-        update_item.add(garisPemisah);
+        JSeparator separatorLine = new JSeparator();
+        separatorLine.setBounds(20, 45, 75, 5);
+        separatorLine.setForeground(Color.LIGHT_GRAY);
+        updateItem.add(separatorLine);
 
         gameOrDLC.setBounds(20, 60, 200, 23);
         gameOrDLC.setForeground(Color.WHITE);
-        update_item.add(gameOrDLC);
+        updateItem.add(gameOrDLC);
 
         updateGame.setBounds(150, 60, 70, 23);
         updateDLC.setBounds(220, 60, 80, 23);
@@ -104,8 +104,8 @@ public class EditItem {
         updateGame.setForeground(Color.WHITE);
         updateDLC.setBackground(Color.DARK_GRAY);
         updateDLC.setForeground(Color.WHITE);
-        update_item.add(updateGame);
-        update_item.add(updateDLC);
+        updateItem.add(updateGame);
+        updateItem.add(updateDLC);
         ButtonGroup bgUpdateItem = new ButtonGroup();
         updateDLC.addActionListener(new ActionListener() {
             @Override
@@ -122,66 +122,68 @@ public class EditItem {
         bgUpdateItem.add(updateGame);
         bgUpdateItem.add(updateDLC);
 
-        JSeparator garisPemisah2 = new JSeparator();
-        garisPemisah2.setBounds(20, 90, 390, 5);
-        garisPemisah2.setForeground(Color.LIGHT_GRAY);
-        update_item.add(garisPemisah2);
+        JSeparator separatorLine2 = new JSeparator();
+        separatorLine2.setBounds(20, 90, 390, 5);
+        separatorLine2.setForeground(Color.LIGHT_GRAY);
+        updateItem.add(separatorLine2);
 
-
-        data = new Object[itemList.size()][6]; 
+        data = new Object[itemList.size()][6];
 
         for (int i = 0; i < itemList.size(); i++) {
             Item item = itemList.get(i);
-            data[i][0] = item.getItemID(); 
-            data[i][1] = item.getName(); 
+            data[i][0] = item.getItemID();
+            data[i][1] = item.getName();
             data[i][2] = item.getType();
-            data[i][3] = item.getDescription(); 
+            data[i][3] = item.getDescription();
             data[i][4] = item.getPrice();
-            data[i][5] = item.getPublisherID(); 
+            data[i][5] = item.getPublisherID();
         }
-    
+
         DefaultTableModel model = new DefaultTableModel(new Object[0][0], columnNames);
 
         itemTable = new JTable(model);
         JScrollPane scrollPane = new JScrollPane(itemTable);
         scrollPane.setBounds(20, 110, 390, 80);
-        update_item.add(scrollPane);
+        updateItem.add(scrollPane);
         itemTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         itemTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             @Override
-            public void valueChanged(ListSelectionEvent e)
-            {
-                if (e.getValueIsAdjusting()) { return; }
+            public void valueChanged(ListSelectionEvent e) {
+                if (e.getValueIsAdjusting()) {
+                    return;
+                }
                 String src = e.getSource().toString();
                 int start = src.indexOf("{") + 1;
                 int stop = src.length() - 1;
                 String s = src.substring(start, stop);
-                if (s.isEmpty()) { return; }
+                if (s.isEmpty()) {
+                    return;
+                }
                 int index = Integer.parseInt(s);
-                isiIdGameOrDLC.setText(String.valueOf((Integer)getDataItem()[index][0]));
+                idField.setText(String.valueOf((Integer) getDataItem()[index][0]));
 
             }
         });
-  
+
         idItem.setBounds(20, 210, 200, 23);
         idItem.setForeground(Color.WHITE);
-        update_item.add(idItem);
+        updateItem.add(idItem);
 
-        isiIdGameOrDLC = new JTextField();
-        isiIdGameOrDLC.setBounds(130, 210, 260, 23);
-        isiIdGameOrDLC.setForeground(Color.WHITE);
-        isiIdGameOrDLC.setBackground(Color.DARK_GRAY);
-        update_item.add(isiIdGameOrDLC);
+        idField = new JTextField();
+        idField.setBounds(130, 210, 260, 23);
+        idField.setForeground(Color.WHITE);
+        idField.setBackground(Color.DARK_GRAY);
+        updateItem.add(idField);
 
         btnSubmit.setBounds(40, 255, 160, 23);
         btnSubmit.setForeground(Color.WHITE);
         btnSubmit.setBackground(Color.decode("#717D7E"));
-        update_item.add(btnSubmit);
+        updateItem.add(btnSubmit);
 
         btnBack.setBounds(210, 255, 160, 23);
         btnBack.setForeground(Color.WHITE);
         btnBack.setBackground(Color.decode("#717D7E"));
-        update_item.add(btnBack);
+        updateItem.add(btnBack);
 
         itemTable.setBackground(Color.DARK_GRAY);
         itemTable.setForeground(Color.WHITE);
@@ -189,34 +191,33 @@ public class EditItem {
         itemTable.getTableHeader().setForeground(Color.WHITE);
         scrollPane.getViewport().setBackground(Color.DARK_GRAY);
 
-
         btnSubmit.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 Object[] x = null;
-                for (Object[] v : data)
-                {
-                    if (String.valueOf(v[0]).equals(isiIdGameOrDLC.getText()))
-                    {
+                for (Object[] v : data) {
+                    if (String.valueOf(v[0]).equals(idField.getText())) {
                         x = v;
                         break;
                     }
                 }
-                if (x != null) { new EditItemGame(publisher, (String)x[2], (Integer)x[0]); }
-                update_item.dispose();
+                if (x != null) {
+                    new EditGameView(publisher, (String) x[2], (Integer) x[0]);
+                }
+                updateItem.dispose();
 
             }
         });
-        update_item.setVisible(true);
+        updateItem.setVisible(true);
 
         btnBack.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new HomePublisher(publisher);
-                update_item.dispose();
+                new HomePublisherView(publisher);
+                updateItem.dispose();
             }
-        });        
+        });
 
     }
-    
+
 }

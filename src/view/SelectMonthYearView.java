@@ -11,12 +11,11 @@ import javax.swing.JLabel;
 import javax.swing.JSeparator;
 import javax.swing.JTextField;
 
-
 import controller.Controller;
 import model.Admin;
 import model.ShoppingCart;
 
-public class SelectMonthYear {
+public class SelectMonthYearView {
     Controller con = Controller.getInstance();
     JTextField year;
     JTextField month;
@@ -24,7 +23,7 @@ public class SelectMonthYear {
     JButton btnBack;
     JButton search;
 
-    public SelectMonthYear(Admin admin) {
+    public SelectMonthYearView(Admin admin) {
         container = new JFrame("Show Monthly Transaction");
         container.setSize(480, 400);
         container.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -36,7 +35,7 @@ public class SelectMonthYear {
         title.setBounds(15, 15, 150, 23);
         title.setForeground(Color.WHITE);
         container.add(title);
-        
+
         JSeparator garisPemisah = new JSeparator();
         garisPemisah.setBounds(28, 150, 410, 5);
         garisPemisah.setForeground(Color.LIGHT_GRAY);
@@ -64,7 +63,7 @@ public class SelectMonthYear {
         container.add(labelMonth);
         container.add(month);
 
-        //Bagian Button Back
+        // Bagian Button Back
         btnBack = new JButton("Back");
         btnBack.setBounds(270, 252, 150, 23);
         btnBack.setForeground(Color.WHITE);
@@ -74,12 +73,12 @@ public class SelectMonthYear {
         btnBack.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new HomeAdmin(admin);
+                new HomeAdminView(admin);
                 container.setVisible(false);
             }
         });
 
-        //Bagian Button Search
+        // Bagian Button Search
         search = new JButton("Search");
         search.setBounds(100, 252, 140, 23);
         search.setForeground(Color.WHITE);
@@ -87,13 +86,13 @@ public class SelectMonthYear {
         container.add(search);
         container.setVisible(true);
 
-         search.addActionListener(new ActionListener() {
+        search.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 int years = (Integer.parseInt(year.getText()));
                 int monthh = (Integer.parseInt(month.getText()));
-                ArrayList<ShoppingCart> transactions = con.getShoppingCartByMonth(monthh,years);
-                new ShowMonthlyTransaction(admin,transactions);
+                ArrayList<ShoppingCart> transactions = con.getShoppingCartByMonth(monthh, years);
+                new MonthlyTransactionView(admin, transactions);
                 container.setVisible(false);
             }
         });

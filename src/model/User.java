@@ -3,18 +3,32 @@ package model;
 import java.util.ArrayList;
 import controller.Controller;
 
-public class User extends Account{
+public class User extends Account {
     private double wallet;
     private ArrayList<Game> ownedGames;
     private ArrayList<DLC> ownedDLCs;
     private ArrayList<ShoppingCart> cart = new ArrayList<>();
+    // shopping cart is stored locally, will be emptied if
+    // user logs out or exits the program
+
+    private NotificationService notificationService;
 
     public User() {
-        
+
     }
 
-    public User(String name, String password, int id) {
-        super(name, password, id);
+    public User(String name, String password, int id, String email, String phoneNumber,
+            NotificationService notificationService) {
+        super(name, password, id, email, phoneNumber);
+        this.notificationService = notificationService;
+    }
+
+    public void setNotificationService(NotificationService notificationService) {
+        this.notificationService = notificationService;
+    }
+
+    public void notifyUser(String message) {
+        notificationService.sendNotification(message);
     }
 
     public double getWallet() {
@@ -41,8 +55,6 @@ public class User extends Account{
     public void setOwnedDLCs(ArrayList<DLC> ownedDLCs) {
         this.ownedDLCs = ownedDLCs;
     }
-
-
 
     public ArrayList<ShoppingCart> getCart() {
         return cart;

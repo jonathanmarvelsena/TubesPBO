@@ -7,7 +7,6 @@ package view;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -17,24 +16,25 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 import controller.Controller;
+import model.Account;
 import model.User;
 
 /**
  *
  * @author abil
  */
-public class Register {
+public class RegisterView {
     Controller con = Controller.getInstance();
 
     JFrame container;
     JTextField username;
     JPasswordField password;
     JButton btnBack;
-    JButton btnRegistrasi;
+    JButton btnRegister;
 
-    public Register() {
+    public RegisterView() {
 
-        container = new JFrame("Steam Register");
+        container = new JFrame("Register");
         container.setSize(480, 300);
         container.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         container.setLocationRelativeTo(null);
@@ -57,17 +57,6 @@ public class Register {
         container.add(username);
         container.add(labelUsername);
 
-        // Email
-        // JLabel email = new JLabel("Email");
-        // username = new JTextField();
-        // email.setBounds(15, 102, 150, 23);
-        // username.setBounds(100, 102, 320, 23);
-        // email.setForeground(Color.WHITE);
-        // username.setForeground(Color.WHITE);
-        // username.setBackground(Color.DARK_GRAY);
-        // container.add(username);
-        // container.add(email);
-
         // Password
         JLabel labelPassword = new JLabel("Password ");
         password = new JPasswordField();
@@ -79,28 +68,31 @@ public class Register {
         container.add(labelPassword);
         container.add(password);
 
-        // Bagian Button Registrasi
-        btnRegistrasi = new JButton("Create Account");
-        btnRegistrasi.setBounds(100, 182, 150, 23);
-        btnRegistrasi.setForeground(Color.WHITE);
-        btnRegistrasi.setBackground(Color.decode("#717D7E"));
-        container.add(btnRegistrasi);
+        // Register
+        btnRegister = new JButton("Create Account");
+        btnRegister.setBounds(100, 182, 150, 23);
+        btnRegister.setForeground(Color.WHITE);
+        btnRegister.setBackground(Color.decode("#717D7E"));
+        container.add(btnRegister);
 
-        btnRegistrasi.addActionListener(new ActionListener() {
+        btnRegister.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String name = username.getText();
                 String pass = new String(password.getPassword());
-                ArrayList<User> listUser = con.getAllUserList();
-                User newUser = new User(name, pass, listUser.size() + 1);
+
+                Account newAccount = con.getUser(name, pass);
+
+                User newUser = (User) newAccount;
+
                 boolean cek = con.insertNewUser(newUser);
                 if (cek) {
-                    JOptionPane.showMessageDialog(container, "Register Succes", "Error",
+                    JOptionPane.showMessageDialog(container, "Register successful", "Error",
                             JOptionPane.WARNING_MESSAGE);
-                    new HomeUser(newUser);
+                    new HomeUserView(newUser);
                     container.dispose();
                 } else {
-                    JOptionPane.showMessageDialog(container, "Register Error", "Error",
+                    JOptionPane.showMessageDialog(container, "Register failed", "Error",
                             JOptionPane.WARNING_MESSAGE);
                 }
 
@@ -108,7 +100,6 @@ public class Register {
         });
         container.setVisible(true);
 
-        // Bagian Button Back
         btnBack = new JButton("Back");
         btnBack.setBounds(270, 182, 150, 23);
         btnBack.setForeground(Color.WHITE);
@@ -118,7 +109,7 @@ public class Register {
         btnBack.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new Login();
+                new LoginView();
                 container.setVisible(false);
             }
         });
