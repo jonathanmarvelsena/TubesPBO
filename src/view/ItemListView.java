@@ -56,6 +56,7 @@ public class ItemListView {
         }
 
         int count = 0;
+        
         ArrayList<Item> items = con.getAllItems();
         for (int i = 0; i < data.length; i++) {
             if (itemType.equals((String) data[i][2])) {
